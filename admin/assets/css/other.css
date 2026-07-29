@@ -1,0 +1,625 @@
+.other-container {
+    width: 100%;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    /* overflow: hidden; */
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background: var(--main-clr);
+    color: var(--txt-clr);
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 10px 10px 0px 0px;
+}
+
+.custom-options {
+    position: relative;
+}
+
+.custom-options button {
+    background: white;
+    color: #000;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.options-dropdown {
+    display: none;
+    position: absolute;
+    right: 0px;
+    top: 50px;
+    background: var(--main-clr);
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    list-style: none;
+    padding: 10px;
+    width: 180px;
+    min-width: fit-content;
+}
+
+.options-dropdown li {
+    padding: 8px;
+    cursor: pointer;
+    transition: background 0.3s;
+    text-wrap: nowrap;
+    font-weight: 500;
+    font-size: 16px;
+}
+
+.options-dropdown li:hover {
+    background: var(--secoundry-clr);
+    color: #000;
+}
+
+.other-box {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+}
+
+.left,
+.right {
+    width: 48%;
+}
+
+.right {
+    border-left: 2px solid #eee;
+    padding-left: 20px;
+}
+
+.input-box {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.set-btn {
+    margin-top: 20px;
+    width: 100%;
+    padding: 10px;
+    cursor: pointer;
+    background: var(--main-clr);
+    color: var(--txt-clr);
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: opacity 0.3s;
+}
+
+.set-btn:hover {
+    opacity: .9;
+}
+
+.fee-list {
+    margin-top: 10px;
+    list-style: none;
+    padding: 0;
+}
+
+.fee-list li {
+    padding: 8px;
+    background: #e9f5ff;
+    margin-bottom: 5px;
+    border-radius: 5px;
+    text-align: center;
+    font-weight: 500;
+    color: #007bff;
+}
+
+
+.input-field {
+    margin-top: 20px;
+}
+
+.input-field label {
+    font-weight: bold;
+    font-size: 16px;
+    margin-bottom: 10px;
+    display: block;
+}
+
+.input-field select {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+.input-field input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+
+/* table style */
+
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.search-container {
+    margin-bottom: 20px;
+}
+
+.table th,
+.table td {
+    text-align: center;
+    padding: 12px;
+    border: 1px solid #ddd;
+}
+
+.table thead {
+    background-color: #f2fcfd;
+    font-weight: bold;
+    color: #4b5460;
+}
+
+.sl {
+    color: #4b5460;
+}
+
+
+.table tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+.table img {
+    width: 50px;
+    height: 50px;
+    border-radius: 5px;
+    object-fit: cover;
+}
+
+.table button {
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+.table .edit {
+    padding: none;
+    color: #007bff;
+    border: 1px solid #007bff;
+    width: 35px;
+    height: 35px;
+    border-radius: 5px;
+    font-size: 20px;
+    margin: 0px auto;
+    cursor: pointer;
+    transition: all .2s ease-in-out;
+
+    &:hover {
+        background: #007bff;
+        color: #fff;
+    }
+}
+
+.table button.delete {
+    color: #dc3545;
+    width: 35px;
+    height: 35px;
+    border: 1px solid #dc3545;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 0px auto;
+    transition: all 0.3s ease-in;
+
+    &:hover {
+        background-color: #dc3545;
+        color: #fff;
+    }
+}
+
+.giftimg {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.image-preview {
+    width: 70px;
+    height: 70px;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.image-preview img {
+    width: 100%;
+    height: 100%;
+}
+
+.select_field select {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin-top: 20px;
+}
+
+ .otherResult  {
+        overflow: hidden;
+        width: 100%;
+        overflow-x: scroll;
+        padding-bottom: 20px;
+
+    }
+
+
+    
+    .otherResult tr,
+    .otherResult th {
+        white-space: nowrap;
+    }
+
+    .otherResult::-webkit-scrollbar {
+        height: 10px;
+
+    }
+
+    .otherResult::-webkit-scrollbar-track {
+        background-color: #00c9a7;
+        /* border-radius: 10px; */
+    }
+
+    .otherResult::-webkit-scrollbar-thumb {
+        /* border-radius: 10px; */
+        background-color: #005555;
+    }
+
+
+/* ======= > >     responsive.css        ========= */
+
+
+@media (max-width:999px) {
+
+    .k_main_container {
+
+        padding-left: 5%;
+        padding-bottom: 50px;
+    }
+
+
+
+}
+
+@media (max-width:788px) {
+
+    .k_other_box {
+        flex-direction: column;
+        gap: 30px;
+        align-items: center;
+    }
+
+    .k_left_section {
+        width: 100%;
+    }
+
+    .k_right {
+        width: 100%;
+    }
+
+
+    .k_result {
+        overflow: hidden;
+        width: 100%;
+        overflow-x: scroll;
+        padding-bottom: 20px;
+
+    }
+
+    .k_table tr,
+    .k_table th {
+        white-space: nowrap;
+    }
+
+    .k_result::-webkit-scrollbar {
+        height: 10px;
+
+    }
+
+    .k_result::-webkit-scrollbar-track {
+        background-color: #00c9a7;
+        /* border-radius: 10px; */
+    }
+
+    .k_result::-webkit-scrollbar-thumb {
+        /* border-radius: 10px; */
+        background-color: #005555;
+    }
+
+
+}
+
+
+/*========================= password change modal ====================================*/
+
+.p_modal_overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+}
+
+.p_modal {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 300px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.p_modal_header {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.p_modal input {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.p_modal_buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.p_modal_buttons button {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.p_cancel_btn {
+    background-color: #ccc;
+}
+
+.p_save_btn {
+    background-color: var(--main-clr);
+    color: white;
+}
+
+
+.time_slot_field {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+.delete_btn {
+    color: #dc3545;
+    width: fit-content;
+    min-width: 65px;
+    height: 35px;
+    border: 1px solid #dc3545!important;
+    border-radius: 5px;
+    cursor: pointer!important;
+    margin: 0px auto;
+    transition: all 0.3s ease-in;
+
+    &:hover {
+        background-color: #dc3545;
+        color: #fff;
+    }
+}
+
+.main_banner{
+    width: 300px!important;
+    height: auto!important;
+}
+
+
+/*  shop modal */
+
+
+/* open button */
+.shop_model_open_btn {
+  padding: 12px 20px;
+  background: #0d6efd;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* modal background */
+.shop_model_modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+/* modal box */
+.shop_model_content {
+  background: #fff;
+  width: 350px;
+  padding: 20px;
+  border-radius: 12px;
+  position: relative;
+  animation: shop_model_fadeIn 0.3s ease;
+}
+
+/* close button */
+.shop_model_close {
+  position: absolute;
+  right: 15px;
+  top: 10px;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+/* toggle */
+.shop_model_toggle {
+  display: flex;
+  justify-content: space-between;
+  margin: 15px 0;
+}
+
+.shop_model_option input {
+  display: none;
+}
+
+.shop_model_option span {
+  padding: 8px 14px;
+  border-radius: 20px;
+  background: #e9ecef;
+  cursor: pointer;
+}
+
+.shop_model_option input:checked + span {
+  background: #198754;
+  color: #fff;
+}
+
+/* textarea */
+.shop_model_textarea {
+  width: 100%;
+  height: 80px;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  resize: none;
+}
+
+/* save button */
+.shop_model_save_btn {
+  margin-top: 15px;
+  width: 100%;
+  padding: 10px;
+  background: var(--main-clr);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+@keyframes shop_model_fadeIn {
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+
+/* =========== shop settings controls============== */
+
+.shop_model_wrapper {
+  max-width: 500px;
+  margin: auto;
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  font-family: Arial, sans-serif;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.shop_model_wrapper h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.shop_model_row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.shop_model_label {
+  font-size: 15px;
+  text-transform: capitalize;
+}
+
+/* toggle switch */
+.shop_model_switch {
+  position: relative;
+  width: 46px;
+  height: 24px;
+}
+
+.shop_model_switch input {
+  display: none;
+}
+
+.shop_model_slider {
+  position: absolute;
+  inset: 0;
+  background: #ccc;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.shop_model_slider::before {
+  content: "";
+  position: absolute;
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  bottom: 3px;
+  background: white;
+  border-radius: 50%;
+  transition: 0.3s;
+}
+
+.shop_model_switch input:checked + .shop_model_slider {
+  background: #198754;
+}
+
+.shop_model_switch input:checked + .shop_model_slider::before {
+  transform: translateX(22px);
+}
+
+
+
+
+.shop_model_field {
+  margin-bottom: 12px;
+}
+
+.shop_model_field label {
+  display: block;
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+
+.shop_model_field input {
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+.hero_box{
+    height: 70px;
+}

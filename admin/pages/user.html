@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<!-- Mirrored from /dashboard/pages/user.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 05 May 2026 18:40:23 GMT -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/form-table.css">
+    <link rel="stylesheet" href="../assets/css/order.css">
+    <link rel="stylesheet" href="../assets/css/user.css">
+    <!-- <link rel="stylesheet" href="../assets/css/category.css"> -->
+</head>
+
+<body>
+
+    <div class="wrapper-overlay"></div>
+    <div class="wrapper">
+
+        <!-- ===== navbar========= -->
+        <div class="navbar">
+            <i class="bi bi-chevron-bar-right"></i>
+
+            <button>Logout</button>
+        </div>
+
+
+        <!-- ========= side bar ======== -->
+        <div class="sidebar">
+            <div class="sidebar-header flex space-between gap-10">
+                <img src="../assets/images/logo.png" alt="">
+                <i class="bi bi-chevron-bar-left"></i>
+            </div>
+
+            <div class="sidebar-content">
+                <div class="sidebar-box flex flex-start gap-10  dashBox">
+                    <i class="bi bi-house-door"></i>
+                    <p>Dashboard</p>
+                </div>
+
+                <div class="sidebar-box  gap-10">
+                    <div class="flex space-between">
+                        <div class="flex flex-start gap-10 posBox">
+                            <i class="bi bi-bag"></i>
+                            <p>POS</p>
+                        </div>
+                        <i class="bi bi-chevron-down down"></i>
+                    </div>
+                    <div class="sub-box">
+                        <li class="posBoxNewList">New Sale</li>
+                        <li class="posBoxOrders">Orders</li>
+                    </div>
+
+                </div>
+
+                <div class="sidebar-box  gap-10 ">
+                    <div class="flex space-between">
+                        <div class="flex flex-start gap-10 ">
+                            <i class="bi bi-cart2"></i>
+                            <p>Orders</p>
+                        </div>
+                        <i class="bi bi-chevron-down down"></i>
+                    </div>
+                    <div class="sub-box">
+                        <li class="orderBoxAll">All</li>
+                        <li class="orderBoxPending">Pending</li>
+                        <li class="orderBoxConfirmed">Confirmed</li>
+                        <li class="orderBoxPackaging">Packaging</li>
+                        <li class="orderBoxDelivered">Delivered</li>
+                        <li class="orderBoxReturned">Returned</li>
+                        <li class="orderBoxCanceled">Canceled</li>
+                    </div>
+
+                </div>
+
+                <div class="sidebar-box  gap-10 ">
+                    <div class="flex space-between">
+                        <div class="flex flex-start gap-10">
+                            <i class="bi bi-boxes"></i>
+                            <p>Category Setup</p>
+                        </div>
+                        <i class="bi bi-chevron-down down"></i>
+                    </div>
+                    <div class="sub-box">
+                        <li class="categoryBox">Top Category</li>
+                        <li class="bottomCategoryBox">Bottom Category</li>
+                        <li class="subCategoryBox">Subcategory</li>
+                    </div>
+
+                </div>
+                 <div class="sidebar-box flex flex-start gap-10 branchBox ">
+                    <i class="bi bi-shop"></i>
+                    <p>Branch</p>
+                </div>
+
+                <div class="sidebar-box flex flex-start gap-10 brandsBox">
+                    <i class="bi bi-amd"></i>
+                    <p>Brands</p>
+                </div>
+                <div class="sidebar-box flex flex-start gap-10 productBox">
+                    <i class="bi bi-gem"></i>
+                    <p>Product</p>
+                </div>
+
+                <div class="sidebar-box flex flex-start gap-10 bannerBox">
+                    <i class="bi bi-image-alt"></i>
+                    <p>Banner</p>
+                </div>
+
+                <div class="sidebar-box flex flex-start gap-10 couponsBox">
+                    <i class="bi bi-gift"></i>
+                    <p>Coupons</p>
+                </div>
+
+                <div class="sidebar-box flex flex-start gap-10 flashSaleBox">
+                    <i class="bi bi-alarm"></i>
+                    <p>Flash Sale</p>
+                </div>
+
+                <div class="sidebar-box flex flex-start gap-10 categoryDiscountBox">
+                    <i class="bi bi-layers"></i>
+                    <p>Category Discount</p>
+                </div>
+
+                <div class="sidebar-box flex flex-start gap-10 salesReportBox">
+                    <i class="bi bi-bar-chart"></i>
+                    <p>Sales Report</p>
+                </div>
+
+                <div class="sidebar-box flex flex-start gap-10 activityReportBox">
+                    <i class="bi bi-shield-check"></i>
+                    <p>Activity Report</p>
+                </div>
+
+                <div class="sidebar-box flex flex-start gap-10 deliveryReportBox">
+                    <i class="bi bi-truck"></i>
+                    <p>Delivery Report</p>
+                </div>
+
+                <div class="sidebar-box  gap-10 active">
+                    <div class="flex space-between">
+                        <div class="flex flex-start gap-10">
+                            <i class="bi bi-people"></i>
+                            <p>User Management</p>
+                        </div>
+                        <i class="bi bi-chevron-down down"></i>
+                    </div>
+                    <div class="sub-box">
+                        <li class="customerListBox">Customer List</li>
+                        <li class="customerWalletBox">Customer Wallet</li>
+                        <li class="customerFundBox">Add Fund</li>
+                        <li class="customerReportBox">Report</li>
+                    </div>
+
+                </div>
+
+                <div class="sidebar-box flex flex-start gap-10 productReviewBox">
+                    <i class="bi bi-card-checklist"></i>
+                    <p>Product Review</p>
+                </div>
+
+                <div class="sidebar-box flex flex-start gap-10 deliveryManBox">
+                    <i class="bi bi-person-rolodex"></i>
+                    <p>Delivery Man</p>
+                </div>
+
+                <div class="sidebar-box flex flex-start gap-10 staffBox" id="manageStaffMenu">
+                    <i class="bi bi-person-badge"></i>
+                    <p>Manage Staff</p>
+                </div>
+
+                <div class="sidebar-box flex flex-start gap-10 otherSetupBox">
+                    <i class="bi bi-sliders2"></i>
+                    <p>Other Setup</p>
+                </div>
+
+                <div class="sidebar-box flex flex-start gap-10 pushNotificationBox">
+                    <i class="bi bi-bell"></i>
+                    <p>Push Notification</p>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ======= main container ========= -->
+
+        <div class="main-container k_main_container">
+
+            <h3 class="headline">All User</h3>
+
+
+
+
+
+
+
+            <div class="result k_result">
+
+
+
+
+                <div class="result-header k_header flex space-between">
+                    <h3>User Table <span class="user_count">8</span></h3>
+
+                    <div class="right_side ">
+                        <div class="filters">
+
+                            <!-- Date Filter -->
+                            <select class="filtter_item" id="dateFilter" onchange="applyFilters()">
+                                <option value="">All Dates</option>
+                                <option value="today">Today</option>
+                                <option value="week">This Week</option>
+                                <option value="month">This Month</option>
+                                <option value="custom">Custom</option>
+                            </select>
+
+                            <input class="filtter_item" type="date" id="fromDate" style="display:none">
+                            <input class="filtter_item" type="date" id="toDate" style="display:none">
+
+                            <!-- Status Filter -->
+                            <select class="filtter_item" id="statusFilter" onchange="applyFilters()">
+                                <option value="">All Users</option>
+                                <option value="true">Active</option>
+                                <option value="false">Blocked</option>
+                            </select>
+
+                            <!-- Rows Per Page -->
+                            <select class="filtter_item" id="pageSize" onchange="changePageSize()">
+                                <option value="10">10 Rows</option>
+                                <option value="25">25 Rows</option>
+                                <option value="50">50 Rows</option>
+                                <option value="100">100 Rows</option>
+                            </select>
+
+                        </div>
+                        <div class="search-container">
+                            <input type="text" id="search-input" placeholder="Search by Name & Mobile" />
+                            <button id="search-button">Search</button>
+                        </div>
+                    </div>
+
+                </div>
+                <table class="table k_table" id="result">
+                    <thead>
+                        <tr>
+                            <th>SL</th>
+                            <th>Full Name</th>
+                            <th>Mobile Number</th>
+                            <th>Email</th>
+                            <th>Refrel Code</th>
+                            <th onclick="sortUsersByTotalOrders()" style="cursor: pointer;">Total Orders <i
+                                    class="bi bi-arrow-down-up"></i></th>
+                            <th>Wallet Balance</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
+
+
+                <div id="pagination"></div>
+            </div>
+
+
+
+
+
+        </div>
+
+
+
+        <!-- Modal -->
+        <div class="modal" id="emailModal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal()">&times;</span>
+                <h3>Update Email</h3>
+                <input type="text" id="user_id" hidden />
+                <input type="email" id="oldEmail" placeholder="Enter new email" readonly />
+                <input type="email" id="newEmail" placeholder="Enter new email" />
+                <div class="error" id="errorMsg"></div>
+                <button onclick="updateEmail()">Update</button>
+            </div>
+        </div>
+
+        <!-- End of Modal -->
+
+
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.js"
+        integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="../assets/js/script.js"></script>
+    <script src="../assets/js/user.js"></script>
+    <script>
+        loadAllUser();
+    </script>
+</body>
+
+
+<!-- Mirrored from /dashboard/pages/user.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 05 May 2026 18:40:23 GMT -->
+</html>

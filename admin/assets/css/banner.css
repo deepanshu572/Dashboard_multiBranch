@@ -1,0 +1,82 @@
+
+.flash-sale-manage-link {
+    display: none;
+    margin-top: 10px;
+    color: #0b63f6;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.flash-sale-manage-link:hover {
+    text-decoration: underline;
+}
+
+
+
+
+/* ======= > >     responsive.css        ========= */
+
+
+
+@media (max-width:1200px){
+    .k_result {
+        overflow: hidden;
+        width: 100%;
+        overflow-x: scroll;
+        
+    }
+    .k_table tr , .k_table th {
+        white-space: nowrap;
+    }
+    .k_result::-webkit-scrollbar {
+        height: 10px;
+    }
+    .k_result::-webkit-scrollbar-track {
+        background-color: #00c9a7;
+        /* border-radius: 10px; */
+    }
+    .k_result::-webkit-scrollbar-thumb {
+        /* border-radius: 10px; */
+        background-color: #005555;
+    }
+
+    .k_main_container {
+        padding-bottom: 50px;
+    }
+
+   
+    
+    
+}
+
+@media (max-width:999px){
+    .k_main_container {
+
+        padding-left: 5%;
+
+    }
+}
+
+@media (max-width:600px){
+   .k_form_group {
+        width:100%;
+    }
+
+    .k_header {
+        align-items: center;
+        flex-wrap: wrap;
+        margin-top: 10px;
+        gap: 10px;
+        justify-content: center;
+    }
+
+    .k_form_group_container {
+        row-gap: 0;
+        column-gap: 30px;
+        flex-wrap: wrap;
+
+    }
+}
+
+

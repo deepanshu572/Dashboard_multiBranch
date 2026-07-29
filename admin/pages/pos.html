@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<!-- Mirrored from /dashboard/pages/pos.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 05 May 2026 18:40:20 GMT -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link href="../../../../../cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/pos.css">
+    <link rel="stylesheet" href="../assets/css/bill.css">
+    <link rel="stylesheet" href="../assets/css/product-popup.css">
+
+</head>
+
+<body>
+
+    <div class="wrapper-overlay"></div>
+    <div class="wrapper">
+
+        <!-- ===== navbar========= -->
+        <div class="navbar">
+            <i class="bi bi-chevron-bar-right"></i>
+
+            <button>Logout</button>
+        </div>
+
+
+        <!-- ========= side bar ======== -->
+        <div class="sidebar  k_sidebar">
+            <div class="sidebar-header flex space-between gap-10">
+                <img src="../assets/images/logo.png" alt="">
+                <i class="bi bi-chevron-bar-left"></i>
+            </div>
+
+            <div class="sidebar-content">
+                <div class="sidebar-box flex flex-start gap-10  dashBox">
+                    <i class="bi bi-house-door"></i>
+                    <p>Dashboard</p>
+                </div>
+
+                <div class="sidebar-box  gap-10 active">
+                    <div class="flex space-between">
+                        <div class="flex flex-start gap-10 posBox">
+                            <i class="bi bi-bag"></i>
+                            <p>POS</p>
+                        </div>
+                        <i class="bi bi-chevron-down down"></i>
+                    </div>
+                    <div class="sub-box">
+                        <li class="posBoxNewList">New Sale</li>
+                        <li class="posBoxOrders">Orders</li>
+                    </div>
+
+                </div>
+
+                <div class="sidebar-box  gap-10">
+                    <div class="flex space-between">
+                        <div class="flex flex-start gap-10 ">
+                            <i class="bi bi-cart2"></i>
+                            <p>Orders</p>
+                        </div>
+                        <i class="bi bi-chevron-down down"></i>
+                    </div>
+                    <div class="sub-box">
+                        <li class="orderBoxAll">All</li>
+                        <li class="orderBoxPending">Pending</li>
+                        <li class="orderBoxConfirmed">Confirmed</li>
+                        <li class="orderBoxPackaging">Packaging</li>
+                        <li class="orderBoxDelivered">Delivered</li>
+                        <li class="orderBoxReturned">Returned</li>
+                        <li class="orderBoxCanceled">Canceled</li>
+                    </div>
+
+                </div>
+
+                <div class="sidebar-box  gap-10 ">
+                    <div class="flex space-between">
+                        <div class="flex flex-start gap-10">
+                            <i class="bi bi-boxes"></i>
+                            <p>Category Setup</p>
+                        </div>
+                        <i class="bi bi-chevron-down down"></i>
+                    </div>
+                   <div class="sub-box">
+                        <li class="categoryBox">Top Category</li>
+                        <li class="bottomCategoryBox">Bottom Category</li>
+                        <li class="subCategoryBox">Subcategory</li>
+                    </div>
+
+                </div>
+                 <div class="sidebar-box flex flex-start gap-10 branchBox ">
+                    <i class="bi bi-shop"></i>
+                    <p>Branch</p>
+                </div>
+
+                <div class="sidebar-box flex flex-start gap-10 brandsBox">
+                    <i class="bi bi-amd"></i>
+                    <p>Brands</p>
+                </div>
+                <div class="sidebar-box flex flex-start gap-10 productBox ">
+                    <i class="bi bi-gem"></i>
+                    <p>Product</p>
+                </div>
+
+                <div class="sidebar-box flex flex-start gap-10 bannerBox">
+                    <i class="bi bi-image-alt"></i>
+                    <p>Banner</p>
+                </div>
+
+                <div class="sidebar-box flex flex-start gap-10 couponsBox">
+                    <i class="bi bi-gift"></i>
+                    <p>Coupons</p>
+                </div>
+
+                <div class="sidebar-box flex flex-start gap-10 flashSaleBox">
+                    <i class="bi bi-alarm"></i>
+                    <p>Flash Sale</p>
+                </div>
+
+                <div class="sidebar-box flex flex-start gap-10 categoryDiscountBox">
+                    <i class="bi bi-layers"></i>
+                    <p>Category Discount</p>
+                </div>
+
+                <div class="sidebar-box flex flex-start gap-10 salesReportBox">
+                    <i class="bi bi-bar-chart"></i>
+                    <p>Sales Report</p>
+                </div>
+
+                <div class="sidebar-box flex flex-start gap-10 activityReportBox">
+                    <i class="bi bi-shield-check"></i>
+                    <p>Activity Report</p>
+                </div>
+
+                <div class="sidebar-box flex flex-start gap-10 deliveryReportBox">
+                    <i class="bi bi-truck"></i>
+                    <p>Delivery Report</p>
+                </div>
+
+                <div class="sidebar-box  gap-10">
+                    <div class="flex space-between">
+                        <div class="flex flex-start gap-10">
+                            <i class="bi bi-people"></i>
+                            <p>User Management</p>
+                        </div>
+                        <i class="bi bi-chevron-down down"></i>
+                    </div>
+                    <div class="sub-box">
+                        <li class="customerListBox">Customer List</li>
+                        <li class="customerWalletBox">Customer Wallet</li>
+                        <li class="customerFundBox">Add Fund</li>
+                        <li class="customerReportBox">Report</li>
+                    </div>
+
+                </div>
+
+                <div class="sidebar-box flex flex-start gap-10 productReviewBox">
+                    <i class="bi bi-card-checklist"></i>
+                    <p>Product Review</p>
+                </div>
+
+                <div class="sidebar-box flex flex-start gap-10 deliveryManBox">
+                    <i class="bi bi-person-rolodex"></i>
+                    <p>Delivery Man</p>
+                </div>
+
+                <div class="sidebar-box flex flex-start gap-10 staffBox" id="manageStaffMenu">
+                    <i class="bi bi-person-badge"></i>
+                    <p>Manage Staff</p>
+                </div>
+
+                <div class="sidebar-box flex flex-start gap-10 otherSetupBox">
+                    <i class="bi bi-sliders2"></i>
+                    <p>Other Setup</p>
+                </div>
+
+                <div class="sidebar-box flex flex-start gap-10 pushNotificationBox">
+                    <i class="bi bi-bell"></i>
+                    <p>Push Notification</p>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ======= main container ========= -->
+
+        <div class="main-container k_main_container">
+            <h3>Pos</h3>
+
+
+            <div class="pos-section k_pos_section">
+
+                <div class="pos-section-left k_pos_section_left">
+                    <div class="main-header">
+                        <h3>Product</h3>
+                    </div>
+                    <div class="header k_pos_header">
+                        <select id="category-filter">
+                            <option value="all">All Categories</option>
+                            <option value="fruits">Fruits</option>
+                            <option value="vegetables">Vegetables</option>
+                            <option value="beverages">Beverages</option>
+                        </select>
+                        <select id="subcategory-filter">
+                            <option value="all">All Subcategories</option>
+                        </select>
+                        <input type="text" id="search-box" placeholder="Search by product name or SKU">
+
+                        <input type="text" id="barcode-input" style="position:absolute; left:-9999px;" autofocus>
+
+                    </div>
+
+                    <div class="products k_products" id="product-list">
+                        <!-- Products will be dynamically loaded here -->
+                    </div>
+
+                    <div class="pagination" id="pagination">
+                        <!-- Pagination buttons will be dynamically loaded here -->
+                    </div>
+                </div>
+
+                <div class="pos-section-right k_pos-section-right">
+                    <div class="bill-section">
+                        <div class="bill-section-header">
+                            <h3>Billing section</h3>
+                        </div>
+
+                        <!----------- search section --------- -->
+
+                        <div class="search-section">
+                            <select id="customer-select" class="select2">
+                                <option value="0">Walk In Customer</option>
+                                <option value="registered">Registered Customer</option>
+                                <!-- Add more options as needed -->
+                            </select>
+                            <button id="add-customer-btn" onclick="addNewCustomer()">Add New Customer</button>
+                        </div>
+
+                        <!-------------------- order type -------------- -->
+
+                        <div class="order-type">
+                            <h3>Select Order Type</h3>
+
+                            <div class="order-type-select">
+
+                                <div class="ots">
+                                    <div class="o1 active flex">
+                                        <div class="o2"></div>
+                                    </div>
+                                    <p>Take Away</p>
+                                </div>
+                                <div class="ots">
+                                    <div class="o1 flex">
+                                        <div class="o2"></div>
+                                    </div>
+                                    <p>Home Delivery</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- =========== product cart =============== -->
+
+                        <div class="product-cart">
+
+                            <table class="cart-table">
+                                <thead>
+                                    <tr>
+                                        <th>Item</th>
+                                        <th>Qty</th>
+                                        <th>Price</th>
+                                        <th>Delete</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="cartGrid">
+                                    <tr>
+                                        <td class="item">
+                                            <img src="../../../../../grofresh-admin.6amtech.com/storage/app/public/product/2023-10-21-6533474b95521.png"
+                                                alt="Cabbage">
+                                            <span>Cabbage</span>
+                                        </td>
+                                        <td>
+                                            <input type="number" value="2" class="quantity" min="1">
+                                        </td>
+                                        <td class="price">₹50</td>
+                                        <td>
+                                            <button class="delete-btn flex">
+                                                <i class="bi bi-trash3"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+
+                        </div>
+
+                        <!-- billing section -->
+
+                        <div class="summary-container">
+                            <div class="order-summary">
+                                <div class="summary-item">
+                                    <span>Sub total :</span>
+                                    <span class="cartSubTotal"> ₹ 141</span>
+                                </div>
+                                <div class="summary-item">
+                                    <span>Product Discount:</span>
+                                    <span class="cartProductDiscount"> ₹ 10</span>
+                                </div>
+                                <div class="summary-item">
+                                    <span>Extra Discount:</span>
+                                    <span>
+
+                                        <button class="edit-btn">
+                                            <i class="bi bi-pencil"></i>
+                                        </button>
+                                        <span class="editable"> <span class="valueDiscountType"> ₹</span> <span
+                                                class="discountPrice">0</span> <span class="percentageDiscountType">
+                                            </span></span>
+                                    </span>
+                                </div>
+
+                                <div class="summary-item">
+                                    <span>Delivery Charge :</span>
+
+                                    <span>
+                                        <button class="del-edit-btn">
+                                            <i class="bi bi-pencil"></i>
+                                        </button>
+                                        <span>₹ <span class="delCharge">0</span></span>
+                                    </span>
+
+                                </div>
+                                <div class="summary-total">
+                                    <span>Total :</span>
+                                    <span class="totalCatAmount">₹ 129.75</span>
+                                </div>
+                            </div>
+                            <div class="payment-method">
+                                <span>Payment Method</span>
+                                <div class="payment-buttons">
+                                    <button class="payment-btn active">Cash</button>
+                                    <button class="payment-btn">Online</button>
+                                </div>
+                            </div>
+                            <div class="action-buttons">
+                                <button class="cancel-order-btn">Cancel Order</button>
+                                <button class="place-order-btn" onclick="placeOrder()">Place Order</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+
+
+
+        </div>
+
+
+
+
+    </div>
+
+    <!-- module -->
+
+
+    <div class="module">
+        <div class="module-result">
+
+        </div>
+    </div>
+
+
+
+    <!-- modal container -->
+
+    <div class="modal-container">
+        <div class="modal">
+            <div class="modal-header">
+                <span class="modal-title">Add New Customer</span>
+                <button class="close-btn">✖</button>
+            </div>
+            <form class="customer-form">
+                <div class="form-group">
+                    <label for="first-name">Full Name <span></span></label>
+                    <input type="text" id="full_name" placeholder="Full name">
+                </div>
+                <!-- <div class="form-group">
+                    <label for="last-name">Last Name <span>*</span></label>
+                    <input type="text" id="last-name" placeholder="Last name" >
+                </div> -->
+                <div class="form-group">
+                    <label for="email">Email </label>
+                    <input type="email" id="email" placeholder="Ex : ex@example.com">
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone Number <span>*</span></label>
+                    <input type="tel" id="phone" placeholder="Phone" required>
+                </div>
+                <div class="form-actions">
+                    <button type="reset" class="reset-btn">Reset</button>
+                    <button type="submit" class="submit-btn">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- price filter modal  -->
+
+    <div class="d-modal">
+        <div class="d-modal-header">
+            <h2>Update Discount</h2>
+            <button class="cancel-discount-modal">&times;</button>
+        </div>
+        <div class="d-modal-body">
+            <div class="d-form-group">
+                <label for="discount">Discount</label>
+                <input type="number" id="discount" class="discount-input" placeholder="0">
+            </div>
+            <div class="d-form-group">
+                <label for="type">Type</label>
+                <select id="type" class="discount-type">
+                    <option value="amount">Amount (₹)</option>
+                    <option value="percentage">Percentage (%)</option>
+                </select>
+            </div>
+        </div>
+        <div class="d-modal-footer">
+            <button class="d-reset-btn" onclick="resetForm()">Reset</button>
+            <button class="d-submit-btn" onclick="setDiscount()">Submit</button>
+        </div>
+    </div>
+
+
+
+    <!-- set pos delivery charge -->
+    <div class="dd-modal">
+        <div class="d-modal-header">
+            <h2>Set Dilevery Charge</h2>
+            <button class="cancel-discount-modal">&times;</button>
+        </div>
+        <div class="d-modal-body">
+            <div class="d-form-group">
+                <label for="setdelcharge">Delivery Charge</label>
+                <input type="number" id="setdelcharge" class="discount-input" placeholder="0">
+            </div>
+        </div>
+        <div class="d-modal-footer">
+            <button class="d-reset-btn" onclick="resetForm()">Reset</button>
+            <button class="d-submit-btn" onclick="setDeliveryCharge()">Submit</button>
+        </div>
+    </div>
+
+
+
+    <!-- bill modal -->
+
+    <div class="bill-modal">
+
+        <div class="binvoice" id="binvoice">
+            <div class="bheader">
+                <img src="../assets/images/logo.png" alt="GroFresh Logo">
+                <h1>Bachet Fresh Kirana</h1>
+                <p class="billing_address"></p>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="details">
+                <p>Order ID: </p>
+                <p class="billOrderDate">29 Jan 2025 11:57 am</p>
+            </div>
+
+            <table class="bill-table" border="1">
+                <thead>
+                    <tr>
+                        <th>QTY</th>
+                        <th>DESC</th>
+                        <th class="bprice">Price</th>
+                    </tr>
+                </thead>
+                <tbody class="billResult">
+                    <tr>
+                        <td>5</td>
+                        <td>Premium Quality Body Lotion<br>Unit bprice: 400.00<br>Disc: 47.00</td>
+                        <td class="bprice">2,115.00</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>Glass Cleaner Mop<br>Unit bprice: 180.00<br>Disc: 18.00</td>
+                        <td class="bprice">648.00</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>Glass Cleaner Mop<br>Unit bprice: 180.00<br>Disc: 18.00</td>
+                        <td class="bprice">648.00</td>
+                    </tr>
+
+
+
+
+                </tbody>
+            </table>
+
+            <div class="btotals">
+                <table class="btotals-table">
+                    <tr>
+                        <td>Item price:</td>
+                        <td class="bprice totalSellingPrice">3,048.00</td>
+                    </tr>
+                    <tr>
+                        <td>Product Discount:</td>
+                        <td class="bprice billProductDiscount">0.00</td>
+                    </tr>
+                    <tr>
+                        <td>Extra Discount:</td>
+                        <td class="bprice extraDiscount">0.00</td>
+                    </tr>
+                    <tr>
+                        <td>Subtotal:</td>
+                        <td class="bprice billSubtotal">3,048.00</td>
+                    </tr>
+
+                    <tr>
+                        <td>Delivery Fee:</td>
+                        <td class="bprice billDelCharge">0.00</td>
+                    </tr>
+                    <tr>
+                        <td>Total:</td>
+                        <td class="bprice"><strong class="billGrandTotal">3,054.00</strong></td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="bfooter">
+                <p>** THANK YOU **</p>
+                <p>Copyright © 2025, Bachet Fresh Kirana</p>
+            </div>
+        </div>
+
+        <div class="no-print flex gap-10">
+            <button onclick="closeBillModel()">Back</button>
+            <button onclick="printBill()">Print</button>
+        </div>
+
+    </div>
+
+
+    <!-- ---------- product popup ------------------- -->
+
+    <div class="product-popup ">
+        <div class="pp-header">
+            <h3>Select Variant</h3>
+            <div class="confirm-btn">
+                <button>X</button>
+            </div>
+        </div>
+        <div class="product-varient-grid">
+
+        </div>
+    </div>
+
+
+    <script src="https://code.jquery.com/jquery-3.7.1.js"
+        integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> -->
+    <script src="../../../../../cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    <script src="../assets/js/script.js"></script>
+    <!-- <script src="../assets/js/product.js"></script> -->
+    <script src="../assets/js/pos.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.select2').select2();
+        });
+        loadProduct();
+        loadCategoryList();
+        loadSubCategoryList();
+        loadAllUserList();
+        renderCartProduct();
+        //  loadProduct();
+
+
+        $(".o1").click(function () {
+            $(".o1").removeClass('active');
+            $(this).addClass('active');
+        })
+
+        const validateInput = (input) => {
+            if (input.value > 5) {
+                input.value = 5;
+            }
+
+            // Ensure value is a single digit
+            if (input.value.length > 1) {
+                input.value = input.value.slice(0, 1);
+            }
+        }
+
+
+        document.querySelectorAll('.payment-btn').forEach((button) => {
+            button.addEventListener('click', (event) => {
+                document.querySelectorAll('.payment-btn').forEach((btn) => btn.classList.remove('active'));
+                event.target.classList.add('active');
+            });
+        });
+
+
+
+        // Edit extra discount
+
+
+    </script>
+    <script>
+
+        function setupSidebarForSmallScreens() {
+            if (window.innerWidth <= 999) {
+                $(".navbar .bi-chevron-bar-right").off("click").on("click", () => {
+                    $(".sidebar").addClass("active");
+                    $(".main-container").css("paddingLeft", "5%");
+                });
+
+                $(".sidebar-header i").off("click").on("click", () => {
+                    $(".sidebar").removeClass("active");
+                    $(".main-container").css("paddingLeft", "5%");
+                });
+            }
+        }
+
+        // Initial check
+        setupSidebarForSmallScreens();
+
+        // Also run on resize
+        $(window).on("resize", setupSidebarForSmallScreens);
+
+
+
+
+    </script>
+</body>
+
+
+<!-- Mirrored from /dashboard/pages/pos.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 05 May 2026 18:40:22 GMT -->
+</html>

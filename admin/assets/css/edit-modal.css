@@ -1,0 +1,144 @@
+.edit-modal {
+    display: none;
+    position: fixed;
+    width: 500px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%  ,-50%);
+    z-index: -999;
+    opacity: 0;
+    transition: all .4s ease-in-out;
+}
+.edit-modal.active{
+    z-index: 9999;
+    opacity: 1;
+    display: block;
+}
+.edit-modal-content {
+    background-color: #fff;
+    padding: 20px;
+    width: 100%;
+    border-radius: 8px;
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    position: relative;
+}
+.close {
+    position: absolute;
+    right: 5px;
+    top: -5px;
+    cursor: pointer;
+    font-size: 30px;
+}
+.edit-modal-left {
+    flex: 1;
+}
+.edit-modal-right {
+    flex: 1;
+    text-align: center;
+}
+.edit-modal-right img {
+    width: 170px;
+    max-width: 170px;
+    aspect-ratio: 1/1;
+    margin-top: 10px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    padding: 5px;
+    object-fit: contain;
+}
+.edit-modal-content input, .edit-modal-content button ,.edit-modal-content select{
+    width: 100%;
+    padding: 8px;
+    margin-top: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+.edit-form-group{
+    width: 100%;
+}
+.edit-modal-content button {
+    background-color: var(--main-clr);
+    color: white;
+    cursor: pointer;
+    border: none;
+    margin-top: 20px;
+}
+.edit-modal-content button:hover {
+   opacity: 1.1;
+}
+#imageError ,#imageError2{
+    color: red;
+    font-size: 12px;
+    display: none;
+}
+
+.brandImg img{
+    width: 100px!important;
+}
+.brandforminput{
+    width: 100%;
+    text-align: left;
+    margin-top: 10px;
+}
+
+
+
+
+
+
+
+
+/* ======= > > catagory.html       responsive.css        ========= */
+
+
+@media (max-width:1200px){
+    .k_result {
+        overflow: hidden;
+        width: 100%;
+        overflow-x: scroll;
+        
+    }
+    .k_table tr , .k_table th {
+        white-space: nowrap;
+    }
+    .k_result::-webkit-scrollbar {
+        height: 10px;
+    }
+    .k_result::-webkit-scrollbar-track {
+        background-color: #00c9a7;
+        /* border-radius: 10px; */
+    }
+    .k_result::-webkit-scrollbar-thumb {
+        /* border-radius: 10px; */
+        background-color: #005555;
+    }
+
+   
+}
+
+
+@media (max-width:999px) {
+    .k_main_container {
+        padding-left: 5%;
+        padding-bottom: 50px;
+    }
+}
+
+@media (max-width:600px){
+    .k_result_header {
+        flex-direction: column;
+        gap: 10px;
+    }
+    .k_category_header {
+        align-items: center;
+        flex-wrap: wrap;
+        margin-top: 10px;
+    }
+}
+
+.pb-5 {
+    padding-bottom: 50px;
+}

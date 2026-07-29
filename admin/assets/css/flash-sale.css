@@ -1,0 +1,143 @@
+.flash-sale-header {
+    margin-bottom: 16px;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.flash-selected-count {
+    background: #eff6ff;
+    color: #1d4ed8;
+    border: 1px solid #bfdbfe;
+    border-radius: 999px;
+    padding: 6px 12px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.flash-filter-wrap {
+    margin-bottom: 20px;
+    overflow: hidden;
+}
+
+.flash-form-group {
+    min-width: 220px;
+    flex: 1 1 220px;
+}
+
+.flash-search-wrap {
+    flex: 1;
+}
+
+.flash-search-wrap input {
+    width: 100%;
+}
+
+.flash-action-bar {
+    margin-top: 16px;
+}
+
+.flash-action-bar button {
+    border: none;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-weight: 600;
+    cursor: pointer;
+    flex: 0 0 auto;
+}
+
+.flash-outline-btn {
+    background: #f8fafc;
+    color: #0f172a;
+    border: 1px solid #cbd5e1 !important;
+}
+
+.flash-add-btn {
+    background: #16a34a;
+    color: #fff;
+}
+
+.flash-remove-btn {
+    background: #dc2626;
+    color: #fff;
+}
+
+.flash-status {
+    border-radius: 6px;
+    padding: 4px 8px;
+    font-size: 12px;
+    font-weight: 600;
+    display: inline-block;
+}
+
+.flash-status.on {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.flash-status.off {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.flash-row-btn {
+    border: none;
+    border-radius: 6px;
+    padding: 7px 10px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.flash-row-btn.add {
+    background: #16a34a;
+    color: #fff;
+}
+
+.flash-row-btn.remove {
+    background: #dc2626;
+    color: #fff;
+}
+
+#flash-product-table td img {
+    width: 42px;
+    height: 42px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+#flash-product-table th,
+#flash-product-table td {
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+.k_result {
+    width: 100%;
+    overflow-x: auto;
+}
+
+#flash-product-table {
+    min-width: 980px;
+}
+
+@media (max-width: 900px) {
+    .flash-form-group {
+        width: 100%;
+    }
+
+    .flash-search-wrap {
+        width: 100%;
+    }
+
+    .flash-action-bar button {
+        flex: 1 1 calc(50% - 10px);
+        min-width: 150px;
+    }
+}
+
+@media (max-width: 560px) {
+    .flash-action-bar button {
+        flex: 1 1 100%;
+        min-width: 100%;
+    }
+}

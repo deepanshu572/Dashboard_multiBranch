@@ -1,0 +1,142 @@
+.coupon-card {
+    background-color: #ffffff;
+    border-radius: 12px;
+    display: flex;
+    width: 400px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    position: fixed;
+    overflow: hidden;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50% ,-50%) scale(0);
+    opacity: 0;
+    transition: all .4s ease-in-out;
+  }
+
+  .coupon-card.active{
+    opacity: 1;
+    transform: translate(-50% ,-50%) scale(1);
+    z-index: 1000;
+  }
+
+  .coupon-left {
+    flex: 1.2;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .coupon-right {
+    width: 140px;
+    background-color: #004e54;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    position: relative;
+  }
+  .coupon-line{
+    width: 10px;
+    height: 100%;
+    background: #93cdd0;
+    position: relative;
+  }
+  .coupon-amount {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50% ,-50%);
+    color: #004e54;
+    font-size: 22px;
+    font-weight: bold;
+    text-align: center;
+    background: #fff;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 4px solid #93cdd0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .coupon-amount span {
+    font-size: 16px;
+    font-weight: normal;
+    display: block;
+    color: #004e54;
+  }
+
+
+  .coupon-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #006d6d;
+    margin-bottom: 5px;
+  }
+
+  .coupon-code {
+    color: #018585;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+
+  .coupon-desc {
+    font-size: 14px;
+    color: #444;
+    margin-bottom: 15px;
+  }
+
+  .coupon-details {
+    font-size: 13px;
+    color: #444;
+    margin-bottom: 5px;
+  }
+
+
+
+  .close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: transparent;
+    border: none;
+    font-size: 25px;
+    color: #fff;
+    cursor: pointer;
+  }
+
+  #update-button{
+    display: none;
+  }
+
+
+
+
+/* ======= > >       responsive.css        ========= */
+
+
+.k_table td > .flex {
+  gap: 10px;
+}
+
+
+
+@media (max-width:1200px){
+  .k_form_group {
+        width: calc(100% / 3 - 60px / 2);
+    }
+   
+    .k_form_group_container {
+        row-gap: 0;
+        column-gap: 30px;
+        flex-wrap: wrap;
+    }
+}
+
+@media (max-width:600px){
+  .k_form_group {
+        width:100%;
+    }
+}
+

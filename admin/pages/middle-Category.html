@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/form-table.css">
+    <link rel="stylesheet" href="../assets/css/edit-modal.css">
+    <!-- <link rel="stylesheet" href="../assets/css/category.css"> -->
+</head>
+
+<body>
+
+    <div class="wrapper-overlay"></div>
+    <div class="wrapper">
+
+        <!-- ===== navbar========= -->
+        <div class="navbar">
+            <i class="bi bi-chevron-bar-right"></i>
+
+            <button>Logout</button>
+        </div>
+
+
+        <!-- ========= side bar ======== -->
+        <div class="sidebar">
+            <div class="sidebar-header flex space-between gap-10">
+                <img src="../assets/images/logo.png" alt="">
+                <i class="bi bi-chevron-bar-left"></i>
+            </div>
+
+            <div class="sidebar-content">
+                <div class="sidebar-box flex flex-start gap-10  dashBox">
+                    <i class="bi bi-house-door"></i>
+                    <p>Dashboard</p>
+                </div>
+
+                <div class="sidebar-box  gap-10">
+                    <div class="flex space-between">
+                        <div class="flex flex-start gap-10 posBox">
+                            <i class="bi bi-bag"></i>
+                            <p>POS</p>
+                        </div>
+                        <i class="bi bi-chevron-down down"></i>
+                    </div>
+                    <div class="sub-box">
+                        <li class="posBoxNewList">New Sale</li>
+                        <li class="posBoxOrders">Orders</li>
+                    </div>
+
+                </div>
+
+                <div class="sidebar-box  gap-10">
+                    <div class="flex space-between">
+                        <div class="flex flex-start gap-10 ">
+                            <i class="bi bi-cart2"></i>
+                            <p>Orders</p>
+                        </div>
+                        <i class="bi bi-chevron-down down"></i>
+                    </div>
+                    <div class="sub-box">
+                        <li class="orderBoxAll">All</li>
+                        <li class="orderBoxPending">Pending</li>
+                        <li class="orderBoxConfirmed">Confirmed</li>
+                        <li class="orderBoxPackaging">Packaging</li>
+                        <li class="orderBoxDelivered">Delivered</li>
+                        <li class="orderBoxReturned">Returned</li>
+                        <li class="orderBoxCanceled">Canceled</li>
+                    </div>
+
+                </div>
+
+                <div class="sidebar-box  gap-10 active">
+                    <div class="flex space-between">
+                        <div class="flex flex-start gap-10">
+                            <i class="bi bi-boxes"></i>
+                            <p>Category Setup</p>
+                        </div>
+                        <i class="bi bi-chevron-down down"></i>
+                    </div>
+                    <div class="sub-box">
+                        <li class="categoryBox">Top Category</li>
+                        <li class="bottomCategoryBox">Bottom Category</li>
+                        <li class="subCategoryBox">Subcategory</li>
+                    </div>
+
+                </div>
+                <div class="sidebar-box flex flex-start gap-10 branchBox ">
+                    <i class="bi bi-shop"></i>
+                    <p>Branch</p>
+                </div>
+
+                <div class="sidebar-box flex flex-start gap-10 brandsBox">
+                    <i class="bi bi-amd"></i>
+                    <p>Brands</p>
+                </div>
+                <div class="sidebar-box flex flex-start gap-10 productBox">
+                    <i class="bi bi-gem"></i>
+                    <p>Product</p>
+                </div>
+
+                <div class="sidebar-box flex flex-start gap-10 bannerBox">
+                    <i class="bi bi-image-alt"></i>
+                    <p>Banner</p>
+                </div>
+
+                <div class="sidebar-box flex flex-start gap-10 couponsBox">
+                    <i class="bi bi-gift"></i>
+                    <p>Coupons</p>
+                </div>
+
+                <div class="sidebar-box flex flex-start gap-10 flashSaleBox">
+                    <i class="bi bi-alarm"></i>
+                    <p>Flash Sale</p>
+                </div>
+
+                <div class="sidebar-box flex flex-start gap-10 categoryDiscountBox">
+                    <i class="bi bi-layers"></i>
+                    <p>Category Discount</p>
+                </div>
+
+                <div class="sidebar-box flex flex-start gap-10 salesReportBox">
+                    <i class="bi bi-bar-chart"></i>
+                    <p>Sales Report</p>
+                </div>
+
+                <div class="sidebar-box flex flex-start gap-10 deliveryReportBox">
+                    <i class="bi bi-truck"></i>
+                    <p>Delivery Report</p>
+                </div>
+
+                <div class="sidebar-box  gap-10">
+                    <div class="flex space-between">
+                        <div class="flex flex-start gap-10">
+                            <i class="bi bi-people"></i>
+                            <p>User Management</p>
+                        </div>
+                        <i class="bi bi-chevron-down down"></i>
+                    </div>
+                    <div class="sub-box">
+                        <li class="customerListBox">Customer List</li>
+                        <li class="customerWalletBox">Customer Wallet</li>
+                        <li class="customerFundBox">Add Fund</li>
+                        <li class="customerReportBox">Report</li>
+                    </div>
+
+                </div>
+
+                <div class="sidebar-box flex flex-start gap-10 productReviewBox">
+                    <i class="bi bi-card-checklist"></i>
+                    <p>Product Review</p>
+                </div>
+
+                <div class="sidebar-box flex flex-start gap-10 deliveryManBox">
+                    <i class="bi bi-person-rolodex"></i>
+                    <p>Delivery Man</p>
+                </div>
+
+                <div class="sidebar-box flex flex-start gap-10 employesBox">
+                    <i class="bi bi-person-vcard"></i>
+                    <p>Employees</p>
+                </div>
+
+                <div class="sidebar-box flex flex-start gap-10 otherSetupBox">
+                    <i class="bi bi-sliders2"></i>
+                    <p>Other Setup</p>
+                </div>
+
+                <div class="sidebar-box flex flex-start gap-10 pushNotificationBox">
+                    <i class="bi bi-bell"></i>
+                    <p>Push Notification</p>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ======= main container ========= -->
+
+        <div class="main-container k_main_container">
+            <h3>Middle Category</h3>
+
+            <div class="form-container">
+
+                <form id="middle-category-form" class="form" onsubmit="handleMiddleCategory(event);return;">
+                    <div class="flex space-between items-start">
+                        <h3>Middle Category Form</h3>
+                        <div class="image-preview">
+                            <img id="preview-img" src="https://placehold.co/500x500" alt="Preview">
+                        </div>
+                    </div>
+
+                    <div class="flex space-between k_category_header gap-30">
+                        <input type="number" id="mainCategory" hidden>
+
+                        <div class="form-group">
+                            <label for="category">Under Category </label>
+                            <select name="" id="category" required>
+                                <option value="">Select Categrory</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="sub-category-name">Middle-Category Name </label>
+                            <input type="text" id="middle-category-name" name="categoryName"
+                                placeholder="Middle Category Name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="middle-category-image">Middle-Category Image <span>(Ratio 1:1)</span></label>
+                            <input type="file" id="middle-category-image" accept="image/*" required>
+                        </div>
+
+                    </div>
+
+                    <div class="buttons flex flex-end gap-20">
+                        <button type="button" id="reset-button">Reset</button>
+                        <button type="submit" id="submit-button">Submit</button>
+                    </div>
+                </form>
+            </div>
+
+
+
+            <div class="result k_result">
+
+                <div class="result-header flex space-between k_result_header">
+                    <h3 class="total_data">Middle category Table <span id="totalData">0</span></h3>
+
+
+                    <div class="filter_section">
+                        <!-- <div class="select_category">
+                            <select name="" id="selected_title" onchange="filterSubcategory()">
+                                <option value="all">Select Title</option>
+                                <option value="1"> Title 1</option>
+                                <option value="2"> Title 2</option>
+                                <option value="3"> Title 3</option>
+                                <option value="4"> Title 4</option>
+                                <option value="5"> Title 5</option>
+                            </select>
+                        </div>
+
+                        <div class="select_category">
+                            <select name="" id="selected_category" onchange="filterSubcategory()">
+                                <option value="all">Select Category</option>
+                            </select>
+                        </div>
+                        <div class="select_stock">
+                            <select name="" id="selected_stock" onchange="filterSubcategory()">
+                                <option value="all">Select No Of Product</option>
+                                <option value="ltoh">Low to High</option>
+                                <option value="htol">High to Low</option>
+                                <option value="oos">Zero Product</option>
+                            </select>
+                        </div>
+
+                        <div class="search-container">
+                            <input type="text" id="search-input" placeholder="Search by Name" />
+                            <button id="search-button">Search</button>
+                        </div> -->
+                    </div>
+
+
+                </div>
+                <table class="table k_table" id="result">
+
+
+                    </tbody>
+                </table>
+            </div>
+
+
+        </div>
+
+
+
+
+        <!-- edit modal -->
+
+        <div class="edit-modal">
+            <div class="edit-modal-content">
+                <span class="close" onclick="closeModal()">&times;</span>
+                <div class="edit-modal-left">
+                    <h2>Edit Subcategory</h2>
+                    <input type="text" id="subcat_id" hidden>
+                    <input type="text" id="categoryName" placeholder="Category Name">
+                    <div class="edit-form-group">
+                        <select id="category-select" required>
+                            <option value="">Select a category</option>
+                            <!-- Options will be dynamically generated -->
+                        </select>
+                    </div>
+                    <input type="file" id="imageUpload" accept="image/*" onchange="previewImage(event)">
+                    <p id="imageError">Image must be less than 100KB</p>
+                    <button onclick="saveChanges()">Save</button>
+                </div>
+                <div class="edit-modal-right">
+                    <img id="imagePreview" src="" alt="Image Preview">
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.js"
+        integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="../assets/js/script.js"></script>
+    <script src="../assets/js/middleCategory.js"></script>
+    <script>
+        loadCategoryList();
+
+
+
+
+        const editSubCategory = async (item) => {
+
+            item = JSON.stringify(item).replace(/`/g, "'");
+            item = JSON.parse(item);
+
+            $("#subcat_id").val(item.id)
+            document.getElementById('categoryName').value = item.name;
+            document.getElementById('imagePreview').src = imgurl + item.img_path;
+            $(".edit-modal").addClass('active');
+            $(".wrapper-overlay").addClass('active');
+            $('body').css("overflow", 'hidden');
+
+            let categoryList = `<option selected disable hidden value="">Select Category</option>`;
+
+            categoryListData.forEach((category, index) => {
+                // Check if the category.id matches under_category
+                const isSelected = (category.id === item.category_id) ? 'selected' : '';
+                categoryList += `
+        <option value="${category.id}" ${isSelected}>${category.name}</option>
+        `;
+            })
+            $("#category-select").html(categoryList);
+
+
+        }
+
+
+        function closeModal() {
+            $(".edit-modal").removeClass('active');
+            $(".wrapper-overlay").removeClass('active');
+            $('body').css("overflow", 'auto');
+        }
+
+
+        const saveChanges = () => {
+            let id = $("#subcat_id").val();
+            let catId = $("#category-select").val();
+            let middleCategoryName = $("#categoryName").val();
+            let img_path = $("#imageUpload")[0].files[0];
+
+            const formData = new FormData();
+
+            formData.append("id", id);
+            formData.append("middleCategory", middleCategoryName);
+            formData.append("categoryId", catId);
+
+            if (img_path) {
+                formData.append("category_img", img_path);
+                formData.append("type", "editMiddleSubCategoryWithImage")
+
+            } else {
+                formData.append("type", "editMiddleCategoryName");
+
+            }
+
+
+            if (middleCategoryName == '') {
+                warningAlert('Enter valid name');
+                return;
+            }
+
+            if (img_path) {
+
+                $.ajax({
+                    url: apiurl,
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        console.log(response)
+
+                        if (response == 'success') {
+
+                            successAlert('Successfully updated');
+                            getMiddlecategory();
+                            $("#imageUpload").val("")
+
+                        } else {
+                            errorAlert('something went wrong');
+                        }
+                    },
+                    error: function (err) {
+                        console.log('Error submitting data.', err);
+                    },
+                });
+            }
+            else {
+                $.ajax({
+                    url: apiurl,
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        console.log(response)
+                        if (response == 'success') {
+                            successAlert('Successfully updated');
+                            getMiddlecategory();
+                            $("#imageUpload").val("");
+                        } else {
+                            errorAlert('something went wrong');
+                        }
+                    },
+                    error: function (err) {
+                        console.log('Error submitting data.', err);
+                    },
+                });
+            }
+
+            closeModal();
+        }
+    </script>
+</body>
+
+</html>

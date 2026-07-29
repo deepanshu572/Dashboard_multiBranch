@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<!-- Mirrored from /dashboard/pages/order.html?type=all by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 05 May 2026 18:40:18 GMT -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/form-table.css">
+    <link rel="stylesheet" href="../assets/css/order.css">
+    <link rel="stylesheet" href="../assets/css/bill.css">
+    <!-- <link rel="stylesheet" href="../assets/css/category.css"> -->
+</head>
+
+<body>
+
+    <div class="wrapper-overlay"></div>
+    <div class="wrapper">
+
+        <!-- ===== navbar========= -->
+        <div class="navbar">
+            <i class="bi bi-chevron-bar-right"></i>
+
+            <button>Logout</button>
+        </div>
+
+
+        <!-- ========= side bar ======== -->
+        <div class="sidebar">
+            <div class="sidebar-header flex space-between gap-10">
+                <img src="../assets/images/logo.png" alt="">
+                <i class="bi bi-chevron-bar-left"></i>
+            </div>
+
+            <div class="sidebar-content">
+                <div class="sidebar-box flex flex-start gap-10  dashBox">
+                    <i class="bi bi-house-door"></i>
+                    <p>Dashboard</p>
+                </div>
+
+                <div class="sidebar-box  gap-10">
+                    <div class="flex space-between">
+                        <div class="flex flex-start gap-10 posBox">
+                            <i class="bi bi-bag"></i>
+                            <p>POS</p>
+                        </div>
+                        <i class="bi bi-chevron-down down"></i>
+                    </div>
+                    <div class="sub-box">
+                        <li class="posBoxNewList">New Sale</li>
+                        <li class="posBoxOrders">Orders</li>
+                    </div>
+
+                </div>
+
+                <div class="sidebar-box  gap-10 active">
+                    <div class="flex space-between">
+                        <div class="flex flex-start gap-10 ">
+                            <i class="bi bi-cart2"></i>
+                            <p>Orders</p>
+                        </div>
+                        <i class="bi bi-chevron-down down"></i>
+                    </div>
+                    <div class="sub-box">
+                        <li class="orderBoxAll">All</li>
+                        <li class="orderBoxPending">Pending</li>
+                        <li class="orderBoxConfirmed">Confirmed</li>
+                        <li class="orderBoxPackaging">Packaging</li>
+                        <li class="orderBoxDelivered">Delivered</li>
+                        <li class="orderBoxReturned">Returned</li>
+                        <li class="orderBoxCanceled">Canceled</li>
+                    </div>
+
+                </div>
+
+                <div class="sidebar-box  gap-10 ">
+                    <div class="flex space-between">
+                        <div class="flex flex-start gap-10">
+                            <i class="bi bi-boxes"></i>
+                            <p>Category Setup</p>
+                        </div>
+                        <i class="bi bi-chevron-down down"></i>
+                    </div>
+                    <div class="sub-box">
+                        <li class="categoryBox">Top Category</li>
+                        <li class="bottomCategoryBox">Bottom Category</li>
+                        <li class="subCategoryBox">Subcategory</li>
+                    </div>
+
+                </div>
+                 <div class="sidebar-box flex flex-start gap-10 branchBox ">
+                    <i class="bi bi-shop"></i>
+                    <p>Branch</p>
+                </div>
+
+                <div class="sidebar-box flex flex-start gap-10 brandsBox">
+                    <i class="bi bi-amd"></i>
+                    <p>Brands</p>
+                </div>
+                <div class="sidebar-box flex flex-start gap-10 productBox">
+                    <i class="bi bi-gem"></i>
+                    <p>Product</p>
+                </div>
+
+                <div class="sidebar-box flex flex-start gap-10 bannerBox">
+                    <i class="bi bi-image-alt"></i>
+                    <p>Banner</p>
+                </div>
+
+                <div class="sidebar-box flex flex-start gap-10 couponsBox">
+                    <i class="bi bi-gift"></i>
+                    <p>Coupons</p>
+                </div>
+
+                <div class="sidebar-box flex flex-start gap-10 flashSaleBox">
+                    <i class="bi bi-alarm"></i>
+                    <p>Flash Sale</p>
+                </div>
+
+                <div class="sidebar-box flex flex-start gap-10 categoryDiscountBox">
+                    <i class="bi bi-layers"></i>
+                    <p>Category Discount</p>
+                </div>
+
+                <div class="sidebar-box flex flex-start gap-10 salesReportBox">
+                    <i class="bi bi-bar-chart"></i>
+                    <p>Sales Report</p>
+                </div>
+
+                <div class="sidebar-box flex flex-start gap-10 activityReportBox">
+                    <i class="bi bi-shield-check"></i>
+                    <p>Activity Report</p>
+                </div>
+
+                <div class="sidebar-box flex flex-start gap-10 deliveryReportBox">
+                    <i class="bi bi-truck"></i>
+                    <p>Delivery Report</p>
+                </div>
+
+                <div class="sidebar-box  gap-10">
+                    <div class="flex space-between">
+                        <div class="flex flex-start gap-10">
+                            <i class="bi bi-people"></i>
+                            <p>User Management</p>
+                        </div>
+                        <i class="bi bi-chevron-down down"></i>
+                    </div>
+                    <div class="sub-box">
+                        <li class="customerListBox">Customer List</li>
+                        <li class="customerWalletBox">Customer Wallet</li>
+                        <li class="customerFundBox">Add Fund</li>
+                        <li class="customerReportBox">Report</li>
+                    </div>
+
+                </div>
+
+                <div class="sidebar-box flex flex-start gap-10 productReviewBox">
+                    <i class="bi bi-card-checklist"></i>
+                    <p>Product Review</p>
+                </div>
+
+                <div class="sidebar-box flex flex-start gap-10 deliveryManBox">
+                    <i class="bi bi-person-rolodex"></i>
+                    <p>Delivery Man</p>
+                </div>
+
+                <div class="sidebar-box flex flex-start gap-10 staffBox" id="manageStaffMenu">
+                    <i class="bi bi-person-badge"></i>
+                    <p>Manage Staff</p>
+                </div>
+
+                <div class="sidebar-box flex flex-start gap-10 otherSetupBox">
+                    <i class="bi bi-sliders2"></i>
+                    <p>Other Setup</p>
+                </div>
+
+                <div class="sidebar-box flex flex-start gap-10 pushNotificationBox">
+                    <i class="bi bi-bell"></i>
+                    <p>Push Notification</p>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ======= main container ========= -->
+
+        <div class="main-container k_main_container">
+
+            <h3 class="headline">Order</h3>
+            <h3 class="backToOrder">Back</h3>
+
+
+
+
+
+
+            <div class="result k_order_result">
+
+                <div class="result-header flex space-between k_result_header">
+                    <h3>Order Table <span class="order_count">8</span></h3>
+
+                    <div class="search-container">
+                        <input type="text" id="search-input" placeholder="Search by Name" />
+                        <button id="search-button">Search</button>
+                    </div>
+                </div>
+
+                <!-- Filter Section -->
+                <div class="filter-section">
+                    <style>
+                        .filter-section {
+                            margin-bottom: 25px;
+                            padding: 20px;
+                            background: #ffffff;
+                            border-radius: 12px;
+                            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+                            border: 1px solid #eef0f3;
+                        }
+
+                        .filter-wrapper {
+                            display: grid;
+                            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                            gap: 15px;
+                            align-items: end;
+                        }
+
+                        .filter-group {
+                            display: flex;
+                            flex-direction: column;
+                            gap: 5px;
+                        }
+
+                        .filter-group label {
+                            font-size: 13px;
+                            font-weight: 600;
+                            color: #495057;
+                            margin-bottom: 0px;
+                        }
+
+                        .filter-control {
+                            padding: 10px 12px;
+                            border: 1px solid #ced4da;
+                            border-radius: 8px;
+                            font-size: 14px;
+                            color: #495057;
+                            transition: all 0.3s ease;
+                            background-color: #f8f9fa;
+                            width: 100%;
+                            height: 42px;
+                            /* Fixed height for alignment */
+                            box-sizing: border-box;
+                        }
+
+                        .filter-control:focus {
+                            border-color: #80bdff;
+                            outline: 0;
+                            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+                            background-color: #fff;
+                        }
+
+                        .filter-actions {
+                            display: flex;
+                            gap: 10px;
+                            grid-column: 1 / -1;
+                            /* Span full width on small screens if needed, or just flow */
+                            justify-content: flex-end;
+                            margin-top: 5px;
+                        }
+
+                        /* Responsive adjustment for actions to sit with filters on large screens if space permits */
+                        @media (min-width: 1200px) {
+                            .filter-wrapper {
+                                grid-template-columns: repeat(5, 1fr) auto;
+                                /* 5 filters + buttons */
+                            }
+
+                            .filter-actions {
+                                grid-column: auto;
+                                margin-top: 0;
+                                justify-content: flex-start;
+                            }
+                        }
+
+                        .btn-filter {
+                            padding: 0 20px;
+                            height: 42px;
+                            border-radius: 8px;
+                            font-weight: 500;
+                            cursor: pointer;
+                            display: inline-flex;
+                            align-items: center;
+                            justify-content: center;
+                            gap: 8px;
+                            transition: all 0.3s;
+                            border: none;
+                        }
+
+                        .btn-apply {
+                            background: linear-gradient(135deg, #0d6efd 0%, #0b5ed7 100%);
+                            color: white;
+                            box-shadow: 0 4px 6px rgba(13, 110, 253, 0.2);
+                        }
+
+                        .btn-apply:hover {
+                            background: linear-gradient(135deg, #0b5ed7 0%, #0a58ca 100%);
+                            transform: translateY(-1px);
+                            box-shadow: 0 6px 8px rgba(13, 110, 253, 0.3);
+                        }
+
+                        .btn-reset {
+                            background: #f8f9fa;
+                            color: #6c757d;
+                            border: 1px solid #dee2e6;
+                        }
+
+                        .btn-reset:hover {
+                            background: #e9ecef;
+                            color: #495057;
+                            border-color: #ced4da;
+                        }
+
+                        /* Animation */
+                        @keyframes fadeIn {
+                            from {
+                                opacity: 0;
+                                transform: translateY(10px);
+                            }
+
+                            to {
+                                opacity: 1;
+                                transform: translateY(0);
+                            }
+                        }
+
+                        .filter-section {
+                            animation: fadeIn 0.4s ease-out;
+                        }
+                    </style>
+
+                    <div class="filter-wrapper">
+                        <!-- Date Filter -->
+                        <div class="filter-group">
+                            <label for="date-filter">Date Range</label>
+                            <select id="date-filter" class="filter-control">
+                                <option value="all">All Time</option>
+                                <option value="today">Today</option>
+                                <option value="yesterday">Yesterday</option>
+                                <option value="this_week">This Week</option>
+                                <option value="this_month">This Month</option>
+                                <option value="custom">Custom Range</option>
+                            </select>
+                        </div>
+
+                        <!-- Status Filter -->
+                        <div class="filter-group">
+                            <label for="status-filter">Order Status</label>
+                            <select id="status-filter" class="filter-control">
+                                <option value="all">All Status</option>
+                                <option value="pending">Pending</option>
+                                <option value="confirmed">Confirmed</option>
+                                <option value="shipped">Shipped</option>
+                                <option value="out for delivery">Out for Delivery</option>
+                                <option value="delivered">Delivered</option>
+                                <option value="cancelled">Cancelled</option>
+                                <option value="returned">Returned</option>
+                            </select>
+                        </div>
+
+                        <!-- Order Type Filter -->
+                        <div class="filter-group">
+                            <label for="order-type-filter">Order Type</label>
+                            <select id="order-type-filter" class="filter-control">
+                                <option value="all">All Types</option>
+                                <option value="Home Delivery">Home Delivery</option>
+                                <option value="In-Store Pick Up">In-Store Pick Up</option>
+                            </select>
+                        </div>
+
+                        <!-- Payment Method Filter -->
+                        <div class="filter-group">
+                            <label for="payment-method-filter">Payment Method</label>
+                            <select id="payment-method-filter" class="filter-control">
+                                <option value="all">All Methods</option>
+                                <option value="Cash On Delivery">Cash On Delivery</option>
+                                <option value="Online">Online</option>
+                                <option value="Wallet">Wallet</option>
+                            </select>
+                        </div>
+
+                        <!-- Selected Date Filter -->
+                        <div class="filter-group">
+                            <label for="selected-date-filter">Selected Date</label>
+                            <input type="date" id="selected-date-filter" class="filter-control">
+                        </div>
+
+                        <!-- Time Slot Filter -->
+                        <div class="filter-group">
+                            <label for="time-slot-filter">Time Slot</label>
+                            <select id="time-slot-filter" class="filter-control">
+                                <option value="all">All Slots</option>
+                            </select>
+                        </div>
+
+                        <!-- Rows Per Page -->
+                        <div class="filter-group">
+                            <label for="rows-per-page">Rows Per Page</label>
+                            <select id="rows-per-page" class="filter-control">
+                                <option value="10">10</option>
+                                <option value="20">20</option>
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                                <option value="150">150</option>
+                                <option value="200">200</option>
+                            </select>
+                        </div>
+
+                        <!-- Actions -->
+                        <div class="filter-actions">
+                            <button id="apply-filters" class="btn-filter btn-apply">
+                                <i class="bi bi-funnel"></i> Apply
+                            </button>
+                            <button id="reset-filters" class="btn-filter btn-reset">
+                                <i class="bi bi-arrow-counterclockwise"></i> Reset
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Custom Date Inputs (Hidden by default) -->
+                    <div class="filter-wrapper custom-date-group"
+                        style="display: none; margin-top: 15px; border-top: 1px dashed #dee2e6; padding-top: 15px;">
+                        <div class="filter-group">
+                            <label for="start-date">From Date</label>
+                            <input type="date" id="start-date" class="filter-control">
+                        </div>
+                        <div class="filter-group">
+                            <label for="end-date">To Date</label>
+                            <input type="date" id="end-date" class="filter-control">
+                        </div>
+                    </div>
+                </div>
+
+                <table class="table k_table" id="result">
+
+                    <thead>
+                        <tr>
+                            <th>SL</th>
+                            <th>Order Id</th>
+                            <th>Dilivery Date</th>
+                            <th>Time Slot</th>
+                            <th>Customer Deatils</th>
+                            <th>Total Amt</th>
+                            <th>Order Type</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                    </tbody>
+                </table>
+
+
+                <div id="pagination"></div>
+            </div>
+
+
+
+            <!-- ---------- order details container ----------- -->
+
+            <div class="order-detail-cotainer">
+                <div class="order-detail">
+
+                    <div class="order-detail-left">
+
+
+                        <div class="od-header">
+                            <h1>Order Details</h1>
+                            <div>
+                                <!-- <button>Show Location in Map</button> -->
+                                <button onclick="openBill()">Print Invoice</button>
+                            </div>
+                        </div>
+
+                        <div class="info-row">
+                            <div>
+                                <h3>Order ID: <span class="orderid"></span></h3>
+                                <p>Date : <span class="orderdate">17 Sep 2024</span> </p>
+                                <p style="margin-top: 10px;">Time : <span class="ordertime"> 07:03:32 PM</span> </p>
+                            </div>
+                            <div>
+                                <h3>Status: <span class="orderstatus">Confirmed</span></h3>
+                                <p>Payment Method: <span class="paymentmethode"></span> </p>
+                                <!-- <p>Payment Status: <span style="color: red;">Unpaid</span></p> -->
+                            </div>
+                        </div>
+
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>SL</th>
+                                        <th>Image</th>
+                                        <th>Item Details</th>
+                                        <th>Quantity</th>
+                                        <th>Nop</th>
+                                        <th>Price</th>
+                                        <th>Discount</th>
+                                        <th>Total Price</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="order-items" id="order-items">
+                                    <tr>
+                                        <td>1</td>
+                                        <td>Premium Quality Body Lotion</td>
+                                        <td>470.00$</td>
+                                        <td>47.00$</td>
+                                        <td>423.00$</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="o-total">
+                            <div>Items Price: <span class="itemPrice"></span> </div>
+                            <div>Item Discount: <span class="totalDiscount"></span></div>
+                            <div>Sub Total: <span class="subTotal"></span></div>
+                            <div>Promo Discount: <span class="promoDiscount"></span></div>
+                            <div>Handling Charge: <span class="handlingCharge"></span></div>
+                            <div>Delivery Fee: <span class="delCharege"></span></div>
+                            <div><strong>Total: <span class="grandTotal"></span></strong></div>
+                        </div>
+
+                    </div>
+
+                    <div class="order-detail-right">
+                        <div class="order-setup">
+                            <h3>Order Setup</h3>
+                            <label for="status">Change Order Status:</label>
+                            <select id="status">
+                                <option value="Pending">Pending</option>
+                                <option value="Shipped">Shipped</option>
+                                <option value="Out for Delivery">Out for Delivery</option>
+                                <option value="Delivered">Delivered</option>
+                                <option value="Cancelled">Cancelled</option>
+                            </select>
+
+                            <!-- <label for="payment">Payment Status:</label>
+                      <select id="payment">
+                        <option value="unpaid">Unpaid</option>
+                        <option value="paid">Paid</option>
+                      </select> -->
+
+                            <label for="delivery-time">Delivery Date & Time:</label>
+                            <input type="date" id="delivery-date">
+                            <input type="time" id="delivery-time">
+
+                            <button class="open_delivery_boy_btn" onclick="openDeliveryBoyModel()">Assign Delivery Man
+                                Manually</button>
+                        </div>
+
+                        <div class="delivery-info">
+                            <h3>Delivery Information</h3>
+                            <div>Name: <span class="customerName"></span></div>
+                            <div>Gmail: <span class="customerEmail"></span></div>
+                            <div>Phone: <span class="customerPhone"></span></div>
+                            <div>Address: <span class="customerAddress"></span></div>
+                            <button id="view-map-btn">
+                                <i class="bi bi-geo-alt-fill"></i> View Map
+                            </button>
+                        </div>
+
+                        <div class="delivery_boy_card">
+                            <div class="delivery_boy_header">
+                                <span><i class="fa fa-user"></i> Deliveryman</span>
+                                <!-- <span class="delivery_boy_change_button" onclick="changeDeliveryman()">Change</span> -->
+                            </div>
+                            <div class="delivery_boy_body">
+                                <div class="delivery_boy_avatar">
+                                    <img src="../../../../../randomuser.me/api/portraits/men/32.jpg" alt="Deliveryman">
+                                </div>
+                                <div class="delivery_boy_info">
+                                    <div class="delivery_boy_name">Floyd Miles</div>
+                                    <!-- <div class="delivery_boy_info_item">
+                                        <i class="fa fa-truck"></i> 0 Orders delivered
+                                    </div> -->
+                                    <div class="delivery_boy_info_item">
+                                        <i class="bi bi-telephone"></i>
+                                        <p class="delivery_boy_phone"></p>
+                                    </div>
+                                    <div class="delivery_boy_info_item">
+                                        <i class="bi bi-envelope"></i>
+                                        <p class="delivery_boy_gmail"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                </div>
+            </div>
+
+        </div>
+
+
+
+
+    </div>
+
+
+
+
+    <!-- bill modal -->
+
+    <div class="bill-modal">
+
+        <div class="binvoice" id="binvoice">
+            <div class="bheader">
+                <img src="../assets/images/logo.png" alt="GroFresh Logo">
+                
+                <p class="billing_address">
+                </p>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="details">
+                <p>Order ID: <span class="billOrderId"></span> </p>
+                <p class="billOrderDate">29 Jan 2025 11:57 am</p>
+            </div>
+
+            <table class="bill-table" border="1">
+                <thead>
+                    <tr>
+                        <th>QTY</th>
+                        <th>DESC</th>
+                        <th class="bprice">Price</th>
+                    </tr>
+                </thead>
+                <tbody class="bill-items">
+                    <tr>
+                        <td>5</td>
+                        <td>Premium Quality Body Lotion<br>Unit bprice: 400.00<br>Disc: 47.00</td>
+                        <td class="bprice">2,115.00</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>Glass Cleaner Mop<br>Unit bprice: 180.00<br>Disc: 18.00</td>
+                        <td class="bprice">648.00</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>Glass Cleaner Mop<br>Unit bprice: 180.00<br>Disc: 18.00</td>
+                        <td class="bprice">648.00</td>
+                    </tr>
+
+
+
+
+                </tbody>
+            </table>
+
+            <div class="btotals">
+                <table class="btotals-table">
+                    <tr>
+                        <td>Item price:</td>
+                        <td class="bprice billtotalItesPrice">3,048.00</td>
+                    </tr>
+                    <tr>
+                        <td>Product Discount:</td>
+                        <td class="bprice billtotalDiscount">0.00</td>
+                    </tr>
+                    <!-- <tr>
+                        <td>Extra Discount:</td>
+                        <td class="bprice extraDiscount">0.00</td>
+                    </tr> -->
+                    <tr>
+                        <td>Subtotal:</td>
+                        <td class="bprice billsubTotal">3,048.00</td>
+                    </tr>
+
+                    <tr>
+                        <td>Handling Charge:</td>
+                        <td class="bprice handlingCharge">0.00</td>
+                    </tr>
+                    <tr>
+                        <td>Delivery Fee:</td>
+                        <td class="bprice billdelCharege">0.00</td>
+                    </tr>
+                    <tr>
+                        <td>Total:</td>
+                        <td class="bprice billgrandTotal"><strong>3,054.00</strong></td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="bfooter">
+                <p>** THANK YOU **</p>
+                
+            </div>
+        </div>
+
+        <div class="no-print flex gap-10">
+            <button onclick="closeBillModel()">Back</button>
+            <button onclick="printBill()">Print</button>
+        </div>
+
+    </div>
+
+
+
+    <!-- delivery boy modal -->
+
+    <div id="driverModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeDeliveryBoyModel()">X</span>
+            <h2>Driver List</h2>
+
+            <div class="driver_list">
+
+                <!-- <div class="driver-card">
+                    <img src="https://placehold.co/400x400@2x.png" alt="Driver">
+                    <div class="driver-info">
+                        <strong>Mohammad Ali</strong><br>
+                        Karachi
+                    </div>
+                    <button class="assign-btn" onclick="assignOrder('Mohammad Ali')">Assign Order</button>
+                </div> -->
+
+                <!-- <div class="driver-card">
+                    <img src="https://placehold.co/400x400@2x.png" alt="Driver">
+                    <div class="driver-info">
+                        <strong>Ahmad Khan</strong><br>
+                        Lahore
+                    </div>
+                    <button class="assign-btn" onclick="assignOrder('Ahmad Khan')">Assign Order</button>
+                </div> -->
+
+            </div>
+
+
+        </div>
+    </div>
+
+
+
+
+    <!-- Map Modal -->
+    <div id="mapModal" class="modal map-modal-wrapper">
+        <div class="modal-content map-modal-content">
+            <div class="map-modal-header">
+                <h3><i class="bi bi-geo-alt-fill"></i> Delivery Location</h3>
+                <div class="map-controls">
+                    <button onclick="toggleMinimizeMap()" title="Minimize"><i class="bi bi-dash-lg"></i></button>
+                    <button onclick="closeMapModal()" title="Close"><i class="bi bi-x-lg"></i></button>
+                </div>
+            </div>
+            <div class="map-body">
+                <iframe id="google-map-iframe" width="100%" height="100%" frameborder="0"
+                    style="border:0; width: 100%; height: 100%; border-radius: 0 0 8px 8px;" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.js"
+        integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="../assets/js/script.js"></script>
+    <script src="../assets/js/order.js"></script>
+    <script>
+        $(document).ready(function () {
+            loadOrder();
+        });
+    </script>
+
+    <script>
+
+    </script>
+</body>
+
+
+<!-- Mirrored from /dashboard/pages/order.html?type=all by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 05 May 2026 18:40:20 GMT -->
+</html>

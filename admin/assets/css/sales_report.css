@@ -1,0 +1,157 @@
+   .filter-box {
+     display: flex;
+     flex-wrap: wrap;
+     gap: 10px;
+     align-items: center;
+     margin-bottom: 20px;
+     justify-content: space-between;
+     margin-top: 20px;
+   }
+
+   .filter-box select,
+   .filter-box input[type="date"] {
+     padding: 8px 12px;
+     border: 1px solid #ccc;
+     border-radius: 6px;
+     font-size: 14px;
+   }
+
+   .filter-box button {
+     padding: 9px 18px;
+     background: #fff;
+     border: none;
+     color: #009688;
+     font-weight: 600;
+     border-radius: 6px;
+     cursor: pointer;
+     border: 1px solid #009688;
+   }
+
+   .filter_btn.active {
+     background-color: #009688;
+     color: #fff;
+   }
+
+   .summary {
+     display: flex;
+     gap: 20px;
+     margin-bottom: 20px;
+     flex-wrap: wrap;
+   }
+
+   .summary-box {
+     flex: 1;
+     min-width: 180px;
+     background-color: #fff;
+     border-radius: 12px;
+     padding: 20px;
+     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+     text-align: center;
+   }
+
+   .summary-box span {
+     font-size: 14px;
+     color: #555;
+   }
+
+   .summary-box h2 {
+     margin: 8px 0 0;
+     color: #009688;
+   }
+
+   table {
+     width: 100%;
+     border-collapse: collapse;
+     background-color: #fff;
+     border-radius: 12px;
+     overflow: hidden;
+     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+   }
+
+   thead {
+     background-color: #f0fcff;
+     color: #333;
+   }
+
+   thead th {
+     text-align: left;
+     padding: 14px;
+     font-size: 14px;
+   }
+
+   tbody td {
+     padding: 14px;
+     border-top: 1px solid #f0f0f0;
+     vertical-align: middle;
+     font-size: 14px;
+   }
+
+   .product-img {
+     width: 40px;
+     height: 40px;
+     border-radius: 6px;
+     object-fit: contain;
+     margin-right: 10px;
+   }
+
+   .product-info {
+     display: flex;
+     align-items: center;
+   }
+
+   .qty-box {
+     text-align: center;
+     background-color: #f0fcff;
+     border-radius: 6px;
+     padding: 6px 12px;
+     display: inline-block;
+     min-width: 40px;
+   }
+
+
+   #salesTable_wrapper {
+     width: 100%;
+     overflow: hidden;
+     overflow-x: auto;
+   }
+
+   #salesTable_wrapper::-webkit-scrollbar{
+      height: 8px;
+   }
+
+   #salesTable_wrapper::-webkit-scrollbar-thumb {
+      background-color: #009688;
+      border-radius: 4px;
+   }
+
+   #salesTable_wrapper::-webkit-scrollbar-track {
+      background-color: #f0f0f0;
+   }
+
+
+   .summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+}
+
+.summary-box {
+    background: #fff;
+    padding: 14px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+.summary-box span {
+    font-size: 13px;
+    color: #666;
+}
+
+.summary-box h2 {
+    margin-top: 6px;
+    font-size: 20px;
+}
+
+.summary-box.income h2 { color: #0a8f3c; }
+.summary-box.loss h2 { color: #d32f2f; }
+.summary-box.profit h2 { font-weight: bold; }

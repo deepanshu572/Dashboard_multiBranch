@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<!-- Mirrored from /dashboard/pages/product.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 05 May 2026 18:40:22 GMT -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <!-- <link rel="stylesheet" href="../assets/css/form-table.css"> -->
+    <link rel="stylesheet" href="../assets/css/product.css">
+</head>
+
+<body>
+
+    <div class="wrapper-overlay"></div>
+    <div class="wrapper">
+
+        <!-- ===== navbar========= -->
+        <div class="navbar">
+            <i class="bi bi-chevron-bar-right"></i>
+
+            <button>Logout</button>
+        </div>
+
+
+        <!-- ========= side bar ======== -->
+        <div class="sidebar">
+            <div class="sidebar-header flex space-between gap-10">
+                <img src="../assets/images/logo.png" alt="">
+                <i class="bi bi-chevron-bar-left"></i>
+            </div>
+
+            <div class="sidebar-content">
+                <div class="sidebar-box flex flex-start gap-10  dashBox">
+                    <i class="bi bi-house-door"></i>
+                    <p>Dashboard</p>
+                </div>
+
+                <div class="sidebar-box  gap-10">
+                    <div class="flex space-between">
+                        <div class="flex flex-start gap-10 posBox">
+                            <i class="bi bi-bag"></i>
+                            <p>POS</p>
+                        </div>
+                        <i class="bi bi-chevron-down down"></i>
+                    </div>
+                    <div class="sub-box">
+                        <li class="posBoxNewList">New Sale</li>
+                        <li class="posBoxOrders">Orders</li>
+                    </div>
+
+                </div>
+
+                <div class="sidebar-box  gap-10">
+                    <div class="flex space-between">
+                        <div class="flex flex-start gap-10 ">
+                            <i class="bi bi-cart2"></i>
+                            <p>Orders</p>
+                        </div>
+                        <i class="bi bi-chevron-down down"></i>
+                    </div>
+                    <div class="sub-box">
+                        <li class="orderBoxAll">All</li>
+                        <li class="orderBoxPending">Pending</li>
+                        <li class="orderBoxConfirmed">Confirmed</li>
+                        <li class="orderBoxPackaging">Packaging</li>
+                        <li class="orderBoxDelivered">Delivered</li>
+                        <li class="orderBoxReturned">Returned</li>
+                        <li class="orderBoxCanceled">Canceled</li>
+                    </div>
+
+                </div>
+
+                <div class="sidebar-box  gap-10 ">
+                    <div class="flex space-between">
+                        <div class="flex flex-start gap-10">
+                            <i class="bi bi-boxes"></i>
+                            <p>Category Setup</p>
+                        </div>
+                        <i class="bi bi-chevron-down down"></i>
+                    </div>
+                    <div class="sub-box">
+                        <li class="categoryBox">Top Category</li>
+                        <li class="bottomCategoryBox">Bottom Category</li>
+                        <li class="subCategoryBox">Subcategory</li>
+                    </div>
+
+                </div>
+                 <div class="sidebar-box flex flex-start gap-10 branchBox ">
+                    <i class="bi bi-shop"></i>
+                    <p>Branch</p>
+                </div>
+
+                <div class="sidebar-box flex flex-start gap-10 brandsBox">
+                    <i class="bi bi-amd"></i>
+                    <p>Brands</p>
+                </div>
+                <div class="sidebar-box flex flex-start gap-10 productBox active">
+                    <i class="bi bi-gem"></i>
+                    <p>Product</p>
+                </div>
+
+                <div class="sidebar-box flex flex-start gap-10 bannerBox">
+                    <i class="bi bi-image-alt"></i>
+                    <p>Banner</p>
+                </div>
+
+                <div class="sidebar-box flex flex-start gap-10 couponsBox">
+                    <i class="bi bi-gift"></i>
+                    <p>Coupons</p>
+                </div>
+
+                <div class="sidebar-box flex flex-start gap-10 flashSaleBox">
+                    <i class="bi bi-alarm"></i>
+                    <p>Flash Sale</p>
+                </div>
+
+                <div class="sidebar-box flex flex-start gap-10 categoryDiscountBox">
+                    <i class="bi bi-layers"></i>
+                    <p>Category Discount</p>
+                </div>
+
+                <div class="sidebar-box flex flex-start gap-10 salesReportBox">
+                    <i class="bi bi-bar-chart"></i>
+                    <p>Sales Report</p>
+                </div>
+
+                <div class="sidebar-box flex flex-start gap-10 activityReportBox">
+                    <i class="bi bi-shield-check"></i>
+                    <p>Activity Report</p>
+                </div>
+
+                <div class="sidebar-box flex flex-start gap-10 deliveryReportBox">
+                    <i class="bi bi-truck"></i>
+                    <p>Delivery Report</p>
+                </div>
+
+                <div class="sidebar-box  gap-10">
+                    <div class="flex space-between">
+                        <div class="flex flex-start gap-10">
+                            <i class="bi bi-people"></i>
+                            <p>User Management</p>
+                        </div>
+                        <i class="bi bi-chevron-down down"></i>
+                    </div>
+                    <div class="sub-box">
+                        <li class="customerListBox">Customer List</li>
+                        <li class="customerWalletBox">Customer Wallet</li>
+                        <li class="customerFundBox">Add Fund</li>
+                        <li class="customerReportBox">Report</li>
+                    </div>
+
+                </div>
+
+                <div class="sidebar-box flex flex-start gap-10 productReviewBox">
+                    <i class="bi bi-card-checklist"></i>
+                    <p>Product Review</p>
+                </div>
+
+                <div class="sidebar-box flex flex-start gap-10 deliveryManBox">
+                    <i class="bi bi-person-rolodex"></i>
+                    <p>Delivery Man</p>
+                </div>
+
+                <div class="sidebar-box flex flex-start gap-10 staffBox" id="manageStaffMenu">
+                    <i class="bi bi-person-badge"></i>
+                    <p>Manage Staff</p>
+                </div>
+
+                <div class="sidebar-box flex flex-start gap-10 otherSetupBox">
+                    <i class="bi bi-sliders2"></i>
+                    <p>Other Setup</p>
+                </div>
+
+                <div class="sidebar-box flex flex-start gap-10 pushNotificationBox">
+                    <i class="bi bi-bell"></i>
+                    <p>Push Notification</p>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ======= main container ========= -->
+
+        <div class="main-container k_main_container">
+            <div class="flex space-between items-center k_main_header">
+                <h3>Product</h3>
+
+
+                <button class="bulk_stock_open_modal_btn" onclick="openBulkStockModal()">
+                    Bulk Stock Update
+                </button>
+            </div>
+
+
+
+
+
+
+            <div class="form-container">
+
+                <form id="product-form" class="form">
+
+                    <div class="flex space-between items-start">
+                        <h3>Add Product</h3>
+                        <p></p>
+                    </div>
+
+                    <div class="flex flex-start gap-30 k_form_group_container">
+                        <!-- Category and Sub-Category -->
+                        <div class="form-group k_form_group">
+                            <label for="category">Category</label>
+                            <select id="category" name="category" required onchange="handleCategoryList()">
+                                <option value="" selected disabled hidden>Select Category</option>
+                                <option value="electronics">Electronics</option>
+                                <option value="clothing">Clothing</option>
+                                <option value="furniture">Furniture</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group k_form_group">
+                            <label for="sub-category">Middle-Category</label>
+                            <select id="middle-category" name="middle-category" required onchange="handleMiddleCategoryList()">
+                                <option value="">Select Middle-Category</option>
+                                <!-- Populate based on category selection dynamically if needed -->
+                            </select>
+                        </div>  
+                         <div class="form-group k_form_group">
+                            <label for="sub-category">Sub-Category</label>
+                            <select id="sub-category" name="sub-category" required>
+                                <option value="">Select Sub-Category</option>
+                                <!-- Populate based on category selection dynamically if needed -->
+                            </select>
+                        </div>
+
+                        <!-- Brand and Name -->
+                        <div class="form-group k_form_group">
+                            <label for="brand-name">Brand Name</label>
+                            <select id="brand_name" name="brand-name" required>
+                                <option value="">Select Brand</option>
+
+                            </select>
+                        </div>
+
+                        <div class="form-group k_form_group">
+                            <label for="product-name">Product Name</label>
+                            <input type="text" id="product-name" name="product-name" placeholder="Product Name"
+                                required>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-start gap-30 k_form_group_container">
+                        <!-- Pricing Information -->
+                        <div class="form-group k_form_group">
+                            <label for="mrp">MRP</label>
+                            <input type="number" step="0.01" id="mrp" name="mrp" placeholder="MRP" required>
+                        </div>
+
+                        <div class="form-group k_form_group">
+                            <label for="selling-price">Selling Price</label>
+                            <input type="number" step="0.01" id="selling-price" name="selling-price"
+                                placeholder="Selling Price" required>
+                        </div>
+
+                        <div class="form-group k_form_group">
+                            <label for="purchase-price">Purchase Price</label>
+                            <input type="number" step="0.01" id="purchase-price" name="purchase-price"
+                                placeholder="Purchase Price" required>
+                        </div>
+                        <div class="form-group k_form_group">
+                            <label for="stock">Stock</label>
+                            <input type="number" step="0.01" id="stock" name="stock" placeholder="Stock" required>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-start gap-30 k_form_group_container">
+                        <div class="form-group k_form_group">
+                            <label for="quantity">Quantity</label>
+                            <input type="text" step="0.01" id="quantity" name="quantity" placeholder="Quantity"
+                                required>
+                        </div>
+
+                        <div class="form-group k_form_group">
+                            <label for="unit">Select Unit</label>
+                            <select id="unit" name="unit" required>
+                                <option value="">Select Unit</option>
+                                <!-- Grocery & General Food Items -->
+                                <option value="gm">gm</option>
+                                <option value="kg">kg</option>
+                                <option value="ml">ml</option>
+                                <option value="liter">liter</option>
+                                <option value="packet">Packet</option>
+                                <option value="bottle">Bottle</option>
+                                <option value="can">Can</option>
+                                <option value="jar">Jar</option>
+                                <option value="tin">Tin</option>
+                                <option value="sachet">Sachet</option>
+                                <option value="bar">Bar</option>
+                                <option value="box">Box</option>
+                                <option value="tray">Tray</option>
+
+                                <!-- Fruits & Vegetables -->
+                                <option value="pieces">Pieces</option>
+                                <option value="bunch">Bunch</option>
+                                <option value="dozen">Dozen</option>
+                                <option value="bundle">Bundle</option>
+                                <option value="pair">Pair</option>
+
+                                <!-- Clothes -->
+                                <option value="piece">Piece</option>
+                                <option value="set">Set</option>
+                                <option value="pair">Pair</option>
+                                <option value="pack">Pack</option>
+                                <option value="s">S</option>
+                                <option value="m">M</option>
+                                <option value="l">L</option>
+                                <option value="xl">XL</option>
+                                <option value="xxl">XXL</option>
+
+                                <!-- Electronics -->
+                                <option value="unit">Unit</option>
+
+                                <option value="half plate">Half Plate</option>
+                                <option value="full plate">Full Plate</option>
+                                <option value="glass">glass</option>
+                                <option value="cup">cup</option>
+                                <option value="plate">plate</option>
+
+                            </select>
+                        </div>
+
+                        <div class="form-group k_form_group">
+                            <label for="review">Review Value</label>
+                            <input type="number" step="0.01" id="review" max="5" maxlength="1"
+                                oninput="validateInput(this)" placeholder="Review Value (0-5)" required>
+                        </div>
+
+                        <div class="form-group k_form_group">
+                            <label for="review-nop">Number of People (Review)</label>
+                            <input type="number" step="0.01" id="review-nop" name="selling-price"
+                                placeholder="Number of People (Review)" required>
+                        </div>
+
+                    </div>
+
+                    <!-- ----- variant section ------ -->
+                    <!-- <div class="">
+                        <h3>Add Variant</h3>
+                        <div class="vareint-result" id="vareint-result">
+
+                        </div>
+
+                        <div class="flex flex-start gap-30 flex-wrap k_form_group_container">
+
+                            <div class="form-group k_form_group">
+                                <label for="vquantity">Quantity</label>
+                                <input type="text" step="0.01" id="vquantity" name="quantity" placeholder="Quantity">
+                            </div>
+
+                            <div class="form-group k_form_group">
+                                <label for="vunit">Select Unit</label>
+                                <select id="vunit" name="vunit">
+                                    <option value="">Select Unit</option>
+                                    Grocery & General Food Items
+                                    <option value="gm">gm</option>
+                                    <option value="kg">kg</option>
+                                    <option value="ml">ml</option>
+                                    <option value="liter">liter</option>
+                                    <option value="packet">Packet</option>
+                                    <option value="bottle">Bottle</option>
+                                    <option value="can">Can</option>
+                                    <option value="jar">Jar</option>
+                                    <option value="tin">Tin</option>
+                                    <option value="sachet">Sachet</option>
+                                    <option value="bar">Bar</option>
+                                    <option value="box">Box</option>
+                                    <option value="tray">Tray</option>
+
+                                    Fruits & Vegetables
+                                    <option value="pieces">Pieces</option>
+                                    <option value="bunch">Bunch</option>
+                                    <option value="dozen">Dozen</option>
+                                    <option value="bundle">Bundle</option>
+                                    <option value="pair">Pair</option>
+
+                                    Clothes
+                                    <option value="piece">Piece</option>
+                                    <option value="set">Set</option>
+                                    <option value="pair">Pair</option>
+                                    <option value="pack">Pack</option>
+                                    <option value="s">S</option>
+                                    <option value="m">M</option>
+                                    <option value="l">L</option>
+                                    <option value="xl">XL</option>
+                                    <option value="xxl">XXL</option>
+
+                                    Electronics
+                                    <option value="unit">Unit</option>
+
+                                    <option value="half plate">Half Plate</option>
+                                    <option value="full plate">Full Plate</option>
+                                    <option value="glass">glass</option>
+                                    <option value="cup">cup</option>
+                                    <option value="plate">plate</option>
+
+                                </select>
+                            </div>
+
+                            <div class="form-group k_form_group">
+                                <label for="vmrp">MRP</label>
+                                <input type="number" step="0.01" id="vmrp" name="mrp" placeholder="MRP">
+                            </div>
+
+                            <div class="form-group k_form_group">
+                                <label for="vselling-price">Selling Price</label>
+                                <input type="number" step="0.01" id="vselling-price" name="selling-price"
+                                    placeholder="Selling Price">
+                            </div>
+                        </div>
+
+                        <div class="flex flex-start gap-30 flex-wrap k_form_group_container">
+                            <div class="form-group k_form_group">
+                                <label for="vpurchase-price">Purchase Price</label>
+                                <input type="number" step="0.01" id="vpurchase-price" name="purchase-price"
+                                    placeholder="Purchase Price">
+                            </div>
+                            Stock and Quantity
+                            <div class="form-group k_form_group">
+                                <label for="vstock">Stock</label>
+                                <input type="number" step="0.01" id="vstock" name="stock" placeholder="Stock">
+                            </div>
+
+                            <div class="form-group k_form_group">
+                                <label for="vlimit">Limit</label>
+                                <input type="number" step="0.01" id="vlimit" name="limit"
+                                    placeholder="Limit (Optional)">
+                            </div>
+
+                            <div class="form-group k_form_group">
+                                <label for="vstock"></label> &nbsp;
+                                <input type="button" id="addmore" value="Add">
+                            </div>
+
+                        </div>
+
+                    </div> -->
+
+                    <!-- --- product details----- -->
+
+                    <div class="">
+
+                        <h3>Highlight</h3>
+                        <div class="left">
+                            <div class="flex flex-start gap-30 flex-wrap k_form_group_container">
+                                <div class="form-group k_form_group">
+                                    <label for="htitle">Title</label>
+                                    <input type="text" id="htitle" placeholder="title">
+                                </div>
+                                <div class="form-group k_form_group">
+                                    <label for="hdescription">Description</label>
+                                    <input type="text" id="hdescription" placeholder="description">
+                                </div>
+                                <div class="form-group k_form_group">
+                                    <label for="highLightSubmit">&nbsp;</label>
+                                    <input type="button" id="highLightSubmit" value="Add">
+                                </div>
+                            </div>
+                            <div class="highlight-result"></div>
+
+                        </div>
+
+                        <h3>Information</h3>
+                        <div class="right">
+                            <div class="flex flex-start gap-30 flex-wrap k_form_group_container">
+                                <div class="form-group k_form_group">
+                                    <label for="ititle">Title</label>
+                                    <input type="text" id="ititle" placeholder="title">
+                                </div>
+                                <div class="form-group k_form_group">
+                                    <label for="idescription">Description</label>
+                                    <input type="text" id="idescription" placeholder="description">
+                                </div>
+                                <div class="form-group k_form_group">
+                                    <label for="informationSubmit">&nbsp;</label>
+                                    <input type="button" id="informationSubmit" value="Add">
+                                </div>
+                            </div>
+                            <div class="information-result"></div>
+                        </div>
+
+                    </div>
+
+
+
+
+                    <!------------- single iamge upload----------  -->
+                    <div class="flex flex-start gap-30 flex-wrap k_form_group_container">
+
+                        <div class="form-group k_form_group">
+                            <label for="sku-number">SKU Number </label>
+                            <input type="text" id="sku-number" placeholder="SKU Number (Optional)">
+                        </div>
+
+                        <div class="form-group k_form_group">
+                            <label for="product_limit">Product Limit </label>
+                            <input type="number" id="product_limit" placeholder="Product Limit (Optional)">
+                        </div>
+
+
+
+                        <div class="form-group k_form_group">
+                            <label for="product-image">Product Image <span>(Ratio 1:1)</span></label>
+                            <input type="file" id="product-image" accept="image/*" required>
+                        </div>
+                        <div class="image-preview flex gap-30">
+                            <img id="preview-img" src="https://placehold.co/500x500" alt="Preview">
+                        </div>
+
+                    </div>
+                    <!-- Image Upload -->
+                    <div class="flex space-between gap-30 flex-wrap k_form_group_container">
+                        <div class="form-group k_form_group">
+                            <label for="product_keyword">Product Keyword </label>
+                            <textarea class="product_keyword" id="product_keyword"
+                                placeholder="Product Keyword (seprate by , ) ex : maggi , nuddle , chowmine , yappe "></textarea>
+                        </div>
+
+                        <div class="form-group k_form_group">
+                            <label for="product-images">Product Images (Multiple Uploads)</label>
+                            <input type="file" id="product-images" name="product-images[]" accept="image/*" multiple>
+                        </div>
+                        <div class="multiple-image-preview flex gap-10" id="multiple-image-preview">
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="buttons flex flex-end gap-20">
+                        <button type="button" id="reset-button">Reset</button>
+                        <button type="submit" id="submit-button">Submit</button>
+                    </div>
+                </form>
+
+
+
+            </div>
+
+
+
+            <div class="result k_result">
+
+                <div class="result-header flex space-between k_header">
+                    <h3 class="total_data">Product Table <span id="totalData">0</span></h3>
+
+                    <div class="product_filter_section">
+
+                       
+                        <select id="rowsPerPage">
+                            <option value="10" selected>10</option>
+                            <option value="25">25</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                        </select>
+                       
+
+                        <div class="select_title">
+                            <select name="" id="select_title" onchange="filterProduct()">
+                                <option value="all">Select Title</option>
+                                <option value="1">Title 1</option>
+                                <option value="2">Title 2</option>
+                                <option value="3">Title 3</option>
+                                <option value="4">Title 4</option>
+                                <option value="5">Title 5</option>
+                                <option value="6">Title 6</option>
+                            </select>
+                        </div>
+                        <div class="select_title">
+                            <select name="" id="select_best_title" onchange="filterProduct()">
+                                <option value="all">Select best Title</option>
+                                <option value="1">Title 1</option>
+                                <option value="2">Title 2</option>
+                                <option value="3">Title 3</option>
+                                <option value="4">Title 4</option>
+                                <option value="5">Title 5</option>
+                                <option value="6">Title 6</option>
+                            </select>
+                        </div>
+                        <div class="select_title">
+                            <select name="" id="select_find_title" onchange="filterProduct()">
+                                <option value="all">Select new find Title</option>
+                                <option value="1">Title 1</option>
+                                <option value="2">Title 2</option>
+                                <option value="3">Title 3</option>
+                                <option value="4">Title 4</option>
+                                <option value="5">Title 5</option>
+                                <option value="6">Title 6</option>
+                            </select>
+                        </div>
+
+                        <div class="select_category">
+                            <select name="" id="selected_category" onchange="filterProduct()">
+                                <option value="all">Select Subcategory</option>
+                            </select>
+                        </div>
+                        <div class="select_sub_category">
+                            <select name="" id="selected_sub_category" onchange="filterProduct()">
+                                <option value="all">Select Subcategory</option>
+                            </select>
+                        </div>
+                        <div class="select_stock">
+                            <select name="" id="selected_stock" onchange="filterProduct()">
+                                <option value="all">Select Stock</option>
+                                <option value="ltoh">Low to High</option>
+                                <option value="htol">High to Low</option>
+                                <option value="oos">Out of Stock</option>
+                            </select>
+                        </div>
+
+                        <div class="search-container flex gap-10" style="flex-wrap: wrap;">
+                            <select id="filter-created-by" style="padding: 8px; border-radius: 4px; border: 1px solid #ccc; outline: none; font-size: 14px; background: white; display: none;">
+                                <option value="all">All Creators</option>
+                            </select>
+                            <input type="text" id="search-input" placeholder="Search by Name" />
+                            <button id="search-button">Search</button>
+                        </div>
+                    </div>
+
+                </div>
+                <table class="table k_table" id="result">
+
+
+                    </tbody>
+                </table>
+
+                <div id="pagination"></div>
+            </div>
+
+
+        </div>
+
+
+
+
+    </div>
+
+    <!-- module -->
+
+
+    <div class="model">
+        <div class="model-result">
+
+        </div>
+    </div>
+
+
+    <div class="v-model">
+
+
+        <div class="addMoreVarient">
+            <h3>Add More Variant</h3>
+            <div class="vareint-result" id="addvareint-result">
+
+            </div>
+
+            <div class="flex flex-start gap-30 flex-wrap k_form_group_container">
+
+                <div class="form-group k_form_group">
+                    <label for="addvquantity">Quantity</label>
+                    <input type="text" step="0.01" id="addvquantity" name="quantity" placeholder="Quantity">
+                </div>
+
+                <div class="form-group k_form_group">
+                    <label for="addvunit">Select Unit</label>
+                    <select id="addvunit" name="vunit">
+                        <option value="">Select Unit</option>
+                        <!-- Grocery & General Food Items -->
+                        <option value="gm">gm</option>
+                        <option value="kg">kg</option>
+                        <option value="ml">ml</option>
+                        <option value="liter">liter</option>
+                        <option value="packet">Packet</option>
+                        <option value="bottle">Bottle</option>
+                        <option value="can">Can</option>
+                        <option value="jar">Jar</option>
+                        <option value="tin">Tin</option>
+                        <option value="sachet">Sachet</option>
+                        <option value="bar">Bar</option>
+                        <option value="box">Box</option>
+                        <option value="tray">Tray</option>
+
+                        <!-- Fruits & Vegetables -->
+                        <option value="pieces">Pieces</option>
+                        <option value="bunch">Bunch</option>
+                        <option value="dozen">Dozen</option>
+                        <option value="bundle">Bundle</option>
+                        <option value="pair">Pair</option>
+
+                        <!-- Clothes -->
+                        <option value="piece">Piece</option>
+                        <option value="set">Set</option>
+                        <option value="pair">Pair</option>
+                        <option value="pack">Pack</option>
+                        <option value="s">S</option>
+                        <option value="m">M</option>
+                        <option value="l">L</option>
+                        <option value="xl">XL</option>
+                        <option value="xxl">XXL</option>
+
+                        <!-- Electronics -->
+                        <option value="unit">Unit</option>
+
+                        <option value="half plate">Half Plate</option>
+                        <option value="full plate">Full Plate</option>
+                        <option value="glass">glass</option>
+                        <option value="cup">cup</option>
+                        <option value="plate">plate</option>
+
+                    </select>
+                </div>
+
+                <div class="form-group k_form_group">
+                    <label for="addvmrp">MRP</label>
+                    <input type="number" step="0.01" id="addvmrp" name="mrp" placeholder="MRP">
+                </div>
+
+                <div class="form-group k_form_group">
+                    <label for="addvselling-price">Selling Price</label>
+                    <input type="number" step="0.01" id="addvselling-price" name="selling-price"
+                        placeholder="Selling Price">
+                </div>
+            </div>
+
+            <div class="flex flex-start gap-30 flex-wrap k_form_group_container">
+                <div class="form-group k_form_group">
+                    <label for="addvpurchase-price">Purchase Price</label>
+                    <input type="number" step="0.01" id="addvpurchase-price" name="purchase-price"
+                        placeholder="Purchase Price">
+                </div>
+                <!-- Stock and Quantity -->
+                <div class="form-group k_form_group">
+                    <label for="addvstock">Stock</label>
+                    <input type="number" step="0.01" id="addvstock" name="stock" placeholder="Stock">
+                </div>
+
+                <div class="form-group k_form_group">
+                    <label for="addvlimit">Limit</label>
+                    <input type="number" step="0.01" id="addvlimit" name="limit" placeholder="Limit (Optional)">
+                </div>
+
+                <div class="form-group k_form_group">
+                    <label for=""></label> &nbsp;
+                    <input type="button" id="addmorevarient" value="Add">
+
+
+                </div>
+
+                <div class="form-group k_form_group">
+                    <label for=""></label> &nbsp;
+                    <button class="vaddsubmit" onclick="addMoreVarient()">Submit</button>
+                </div>
+
+            </div>
+
+        </div>
+        <div class="v-model-result">
+        </div>
+
+    </div>
+
+
+
+
+    <div class="img-model">
+        <input type="text" id="product-id" hidden>
+        <div class="img-model-result">
+
+        </div>
+        <div class="addMoreImages flex space-between gap-30 flex-wrap ">
+            <div class="form-group ">
+                <label for="add-product-images">Product Images (Multiple Uploads)</label>
+                <input type="file" id="add-product-images" name="product-images[]" accept="image/*" multiple>
+            </div>
+            <div class="multiple-image-preview flex gap-10" id="add-multiple-image-preview"> </div>
+            <button class="addMoreBtn" onclick="addMoreImages()">Add More Images</button>
+        </div>
+    </div>
+
+
+    <!-- description model -->
+
+    <div class="description-model">
+        <div class="modal-content">
+            <h2>Edit Description</h2>
+
+            <!-- Highlights Section -->
+            <div class="section">
+                <h3>Highlights</h3>
+                <div id="highlight-list"></div>
+                <button type="button" id="add-highlight">+ Add Highlight</button>
+            </div>
+
+            <!-- Information Section -->
+            <div class="section">
+                <h3>Information</h3>
+                <div id="information-list"></div>
+                <button type="button" id="add-information">+ Add Information</button>
+            </div>
+
+            <button id="final-submit">✅ Submit</button>
+        </div>
+    </div>
+
+
+
+    <!-- Modal -->
+    <div class="bulk_stock_modal_overlay" id="bulk_stock_modal">
+        <div class="bulk_stock_modal_box">
+
+            <div class="bulk_stock_modal_header">
+                <h2>Bulk Stock Update</h2>
+                <span class="bulk_stock_close_btn" onclick="closeBulkStockModal()">×</span>
+            </div>
+
+            <div class="bulk_stock_modal_body">
+                <p class="bulk_stock_info_text">
+                    Download the stock file, update quantities, and upload it back.
+                </p>
+
+                <button class="bulk_stock_download_btn" onclick="downloadExcel()">
+                    ⬇ Download Stock File
+                </button>
+
+                <form id="uploadForm" enctype="multipart/form-data">
+                    <label class="bulk_stock_file_label">
+                        <input type="file" name="file" required>
+                        Choose File
+                    </label>
+
+                    <button type="submit" class="bulk_stock_upload_btn">
+                        ⬆ Upload & Update Stock
+                    </button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+
+    <script src="https://code.jquery.com/jquery-3.7.1.js"
+        integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="../assets/js/script.js"></script>
+    <script src="../assets/js/product.js?v=1.0"></script>
+    <script>
+
+
+        loadCategoryList();
+        loadAllSubCategoryList();
+        loadBrandList();
+        loadProduct();
+        getMiddleCategory();
+
+        const validateInput = (input) => {
+            if (input.value > 5) {
+                input.value = 5;
+            }
+
+            // Ensure value is a single digit
+            if (input.value.length > 1) {
+                input.value = input.value.slice(0, 1);
+            }
+        }
+
+    </script>
+</body>
+
+
+<!-- Mirrored from /dashboard/pages/product.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 05 May 2026 18:40:22 GMT -->
+</html>

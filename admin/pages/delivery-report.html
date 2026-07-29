@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delivery Report</title>
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/form-table.css">
+    <link rel="stylesheet" href="../assets/css/sales_report.css">
+
+    <style>
+        .filter-section {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: center;
+            background: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+        }
+
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .filter-group label {
+            font-weight: 600;
+            color: #555;
+            min-width: max-content;
+        }
+
+        .form-select,
+        input[type="date"] {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            outline: none;
+            font-size: 14px;
+        }
+
+        .btn-filter {
+            padding: 8px 16px;
+            border: 1px solid var(--main-clr);
+            background: transparent;
+            color: var(--main-clr);
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-filter.active,
+        .btn-filter:hover {
+            background: var(--main-clr);
+            color: #fff;
+        }
+
+        .summary-box {
+            flex: 1;
+            min-width: 200px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="wrapper-overlay"></div>
+    <div class="wrapper">
+
+        <!-- ===== navbar========= -->
+        <div class="navbar">
+            <i class="bi bi-chevron-bar-right"></i>
+            <button>Logout</button>
+        </div>
+
+
+        <!-- ========= side bar ======== -->
+        <div class="sidebar">
+            <div class="sidebar-header flex space-between gap-10">
+                <img src="../assets/images/logo.png" alt="">
+                <i class="bi bi-chevron-bar-left"></i>
+            </div>
+
+            <div class="sidebar-content">
+                <div class="sidebar-box flex flex-start gap-10  dashBox">
+                    <i class="bi bi-house-door"></i>
+                    <p>Dashboard</p>
+                </div>
+
+                <!-- ... (Sidebar content will be populated dynamically or static depending on implementation. 
+                     For simplicity, I'll keep the sidebar structure similar to other pages but mark 'Sales Report' or create new active state) ... -->
+
+                <!-- Placeholder for Sidebar Content replication -->
+                <div class="sidebar-box  gap-10">
+                    <div class="flex space-between">
+                        <div class="flex flex-start gap-10 posBox">
+                            <i class="bi bi-bag"></i>
+                            <p>POS</p>
+                        </div>
+                        <i class="bi bi-chevron-down down"></i>
+                    </div>
+                    <div class="sub-box">
+                        <li class="posBoxNewList">New Sale</li>
+                        <li class="posBoxOrders">Orders</li>
+                    </div>
+                </div>
+
+                <div class="sidebar-box  gap-10">
+                    <div class="flex space-between">
+                        <div class="flex flex-start gap-10 ">
+                            <i class="bi bi-cart2"></i>
+                            <p>Orders</p>
+                        </div>
+                        <i class="bi bi-chevron-down down"></i>
+                    </div>
+                    <div class="sub-box">
+                        <li class="orderBoxAll">All</li>
+                        <li class="orderBoxPending">Pending</li>
+                        <li class="orderBoxConfirmed">Confirmed</li>
+                        <li class="orderBoxPackaging">Packaging</li>
+                        <li class="orderBoxDelivered">Delivered</li>
+                        <li class="orderBoxReturned">Returned</li>
+                        <li class="orderBoxCanceled">Canceled</li>
+                    </div>
+                </div>
+
+                <div class="sidebar-box  gap-10 ">
+                    <div class="flex space-between">
+                        <div class="flex flex-start gap-10">
+                            <i class="bi bi-boxes"></i>
+                            <p>Category Setup</p>
+                        </div>
+                        <i class="bi bi-chevron-down down"></i>
+                    </div>
+                    <div class="sub-box">
+                        <li class="categoryBox">Top Category</li>
+                        <li class="bottomCategoryBox">Bottom Category</li>
+                        <li class="subCategoryBox">Subcategory</li>
+                    </div>
+                </div>
+
+                 <div class="sidebar-box flex flex-start gap-10 branchBox ">
+                    <i class="bi bi-shop"></i>
+                    <p>Branch</p>
+                </div>
+                <div class="sidebar-box flex flex-start gap-10 brandsBox ">
+                    <i class="bi bi-amd"></i>
+                    <p>Brands</p>
+                </div>
+                <div class="sidebar-box flex flex-start gap-10 productBox">
+                    <i class="bi bi-gem"></i>
+                    <p>Product</p>
+                </div>
+
+                <div class="sidebar-box flex flex-start gap-10 bannerBox">
+                    <i class="bi bi-image-alt"></i>
+                    <p>Banner</p>
+                </div>
+
+                <div class="sidebar-box flex flex-start gap-10 couponsBox">
+                    <i class="bi bi-gift"></i>
+                    <p>Coupons</p>
+                </div>
+
+                <div class="sidebar-box flex flex-start gap-10 flashSaleBox">
+                    <i class="bi bi-alarm"></i>
+                    <p>Flash Sale</p>
+                </div>
+
+                <div class="sidebar-box flex flex-start gap-10 categoryDiscountBox">
+                    <i class="bi bi-layers"></i>
+                    <p>Category Discount</p>
+                </div>
+
+                <div class="sidebar-box flex flex-start gap-10 salesReportBox">
+                    <i class="bi bi-bar-chart"></i>
+                    <p>Sales Report</p>
+                </div>
+
+                <!-- New Active Sidebar Item -->
+                <div class="sidebar-box flex flex-start gap-10 deliveryReportBox active">
+                    <i class="bi bi-truck"></i>
+                    <p>Delivery Report</p>
+                </div>
+
+
+                <div class="sidebar-box  gap-10">
+                    <div class="flex space-between">
+                        <div class="flex flex-start gap-10">
+                            <i class="bi bi-people"></i>
+                            <p>User Management</p>
+                        </div>
+                        <i class="bi bi-chevron-down down"></i>
+                    </div>
+                    <div class="sub-box">
+                        <li class="customerListBox">Customer List</li>
+                        <li class="customerWalletBox">Customer Wallet</li>
+                        <li class="customerFundBox">Add Fund</li>
+                        <li class="customerReportBox">Report</li>
+                    </div>
+                </div>
+
+                <div class="sidebar-box flex flex-start gap-10 productReviewBox">
+                    <i class="bi bi-card-checklist"></i>
+                    <p>Product Review</p>
+                </div>
+
+                <div class="sidebar-box flex flex-start gap-10 deliveryManBox">
+                    <i class="bi bi-person-rolodex"></i>
+                    <p>Delivery Man</p>
+                </div>
+
+                <div class="sidebar-box flex flex-start gap-10 employesBox">
+                    <i class="bi bi-person-vcard"></i>
+                    <p>Employees</p>
+                </div>
+
+                <div class="sidebar-box flex flex-start gap-10 otherSetupBox">
+                    <i class="bi bi-sliders2"></i>
+                    <p>Other Setup</p>
+                </div>
+
+                <div class="sidebar-box flex flex-start gap-10 pushNotificationBox">
+                    <i class="bi bi-bell"></i>
+                    <p>Push Notification</p>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ======= main container ========= -->
+
+        <div class="main-container k_main_container">
+            <h3>Delivery Report</h3>
+
+            <!-- Filters -->
+            <div class="filter-section">
+                <!-- Date Filter -->
+                <div class="filter-group">
+                    <label>Date Range:</label>
+                    <input type="date" id="startDate">
+                    <span>to</span>
+                    <input type="date" id="endDate">
+                </div>
+
+                <!-- Quick Date Filters -->
+                <div class="filter-group">
+                    <button class="btn-filter" data-filter="today">Today</button>
+                    <button class="btn-filter" data-filter="yesterday">Yesterday</button>
+                    <button class="btn-filter" data-filter="this_week">This Week</button>
+                    <button class="btn-filter" data-filter="this_month">This Month</button>
+                </div>
+
+                <!-- Delivery Boy Filter -->
+                <div class="filter-group">
+                    <label>Delivery Boy:</label>
+                    <select id="deliveryBoyFilter" class="form-select" style="min-width: 150px;">
+                        <option value="">All Delivery Boys</option>
+                        <!-- Options populated via JS -->
+                    </select>
+                </div>
+
+                <!-- Payment Method Filter -->
+                <div class="filter-group">
+                    <label>Payment:</label>
+                    <select id="paymentMethodFilter" class="form-select">
+                        <option value="">All</option>
+                        <option value="Cash On Delivery">Cash On Delivery</option>
+                        <option value="online">Online</option>
+                    </select>
+                </div>
+
+                <!-- Order Status Filter -->
+                <div class="filter-group">
+                    <label>Status:</label>
+                    <select id="orderStatusFilter" class="form-select">
+                        <option value="">All Status</option>
+                        <option value="Pending">Pending</option>
+                        <option value="Confirmed">Confirmed</option>
+                        <option value="Packaging">Packaging</option>
+                        <option value="Out for Delivery">Out for Delivery</option>
+                        <option value="Delivered">Delivered</option>
+                        <option value="Returned">Returned</option>
+                        <option value="Cancelled">Cancelled</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <button class="btn-filter" style="background:var(--main-clr); color:white;"
+                        onclick="renderDeliveryReport()">Show Data</button>
+                    <button class="btn-filter" style="border-color:#dc3545; color:#dc3545;"
+                        onclick="clearDeliveryFilters()">Clear</button>
+                </div>
+            </div>
+
+            <!-- Summary Cards -->
+            <div class="summary" style="margin-bottom: 20px;">
+                <div class="summary-box">
+                    <span>Total Orders</span>
+                    <h2 class="total_orders">0</h2>
+                </div>
+
+                <div class="summary-box income">
+                    <span>Total Amount</span>
+                    <h2 class="total_amount">₹ 0.00</h2>
+                </div>
+
+                <div class="summary-box">
+                    <span>Cash on Delivery</span>
+                    <h2 class="total_cod">₹ 0.00</h2>
+                </div>
+
+                <div class="summary-box">
+                    <span>Online Paid</span>
+                    <h2 class="total_online">₹ 0.00</h2>
+                </div>
+            </div>
+
+
+            <table id="deliveryTable" class="display nowrap" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>SL</th>
+                        <th>Order ID</th>
+                        <th>Date</th>
+                        <th>Delivery Boy</th>
+                        <th>Customer</th>
+                        <th>Payment Method</th>
+                        <th>Status</th>
+                        <th>Amount</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    <!-- Rows populated via JS -->
+                </tbody>
+            </table>
+
+        </div>
+
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.js"
+        integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- DataTables JS -->
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
+
+    <script src="../assets/js/script.js"></script>
+    <script src="../assets/js/delivery-report.js"></script> <!-- New JS File -->
+
+    <script>
+        // Init script
+        $(document).ready(function () {
+            // Activate sidebar link logic if needed, or handled via script.js common logic
+            $('.sidebar-box').removeClass('active');
+            $('.deliveryReportBox').addClass('active');
+        });
+    </script>
+</body>
+
+</html>

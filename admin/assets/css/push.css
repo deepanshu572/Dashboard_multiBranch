@@ -1,0 +1,78 @@
+.p_container{
+    display: flex;
+    gap: 50px;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+
+.push-form-container {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0,0,0,0.1);
+    width: 100%;
+    max-width: 400px;
+    margin-top: 20px;
+}
+.push-form-container h2 {
+    text-align: center;
+    margin-bottom: 15px;
+}
+.push-form-container label {
+    font-weight: bold;
+}
+.push-form-container input, .push-form-container textarea {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+.push-form-container button {
+    background-color: var(--main-clr);
+    color: var(--txt-clr);
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 10px;
+    border-radius: 5px;
+}
+
+
+
+
+
+
+
+/* ======= > >     responsive.css        ========= */
+
+
+
+
+@media (max-width:900px){
+    .k_main_container {
+        padding-left: 5%;
+        padding-bottom: 50px;
+    }
+
+    .k_push_form_container {
+        margin-inline: auto;
+    }
+    .p_container{
+        flex-direction: column;
+        align-items: center;
+        gap: 30px;
+    }
+}
+
+
+.push_example{
+    width: 300px;
+}
+.push_example img{
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+}

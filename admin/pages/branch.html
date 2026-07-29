@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/form-table.css">
+    <link rel="stylesheet" href="../assets/css/edit-modal.css">
+    <style>
+        .branch-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, .5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .branch-modal-content {
+            width: 900px;
+            background: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            max-height: 90vh;
+            overflow: auto;
+        }
+
+        .branch-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .close-modal {
+            font-size: 28px;
+            cursor: pointer;
+        }
+
+        @media screen and (max-width:600px) {
+            form#branch-form>div {
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+
+            .branch-modal-content>div {
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+
+            .branch-modal-content {
+                width: 90%;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="wrapper-overlay"></div>
+    <div class="wrapper">
+
+        <!-- ===== navbar========= -->
+        <div class="navbar">
+            <i class="bi bi-chevron-bar-right"></i>
+
+            <button>Logout</button>
+        </div>
+
+
+        <!-- ========= side bar ======== -->
+        <div class="sidebar">
+            <div class="sidebar-header flex space-between gap-10">
+                <img src="../assets/images/logo.png" alt="">
+                <i class="bi bi-chevron-bar-left"></i>
+            </div>
+
+            <div class="sidebar-content">
+                <div class="sidebar-box flex flex-start gap-10  dashBox">
+                    <i class="bi bi-house-door"></i>
+                    <p>Dashboard</p>
+                </div>
+
+                <div class="sidebar-box  gap-10">
+                    <div class="flex space-between">
+                        <div class="flex flex-start gap-10 posBox">
+                            <i class="bi bi-bag"></i>
+                            <p>POS</p>
+                        </div>
+                        <i class="bi bi-chevron-down down"></i>
+                    </div>
+                    <div class="sub-box">
+                        <li class="posBoxNewList">New Sale</li>
+                        <li class="posBoxOrders">Orders</li>
+                    </div>
+
+                </div>
+
+                <div class="sidebar-box  gap-10">
+                    <div class="flex space-between">
+                        <div class="flex flex-start gap-10 ">
+                            <i class="bi bi-cart2"></i>
+                            <p>Orders</p>
+                        </div>
+                        <i class="bi bi-chevron-down down"></i>
+                    </div>
+                    <div class="sub-box">
+                        <li class="orderBoxAll">All</li>
+                        <li class="orderBoxPending">Pending</li>
+                        <li class="orderBoxConfirmed">Confirmed</li>
+                        <li class="orderBoxPackaging">Packaging</li>
+                        <li class="orderBoxDelivered">Delivered</li>
+                        <li class="orderBoxReturned">Returned</li>
+                        <li class="orderBoxCanceled">Canceled</li>
+                    </div>
+
+                </div>
+
+                <div class="sidebar-box  gap-10 ">
+                    <div class="flex space-between">
+                        <div class="flex flex-start gap-10">
+                            <i class="bi bi-boxes"></i>
+                            <p>Category Setup</p>
+                        </div>
+                        <i class="bi bi-chevron-down down"></i>
+                    </div>
+                    <div class="sub-box">
+                        <li class="categoryBox">Top Category</li>
+                        <li class="bottomCategoryBox">Bottom Category</li>
+                        <li class="subCategoryBox">Subcategory</li>
+                    </div>
+
+                </div>
+
+                <div class="sidebar-box flex flex-start gap-10 branchBox active">
+                    <i class="bi bi-shop"></i>
+                    <p>Branch</p>
+                </div>
+                <div class="sidebar-box flex flex-start gap-10 brandsBox ">
+                    <i class="bi bi-amd"></i>
+                    <p>Brands</p>
+                </div>
+                <div class="sidebar-box flex flex-start gap-10 productBox">
+                    <i class="bi bi-gem"></i>
+                    <p>Product</p>
+                </div>
+
+                <div class="sidebar-box flex flex-start gap-10 bannerBox">
+                    <i class="bi bi-image-alt"></i>
+                    <p>Banner</p>
+                </div>
+
+                <div class="sidebar-box flex flex-start gap-10 couponsBox">
+                    <i class="bi bi-gift"></i>
+                    <p>Coupons</p>
+                </div>
+
+                <div class="sidebar-box flex flex-start gap-10 flashSaleBox">
+                    <i class="bi bi-alarm"></i>
+                    <p>Flash Sale</p>
+                </div>
+
+                <div class="sidebar-box flex flex-start gap-10 categoryDiscountBox">
+                    <i class="bi bi-layers"></i>
+                    <p>Category Discount</p>
+                </div>
+
+                <div class="sidebar-box flex flex-start gap-10 salesReportBox">
+                    <i class="bi bi-bar-chart"></i>
+                    <p>Sales Report</p>
+                </div>
+
+                <div class="sidebar-box flex flex-start gap-10 deliveryReportBox">
+                    <i class="bi bi-truck"></i>
+                    <p>Delivery Report</p>
+                </div>
+
+                <div class="sidebar-box  gap-10">
+                    <div class="flex space-between">
+                        <div class="flex flex-start gap-10">
+                            <i class="bi bi-people"></i>
+                            <p>User Management</p>
+                        </div>
+                        <i class="bi bi-chevron-down down"></i>
+                    </div>
+                    <div class="sub-box">
+                        <li class="customerListBox">Customer List</li>
+                        <li class="customerWalletBox">Customer Wallet</li>
+                        <li class="customerFundBox">Add Fund</li>
+                        <li class="customerReportBox">Report</li>
+                    </div>
+
+                </div>
+
+                <div class="sidebar-box flex flex-start gap-10 productReviewBox">
+                    <i class="bi bi-card-checklist"></i>
+                    <p>Product Review</p>
+                </div>
+
+                <div class="sidebar-box flex flex-start gap-10 deliveryManBox">
+                    <i class="bi bi-person-rolodex"></i>
+                    <p>Delivery Man</p>
+                </div>
+
+                <div class="sidebar-box flex flex-start gap-10 employesBox">
+                    <i class="bi bi-person-vcard"></i>
+                    <p>Employees</p>
+                </div>
+
+                <div class="sidebar-box flex flex-start gap-10 otherSetupBox">
+                    <i class="bi bi-sliders2"></i>
+                    <p>Other Setup</p>
+                </div>
+
+                <div class="sidebar-box flex flex-start gap-10 pushNotificationBox">
+                    <i class="bi bi-bell"></i>
+                    <p>Push Notification</p>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ======= main container ========= -->
+
+        <div class="main-container k_main_container">
+            <h3>Branch</h3>
+
+            <div class="form-container">
+
+                <form id="branch-form" onsubmit="AddBranch(event); return false;" class="form">
+
+                    <!-- Row 1 -->
+                    <div class="flex flex-start gap-30 k_form_group_container">
+
+                        <div class="form-group k_form_group">
+                            <label for="branch-name">Branch Name</label>
+                            <input type="text" id="branch-name" placeholder="Enter branch name" required>
+                        </div>
+
+                        <div class="form-group k_form_group">
+                            <label for="branch-desc">Description</label>
+                            <input type="text" id="branch-desc" placeholder="Enter description">
+                        </div>
+
+                        <div class="form-group k_form_group">
+                            <label for="branch-phone">Phone No</label>
+                            <input type="text" id="branch-phone" placeholder="Enter phone number" required>
+                        </div>
+
+                        <div class="form-group k_form_group">
+                            <label for="branch-email">Email</label>
+                            <input type="text" id="branch-email" placeholder="Enter email">
+                        </div>
+
+                    </div>
+
+                    <!-- Row 2 -->
+                    <div class="flex flex-start gap-30 k_form_group_container">
+
+                        <div class="form-group k_form_group">
+                            <label for="branch-address">Address</label>
+                            <input type="text" id="branch-address" placeholder="Enter address">
+                        </div>
+
+                        <div class="form-group k_form_group">
+                            <label for="branch-city">City</label>
+                            <input type="text" id="branch-city" placeholder="Enter city">
+                        </div>
+
+                        <div class="form-group k_form_group">
+                            <label for="branch-state">State</label>
+                            <input type="text" id="branch-state" placeholder="Enter state">
+                        </div>
+
+                        <div class="form-group k_form_group">
+                            <label for="branch-pincode">Pincode</label>
+                            <input type="text" id="branch-pincode" placeholder="Enter pincode">
+                        </div>
+
+                    </div>
+
+                    <!-- Row 3 -->
+                    <div class="flex flex-start gap-30 k_form_group_container">
+
+                        <div class="form-group k_form_group">
+                            <label for="branch-latitude">Latitude</label>
+                            <input type="text" id="branch-latitude" placeholder="Ex: 23.6749065">
+                        </div>
+
+                        <div class="form-group k_form_group">
+                            <label for="branch-longitude">Longitude</label>
+                            <input type="text" id="branch-longitude" placeholder="Ex: 93.6749065">
+                        </div>
+                        <div class="form-group k_form_group">
+                            <label for="branch-Coverage">Coverage</label>
+                            <input type="text" id="branch-Coverage" placeholder="Ex: 3">
+                        </div>
+
+                        <div class="form-group k_form_group">
+                            <label for="branch-isOpen">Is Open</label>
+                            <select id="branch-isOpen">
+                                <option value="true">Open</option>
+                                <option value="false">Closed</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group k_form_group">
+                            <label for="branch-status">Status</label>
+                            <select id="branch-status">
+                                <option value="true">Active</option>
+                                <option value="false">Inactive</option>
+                            </select>
+                        </div>
+
+                    </div>
+                    <div class="buttons flex flex-end gap-20">
+                        <button type="button" id="reset-button" onclick=" $('#branch-form')[0].reset()">Reset</button>
+                        <button type="submit" id="submit-button">Submit</button>
+                    </div>
+
+
+                </form>
+            </div>
+
+
+
+            <div class="result k_result">
+
+                <div class="result-header flex space-between k_result_header mb">
+                    <h3>Branch Table <span id="totalData"></span></h3>
+
+                    <!-- <div class="search-container">
+                        <input type="text" id="search-input" placeholder="Search by Name">
+                        <button id="search-button">Search</button>
+                    </div> -->
+                </div>
+                <table class="table k_table" id="result">
+
+
+                    </tbody>
+                </table>
+
+                <div id="pagination"></div>
+            </div>
+
+
+
+
+        </div>
+        <!-- module -->
+
+
+        <div class="branch-modal" id="branchModal">
+
+            <div class="branch-modal-content">
+
+                <div class="branch-modal-header">
+                    <h3>Edit Branch</h3>
+                    <span class="close-modal" onclick="closeBranchModal()">&times;</span>
+                </div>
+
+                <!-- Row 1 -->
+                <div class="flex flex-start gap-30 k_form_group_container">
+
+                    <input type="hidden" id="edit-branch-id">
+
+                    <div class="form-group k_form_group">
+                        <label>Branch Name</label>
+                        <input type="text" id="edit-branch-name">
+                    </div>
+
+                    <div class="form-group k_form_group">
+                        <label>Description</label>
+                        <input type="text" id="edit-branch-desc">
+                    </div>
+                </div>
+                <div class="flex flex-start gap-30 k_form_group_container">
+
+
+                    <div class="form-group k_form_group">
+                        <label>Phone No</label>
+                        <input type="text" id="edit-branch-phone">
+                    </div>
+
+                    <div class="form-group k_form_group">
+                        <label>Email</label>
+                        <input type="text" id="edit-branch-email">
+                    </div>
+
+                </div>
+
+                <!-- Row 2 -->
+
+                <div class="flex flex-start gap-30 k_form_group_container">
+
+                    <div class="form-group k_form_group">
+                        <label>Address</label>
+                        <input type="text" id="edit-branch-address">
+                    </div>
+
+                    <div class="form-group k_form_group">
+                        <label>City</label>
+                        <input type="text" id="edit-branch-city">
+                    </div>
+                </div>
+                <div class="flex flex-start gap-30 k_form_group_container">
+
+                    <div class="form-group k_form_group">
+                        <label>State</label>
+                        <input type="text" id="edit-branch-state">
+                    </div>
+
+                    <div class="form-group k_form_group">
+                        <label>Pincode</label>
+                        <input type="text" id="edit-branch-pincode">
+                    </div>
+
+                </div>
+                <!-- row 3-->
+                <div class="flex flex-start gap-30 k_form_group_container">
+
+                    <!-- <input type="hidden" id="edit-branch-id"> -->
+
+                    <div class="form-group k_form_group">
+                        <label>Longitude</label>
+                        <input type="text" id="longitude-branch">
+                    </div>
+
+                    <div class="form-group k_form_group">
+                        <label>Latitude</label>
+                        <input type="text" id="latitude-branch">
+                    </div>
+                </div>
+                 <div class="flex flex-start gap-30 k_form_group_container">
+
+
+                    <div class="form-group k_form_group">
+                        <label>Coverage</label>
+                        <input type="text" id="coverage-branch">
+                    </div>
+
+                    <div class="form-group k_form_group" style="opacity: 0;">
+                        <label>Coverage</label>
+                        <input type="text">
+                    </div>
+                    
+                </div>
+
+
+
+                <div class="buttons flex flex-end gap-20">
+                    <button type="button" id="reset-button" onclick="closeBranchModal()">Close</button>
+                    <button type="submit" id="submit-button" onclick="updateBranch()">Submit</button>
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.js"
+        integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="../assets/js/script.js"></script>
+    <script src="../assets/js/branch.js"></script>
+    <script>
+
+
+        // function categoryTracker(categoryId) {
+        //     console.log('Selected Category ID:', categoryId);
+        //     $('#selectedCategoryId').val(categoryId);
+
+        //     // You can perform additional actions here based on the selected category
+        // }
+
+    </script>
+</body>
+
+</html>

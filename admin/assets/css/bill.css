@@ -1,0 +1,154 @@
+.bill-modal {
+    width: 100% !important;
+    position: fixed;
+    top: -100%;
+    left: 0px;
+    height: 100%;
+    /* height: 100vh; */
+    /* overflow: hidden; */
+    overflow-y: scroll;
+    /* display: flex; */
+    /* align-items: center; */
+    /* justify-content: center; */
+    /* flex-direction: column; */
+    /* gap: 10px; */
+    opacity: 0;
+    transition: all .4s ease-in-out;
+}
+
+.bill-modal.active {
+    opacity: 1;
+    top: 0px;
+    z-index: 1000;
+}
+
+.binvoice {
+    width: 300px;
+    margin: 30px auto;
+    background: #fff;
+    padding: 15px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+   height: auto;
+}
+
+.bheader {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.bheader img {
+    max-width: 100px;
+}
+
+.bheader h1 {
+    font-size: 16px;
+    margin: 5px 0;
+}
+
+.bheader p {
+    margin: 0;
+    font-size: 10px;
+}
+
+.divider {
+    border-top: 1px dashed #000;
+    margin: 10px 0;
+}
+
+.details {
+    margin-bottom: 10px;
+}
+
+.details p {
+    margin: 3px 0;
+}
+
+.btotals-table ,.bill-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.btotals-table th,
+.btotals-table td {
+    text-align: left;
+    padding: 5px 10px;
+    font-size: 12px;
+    /* border: 1px solid #ccc; */
+}
+
+.bill-table th,
+.bill-table td {
+    text-align: left;
+    padding: 5px 10px;
+    font-size: 12px;
+    border: 1px solid #ccc;
+}
+
+.bill-table th {
+    border-bottom: 1px solid #ccc;
+}
+
+.btotals-table td.bprice {
+    text-align: right;
+}
+
+.btotals {
+    margin-top: 10px;
+}
+
+.btotals table {
+    width: 100%;
+}
+
+.btotals table td {
+    padding: 5px 10px;
+    font-size: 12px;
+}
+
+.btotals table td.bprice {
+    text-align: right;
+}
+
+.bfooter {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 10px;
+}
+
+.bfooter p {
+    margin: 3px 0;
+}
+
+.no-print {
+    display: flex;
+    margin: 10px auto;
+}
+
+.no-print button {
+    padding: 8px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+
+.no-print button:nth-child(2) {
+    background: var(--main-clr);
+    color: var(--txt-clr);
+}
+.bprice{
+    text-wrap: nowrap;
+}
+
+@media print {
+    .no-print {
+        display: none;
+    }
+    .wrapper{
+        display: none;
+    }
+    .wrapper-overlay{
+        display: none;
+    }
+}
