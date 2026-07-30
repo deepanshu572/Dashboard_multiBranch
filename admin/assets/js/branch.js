@@ -1,4 +1,6 @@
-    function AddBranch(e) {
+let editBranchMap = null;   
+   
+   function AddBranch(e) {
             e.preventDefault();
 
             let branchName = $("#branch-name").val();
@@ -14,6 +16,9 @@
             let coverage = $("#branch-Coverage").val();
             let branchIsOpen = $("#branch-isOpen").val();
             let branchStatus = $("#branch-status").val();
+            let password = $("#branch-password").val();
+
+            
 
             // console.log(branchName,branchAddress,branchCity,branchDesc,branchEmail,branchIsOpen,branchPincode,branchStatus);
             $("#submit-button").prop("disabled", true)
@@ -28,6 +33,7 @@
                     description: branchDesc,
                     phone_no: branchPhone,
                     email: branchEmail,
+                    password:password,
                     address: branchAddress,
                     city: branchCity,
                     latitude:branchLatitude,
@@ -191,23 +197,45 @@
             });
         }
 
-        function editBranch(item) {
+function editBranch(item) {
 
-            $("#edit-branch-id").val(item.id);
-            $("#edit-branch-name").val(item.name);
-            $("#edit-branch-desc").val(item.description);
-            $("#edit-branch-phone").val(item.phone_no);
-            $("#edit-branch-email").val(item.email);
-            $("#edit-branch-address").val(item.address);
-            $("#edit-branch-city").val(item.city);
-            $("#edit-branch-state").val(item.state);
-            $("#edit-branch-pincode").val(item.pincode);
-            $("#longitude-branch").val(item.longitude);
-            $("#latitude-branch").val(item.latitude);
-            $("#coverage-branch").val(item.coverage);
+    $("#edit-branch-id").val(item.id);
+    $("#edit-branch-name").val(item.name);
+    $("#edit-branch-desc").val(item.description);
+    $("#edit-branch-phone").val(item.phone_no);
+    $("#edit-branch-email").val(item.email);
+    $("#edit-branch-address").val(item.address);
+    $("#edit-branch-city").val(item.city);
+    $("#edit-branch-state").val(item.state);
+    $("#edit-branch-pincode").val(item.pincode);
+    $("#edit-branch-latitude").val(item.latitude);
+    $("#edit-branch-longitude").val(item.longitude);
+    $("#coverage-branch").val(item.coverage);
 
-            openBranchModal();
+    openBranchModal();
+
+    setTimeout(() => {
+
+        if (!editBranchMap) {
+
+            editBranchMap = initBranchMap({
+                mapId: "editMap",
+                latInput: "#edit-branch-latitude",
+                lngInput: "#edit-branch-longitude"
+            });
+
         }
+
+        editBranchMap.setLocation(
+            item.latitude,
+            item.longitude
+        );
+
+        editBranchMap.map.invalidateSize();
+
+    }, 300);
+
+}
         function deleteBranch(id) {
             $.ajax({
                 url:apiurl,

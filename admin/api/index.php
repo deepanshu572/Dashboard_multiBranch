@@ -253,14 +253,11 @@ mysqli_query($con, "SET time_zone = '+05:30'");
 
 
 
-//   if($type=='adminLogin'){
+
+    //   if($type=='adminLogin'){
        
 //     $username=$_POST['username'];
 //     $password=$_POST['password'];
-   
-   
-   
-
 //     $query ="SELECT * FROM `admin` WHERE username ='$username' AND password ='$password'";
 //     $run=mysqli_query($con,$query);
 //     if(mysqli_num_rows($run) >0){
@@ -271,7 +268,7 @@ mysqli_query($con, "SET time_zone = '+05:30'");
 
 //     }
 
-        if($type == 'adminLogin'){
+if($type == 'adminLogin'){
 
     $username = $_POST['username'];
     $password = $_POST['password'];
@@ -826,28 +823,34 @@ else if ($type == 'logout') {
         $imgquery = "INSERT INTO `product_img`(`product_id`, `image_path`) VALUES ('$lastId','$imgurl')";
         mysqli_query($con, $imgquery);
 
-        // Insert variants if any
-        // if (!empty($variantData)) {
-        //     foreach ($variantData as $variant) {
-        //         $quantity      = $variant['quantity'] ?? null;
-        //         $unit          = mysqli_real_escape_string($con, $variant['unit'] ?? '');
-        //         $mrp           = $variant['mrp'] ?? null;
-        //         $sellingPrice  = $variant['sellingPrice'] ?? null;
-        //         $purchasePrice = $variant['purchasePrice'] ?? null;
-        //         $stock         = $variant['stock'] ?? null;
-        //         $vlimit         = $variant['limit'] ?? null;
-
                 $addVariant = "INSERT INTO `varient`
                                (`v_mrp`, `product_id`, `v_seliing_price`, `v_purchase_price`, `v_stock`, `v_quantity`, `v_unit`,`v_p_limit`)
                                VALUES ('$mrp', '$lastId', '$sellingPrice', '$purchasePrice', '$stock', '$quantity', '$unit','')"; 
                 $run1 = mysqli_query($con, $addVariant);
 
-                // if (!$run1) {
-                //     echo "Error inserting variant: " . mysqli_error($con);
-                //     exit;
-                // }
-        //     }
-        // }
+                if($run1){
+
+                    // Newly created Variant ID
+                    $variantId = mysqli_insert_id($con);
+
+                    // Add stock entry for every branch
+                    $query = "INSERT INTO `branch_stock`
+                    (branch_id, product_id, varient_id, stock)
+                    SELECT
+                        id,
+                        '$lastId',
+                        '$variantId',
+                        '0'
+                    FROM branch";
+
+                    $run2 = mysqli_query($con, $query);
+
+                    if($run2){
+                        echo "Success";
+                    }else{
+                        echo mysqli_error($con);
+                    }
+                }
 
         // Insert multiple product images
         if (!empty($imageFiles)) {
@@ -1253,9 +1256,12 @@ else if ($type == 'logout') {
         
             // 🔹 Step 5: Cart table me is product ke status=true wale items delete karo
             mysqli_query($con, "DELETE FROM `cart` WHERE `p_id`='$p_id' AND `status`='true'");
+            // delete from branc_stock
+            mysqli_query($con,"DELETE FROM `branch_stock` WHERE `product_id` = '$p_id'");
         
             // 🔹 Step 6: Product table se row delete karo
             $query = "DELETE FROM `product` WHERE `p_id`='$p_id'";
+
             $run = mysqli_query($con, $query);
         
             if ($run) {
@@ -2092,6 +2098,8 @@ else if ($type == 'logout') {
                 DELETE FROM `cart` 
                 WHERE `vid` = '$vid' AND `status` = 'true'
             ");
+            mysqli_query($con,"DELETE FROM `branch_stock` WHERE `varient_id` = '$vid'");
+
 
             // 🔹 Step 4: Check if product has any variants left 
             $checkVariants = mysqli_query($con, "
@@ -2175,8 +2183,19 @@ else if ($type == 'logout') {
                         '$unit'
                     )
                 ";
-                // echo $addVariant; exit();
+
                 $run1 = mysqli_query($con, $addVariant);  
+                $variantId = mysqli_insert_id($con);
+
+            mysqli_query($con,"INSERT INTO `branch_stock`
+                (branch_id, product_id, varient_id, stock)
+                SELECT
+                    id,
+                    '$lastId',
+                    '$variantId',
+                    '0'
+                FROM branch");
+            // echo $addVariant; exit();
 
                 if (!$run1) {
                     echo "Error inserting variant: " . mysqli_error($con);
@@ -4146,6 +4165,7 @@ else if($type == 'addBranch'){
     $description = $_POST['description'];
     $phone_no = $_POST['phone_no'];
     $email = $_POST['email'];
+    $password = $_POST['password'];
     $address = $_POST['address'];
     $longitude = $_POST['longitude'];
     $latitude = $_POST['latitude'];
@@ -4156,12 +4176,13 @@ else if($type == 'addBranch'){
     $isOpen = $_POST['isOpen'];
     $status = $_POST['status'];
 
-    $query = "INSERT INTO `branch`
+    $query1= "INSERT INTO `branch`
     (
         `name`,
         `description`,
         `phone_no`,
         `email`,
+        `password`,
         `address`,
         `latitude`,
         `longitude`,
@@ -4178,6 +4199,7 @@ else if($type == 'addBranch'){
         '$description',
         '$phone_no',
         '$email',
+        '$password',
         '$address',
         '$longitude',
         '$latitude',
@@ -4189,17 +4211,67 @@ else if($type == 'addBranch'){
         '$status'
     )";
 
-    if (mysqli_query($con, $query)) {
-        echo json_encode([
-            "status" => "success",
-            "message" => "Branch added successfully."
-        ]);
+    $res1 = mysqli_query($con,$query1);
+    
+  if ($res1) {
+
+    $lastId = mysqli_insert_id($con);
+
+    $query2 = "INSERT INTO admin
+    (username, password, email, role, role_id, status, permissions)
+    VALUES
+    ('$name','$password','$email','branch','$lastId','1','pos,Product,Category,Order')";
+
+    $res2 = mysqli_query($con, $query2);
+
+    if ($res2) {
+
+        // Copy all variants into branch_stock
+        $query3 = "INSERT INTO branch_stock
+        (branch_id, product_id, varient_id, stock)
+        SELECT
+            '$lastId',
+            product_id,
+            vid,
+            0
+        FROM varient";
+        // echo $query3; exit();
+
+        $res3 = mysqli_query($con, $query3);
+
+        if ($res3) {
+
+            echo json_encode([
+                "status" => "success",
+                "message" => "Branch, admin and stock initialized successfully!"
+            ]);
+
+        } else {
+
+            echo json_encode([
+                "status" => "error",
+                "message" => mysqli_error($con)
+            ]);
+
+        }
+
     } else {
+
         echo json_encode([
             "status" => "error",
             "message" => mysqli_error($con)
         ]);
+
     }
+
+} else {
+
+    echo json_encode([
+        "status" => "error",
+        "message" => mysqli_error($con)
+    ]);
+
+}
 
 }
 else if($type == 'loadBranch'){

@@ -437,3 +437,9 @@ body {
 .result-header{
     align-items: flex-start;
 }
+.leaflet-right{
+    display: none !important;
+}
+.align-items-start{
+    align-items: start !important;
+}

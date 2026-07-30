@@ -35,39 +35,109 @@ $.ajaxPrefilter(function(options, originalOptions, jqXHR) {
 });
 
 // Global Fetch Interceptor to append staff username for Audit Logging and handle session
-const originalFetch = window.fetch;
-window.fetch = async function() {
-    let [resource, config] = arguments;
-    config = config || {};
+// const originalFetch = window.fetch;
+// window.fetch = async function() {
+//     let [resource, config] = arguments;
+//     config = config || {};
     
-    // Ensure credentials (sessions) are sent for fetch too
-    config.credentials = 'include';
+//     // Ensure credentials (sessions) are sent for fetch too
+//     config.credentials = 'include';
 
-    if (config.method && config.method.toUpperCase() === 'POST' && config.body) {
-        let loggedUser = localStorage.getItem('admin_username') || localStorage.getItem('admin_role') || 'Unknown';
+//     if (config.method && config.method.toUpperCase() === 'POST' && config.body) {
+//         let loggedUser = localStorage.getItem('admin_username') || localStorage.getItem('admin_role') || 'Unknown';
         
-        if (typeof config.body === 'string') {
-            if (config.body.indexOf('log_admin_username=') === -1) {
-                config.body += "&log_admin_username=" + encodeURIComponent(loggedUser);
+//         if (typeof config.body === 'string') {
+//             if (config.body.indexOf('log_admin_username=') === -1) {
+//                 config.body += "&log_admin_username=" + encodeURIComponent(loggedUser);
+//             }
+//         } else if (window.FormData && config.body instanceof FormData) {
+//             if (!config.body.has('log_admin_username')) {
+//                 config.body.append('log_admin_username', loggedUser);
+//             }
+//         }
+//     }
+
+//     const response = await originalFetch(resource, config);
+    
+//     // Clone response to check body without consuming it
+//     const clone = response.clone();
+//     try {
+//         const json = await clone.json();
+//         if (json && json.status === 'auth_error') {
+//             localStorage.clear();
+//             location.href = (window.location.pathname.includes('pages/')) ? '../index.html' : 'index.html';
+//         }
+//     } catch (e) { }
+
+//     return response;
+// };
+const originalFetch = window.fetch;
+
+window.fetch = async function(resource, config = {}) {
+
+    // Get request URL
+    const url = typeof resource === "string" ? resource : resource.url;
+
+    // Check if request is to your own server
+    const isLocalRequest =
+        url.startsWith(window.location.origin) ||
+        url.startsWith("/") ||
+        !url.startsWith("http");
+
+    // Send credentials ONLY for your own APIs
+    if (isLocalRequest) {
+        config.credentials = "include";
+    } else {
+        config.credentials = "omit";
+    }
+
+    // Append username only to your own POST requests
+    if (
+        isLocalRequest &&
+        config.method &&
+        config.method.toUpperCase() === "POST" &&
+        config.body
+    ) {
+        let loggedUser =
+            localStorage.getItem("admin_username") ||
+            localStorage.getItem("admin_role") ||
+            "Unknown";
+
+        if (typeof config.body === "string") {
+
+            if (!config.body.includes("log_admin_username=")) {
+                config.body +=
+                    "&log_admin_username=" +
+                    encodeURIComponent(loggedUser);
             }
-        } else if (window.FormData && config.body instanceof FormData) {
-            if (!config.body.has('log_admin_username')) {
-                config.body.append('log_admin_username', loggedUser);
+
+        } else if (config.body instanceof FormData) {
+
+            if (!config.body.has("log_admin_username")) {
+                config.body.append("log_admin_username", loggedUser);
             }
+
         }
     }
 
     const response = await originalFetch(resource, config);
-    
-    // Clone response to check body without consuming it
-    const clone = response.clone();
-    try {
-        const json = await clone.json();
-        if (json && json.status === 'auth_error') {
-            localStorage.clear();
-            location.href = (window.location.pathname.includes('pages/')) ? '../index.html' : 'index.html';
-        }
-    } catch (e) { }
+
+    // Check auth only for your own APIs
+    if (isLocalRequest) {
+        const clone = response.clone();
+
+        try {
+            const json = await clone.json();
+
+            if (json?.status === "auth_error") {
+                localStorage.clear();
+                location.href = window.location.pathname.includes("pages/")
+                    ? "../index.html"
+                    : "index.html";
+            }
+
+        } catch (e) {}
+    }
 
     return response;
 };
