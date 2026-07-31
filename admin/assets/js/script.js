@@ -373,6 +373,7 @@ const adminLogin = () => {
                 if (res && res.status == 'success') {
                     localStorage.setItem('admin_login_status', true);
                     localStorage.setItem('admin_role', res.role || 'admin');
+                    localStorage.setItem('role_id', res.role_id|| 0);
                     localStorage.setItem('admin_permissions', res.permissions || 'all');
                     localStorage.setItem('admin_username', res.username || username);
                     location.href = 'pages/dashboard.html';
@@ -455,6 +456,9 @@ const applyRBAC = () => {
     // Granular menu hiding based on `permissions` string parsing
     if (role === 'staff' && permissions && permissions !== 'all') {
         let permsArray = permissions.split(',');
+        // console.log("===================");
+        // console.log(permsArr);
+        // console.log("===================");
         
         // --- Product & Category Setup ---
         if (!permsArray.includes('add_category') && !permsArray.includes('Category')) $(".categoryBox").hide();

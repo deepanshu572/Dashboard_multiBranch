@@ -75,6 +75,17 @@ const loadOrder = async (page = 1, pageSize = 10) => {
     let params = new URLSearchParams(window.location.search);
     let type = params.get("type");
     let mobile = params.get("mobile");
+    let branchId = localStorage.getItem("role_id");
+
+       const productData =
+        branchId > 0
+        ? {
+            type: "loadBranchOrder",
+            branchId
+        }
+        : {
+            type: "loadOrder"
+        };
 
     console.log("URL Param Type:", type, "Mobile:", mobile);
 
@@ -83,7 +94,7 @@ const loadOrder = async (page = 1, pageSize = 10) => {
         $.ajax({
             url: apiurl,
             type: 'POST',
-            data: { type: 'loadOrder' },
+            data: productData,
             success: function (response) {
                 console.log("API Response received (raw):", response);
                 if (response != 'error' && response != null) {

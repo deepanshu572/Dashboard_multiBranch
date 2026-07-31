@@ -187,7 +187,7 @@
         <!-- ======= main container ========= -->
 
         <div class="main-container k_main_container">
-            <div class="flex space-between items-center k_main_header">
+            <div class="flex space-between items-center k_main_header toggleDisplay">
                 <h3>Product</h3>
 
 
@@ -195,13 +195,14 @@
                     Bulk Stock Update
                 </button>
             </div>
+            <input type="number" id="productId" hidden>
 
 
 
 
 
 
-            <div class="form-container">
+            <div class="form-container toggleDisplay">
 
                 <form id="product-form" class="form">
 
@@ -271,10 +272,10 @@
                             <input type="number" step="0.01" id="purchase-price" name="purchase-price"
                                 placeholder="Purchase Price" required>
                         </div>
-                        <div class="form-group k_form_group">
+                        <!-- <div class="form-group k_form_group">
                             <label for="stock">Stock</label>
                             <input type="number" step="0.01" id="stock" name="stock" placeholder="Stock" required>
-                        </div>
+                        </div> -->
                     </div>
 
                     <div class="flex flex-start gap-30 k_form_group_container">
@@ -661,7 +662,7 @@
     <div class="v-model">
 
 
-        <div class="addMoreVarient">
+        <div class="addMoreVarient toggleDisplay">
             <h3>Add More Variant</h3>
             <div class="vareint-result" id="addvareint-result">
 
@@ -742,10 +743,10 @@
                         placeholder="Purchase Price">
                 </div>
                 <!-- Stock and Quantity -->
-                <div class="form-group k_form_group">
+                <!-- <div class="form-group k_form_group">
                     <label for="addvstock">Stock</label>
                     <input type="number" step="0.01" id="addvstock" name="stock" placeholder="Stock">
-                </div>
+                </div> -->
 
                 <div class="form-group k_form_group">
                     <label for="addvlimit">Limit</label>

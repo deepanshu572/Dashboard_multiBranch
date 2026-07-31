@@ -211,7 +211,7 @@ $("#addmorevarient").click(() => {
     const vmrp = $("#addvmrp").val();
     const vsellingPrice = $("#addvselling-price").val();
     const vpurchasePrice = $("#addvpurchase-price").val();
-    const vstock = $("#addvstock").val();
+    // const vstock = $("#addvstock").val();
     const vlimit = $("#addvlimit").val();
 
     addvarientData.push(
@@ -221,7 +221,6 @@ $("#addmorevarient").click(() => {
             unit: vunit,
             mrp: vmrp,
             sellingPrice: vsellingPrice, purchasePrice: vpurchasePrice,
-            stock: vstock,
             limit: vlimit
         }
     )
@@ -235,7 +234,6 @@ $("#addmorevarient").click(() => {
           <p> MRP: ${vmrp}</p>
           <p> Selling Price: ${vsellingPrice}</p>
           <p> Purchase Price: ${vpurchasePrice}</p>
-          <p> Stock: ${vstock}</p>
          <p> Limit: ${vlimit}</p>
           <div class="vcancel flex" onclick="addVareintCancel(${addvid})">X</div>
         </div>
@@ -247,7 +245,6 @@ $("#addmorevarient").click(() => {
     $("#addvmrp").val("");
     $("#addvselling-price").val("");
     $("#addvpurchase-price").val("");
-    $("#addvstock").val("");
 
     addvid++;
     $("#addvquantity").focus();
@@ -394,7 +391,7 @@ $('#product-form').submit(function (e) {
     const mrp = $('#mrp').val();
     const sellingPrice = $('#selling-price').val();
     const purchasePrice = $('#purchase-price').val();
-    const stock = $('#stock').val();
+    // const stock = $('#stock').val();
     const quantity = $('#quantity').val();
     const unit = $('#unit').val();
     const review = $('#review').val();
@@ -427,7 +424,7 @@ $('#product-form').submit(function (e) {
     formData.append('mrp', mrp);
     formData.append('sellingPrice', sellingPrice);
     formData.append('purchasePrice', purchasePrice);
-    formData.append('stock', stock);
+    // formData.append('stock', stock);
     formData.append('quantity', quantity);
     formData.append('unit', unit);
     formData.append('review', review);
@@ -557,18 +554,18 @@ const handleCategoryList = () => {
     loadBrandList(categoryid, 'brand_name')
 }
 let middleCategoryListData = [];
-const getMiddleCategory = () =>{
-     return $.ajax({
+const getMiddleCategory = () => {
+    return $.ajax({
         url: apiurl,
         type: 'POST',
-        dataType:"JSON",
+        dataType: "JSON",
         data: { type: 'getAllMiddleCategory' },
         success: function (response) {
-            if(response.status == "success"){
-            let data = response.data;
-                middleCategoryListData=data;
+            if (response.status == "success") {
+                let data = response.data;
+                middleCategoryListData = data;
             }
-            else{
+            else {
                 console.log("something wents wrong in getMiddleCategory !");
             }
         }
@@ -606,7 +603,7 @@ const handleMiddleCategoryList = () => {
 
 
 let brandListData = [];
-const loadBrandList = (categoryId = '', brandName=undefined) => {
+const loadBrandList = (categoryId = '', brandName = undefined) => {
     return $.ajax({
         url: apiurl,
         type: 'POST',
@@ -615,17 +612,17 @@ const loadBrandList = (categoryId = '', brandName=undefined) => {
             if (response != null && response != 'error' && response != 'null') {
                 let data = JSON.parse(response);
                 brandListData = data;
-                    let filteredData = data.filter((item) => item.categoryId == categoryId);
+                let filteredData = data.filter((item) => item.categoryId == categoryId);
 
-                    let brandList = ' <option value="all" selected disabled hidden>Select Brand</option>';
-                    filteredData.forEach((item, index) => {
-                        brandList += `
+                let brandList = ' <option value="all" selected disabled hidden>Select Brand</option>';
+                filteredData.forEach((item, index) => {
+                    brandList += `
                     <option value="${item.id}">${item.name}</option>
                     `;
-                    });
-                    console.log("ZEENAT......", brandName);
-                    $(`#${brandName}`).html(brandList);
-                
+                });
+                console.log("ZEENAT......", brandName);
+                $(`#${brandName}`).html(brandList);
+
                 console.log("ZEENAT NOT......", brandName,);
                 console.log("ZEENAT NOT......", categoryId);
                 console.log("ZEENAT NOT......", brandListData);
@@ -649,10 +646,15 @@ let pageNumber = 1;
 let pageSize = 10;
 
 const loadProduct = (pageNumber = 1, pageSize = 10) => {
+    let branchId = localStorage.getItem("role_id");
+    if (branchId > 0) {
+        $(".toggleDisplay").css("display", "none");
+    }
+
     $.ajax({
         url: apiurl,
         type: 'POST',
-        data: { 'type': 'loadProduct' },
+        data: { type: "loadProduct" },
         success: function (response) {
             if (response != null && response != 'error') {
                 let data = JSON.parse(response);
@@ -670,6 +672,7 @@ const loadProduct = (pageNumber = 1, pageSize = 10) => {
 
                 filteredData = data;
 
+
                 renderProduct(pageNumber, pageSize)
 
             }
@@ -680,6 +683,8 @@ const loadProduct = (pageNumber = 1, pageSize = 10) => {
 
 
 const renderProduct = (page, pageSize) => {
+    let branchId = localStorage.getItem("role_id");
+
 
     console.log('Rendering page:', page, 'with page size:', pageSize);
 
@@ -752,35 +757,81 @@ const renderProduct = (page, pageSize) => {
     const totalPages = Math.ceil(totalItems / pageSize);
     const paginatedData = filteredData.slice((page - 1) * pageSize, page * pageSize);
 
-
+    let html;
 
     $("#totalData").html(filteredData.length);
-    let html = `
-    <thead>
-            <tr>
-                <th>SL</th>
-                <th>Image</th>
-                <th>Name</th>
-                <th>MRP</th>
-                <th>Selling <br> price</th>
-                <th>Purchase <br> price</th>
-                <th>Stock <br> Limit</th>
-                <th>Quantity</th>
-                <th>Created By</th>
-                <th>Status</th>
-                <th>Select <br> Bestseller</th>
-                <th>Select <br> Title</th>
-                <th>Select <br> New Finds</th>
-                <th>Other</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-    <tbody>
-    `;
+    if (branchId > 0) {
+        html = `
+            <thead>
+               <tr>
+                   <th>SL</th>
+                   <th>Image</th>
+                   <th>Name</th>
+                   <th>MRP</th>
+                   <th>Selling <br> price</th>
+                   <th>Purchase <br> price</th>
+                   <th>Stock <br> Limit</th>
+                   <th>Quantity</th>
+                   <th>Created By</th>
+                   <th>Other</th>
+               </tr>
+            </thead>
+        <tbody>
+       `;
+    } else {
+        html = `
+       <thead>
+               <tr>
+                   <th>SL</th>
+                   <th>Image</th>
+                   <th>Name</th>
+                   <th>MRP</th>
+                   <th>Selling <br> price</th>
+                   <th>Purchase <br> price</th>
+                   <th>Stock <br> Limit</th>
+                   <th>Quantity</th>
+                   <th>Created By</th>
+                   <th>Status</th>
+                   <th>Select <br> Bestseller</th>
+                   <th>Select <br> Title</th>
+                   <th>Select <br> New Finds</th>
+                   <th>Other</th>
+                   <th>Action</th>
+               </tr>
+           </thead>
+       <tbody>
+       `;
+    }
     paginatedData.forEach((item, index) => {
 
         let items = JSON.stringify(item).replace(/'/g, '`');
-        html += `
+        if (branchId > 0) {
+            html += `
+       <tr>
+            <td class="sl">${(page - 1) * pageSize + index + 1}</td>
+            <td><img src="${imgurl + item.image_path}" alt="${item.name}"></td>
+            <td>${item.name}</td>
+            <td>${item.mrp}</td>
+            <td>${item.selling_price}</td>
+            <td>${item.purchase_price}</td>
+            <td>S - ${item.stock} <br> L - ${item.p_limit}</td>
+            <td>${item.quantity} ${item.unit}</td>
+            <td style="color:#4F46E5; font-size:12px;"><b>@${item.added_by || 'admin'}</b></td>
+            
+           
+
+           
+
+                    <td>
+            <div class="flex gap-20 pbtn">
+                <button class="flex" onclick="seeVarient('${item.p_id}' ,'${item.image_path}')"><i class="bi bi-info"></i></button>
+                </div>
+            </td>
+            
+        </tr>
+        `;
+        } else {
+            html += `
        <tr>
             <td class="sl">${(page - 1) * pageSize + index + 1}</td>
             <td><img src="${imgurl + item.image_path}" alt="${item.name}"></td>
@@ -979,6 +1030,7 @@ const renderProduct = (page, pageSize) => {
             </td>
         </tr>
         `;
+        }
     });
     html += `</tbody>`;
     $("#result").html(html);
@@ -1190,11 +1242,13 @@ const seeAllInfo = async (p_id) => {
 const seeVarient = async (p_id, image_path) => {
 
     localStorage.setItem('forAddMoreVarient_p_id', p_id);
+    let branchId = localStorage.getItem("role_id");
+    $("#productId").val(p_id);
 
     await $.ajax({
         url: apiurl,
         type: 'POST',
-        data: { type: 'seeVarient', p_id: p_id },
+        data: { type: 'seeVarient', p_id: p_id,branchId },
         success: function (response) {
             if (response != 'error' && response != 'null') {
                 let data = JSON.parse(response);
@@ -1222,7 +1276,8 @@ const seeVarient = async (p_id, image_path) => {
                         unitList += `
                        <option ${isSelected} value="${unit}">${unit}</option>
                           `;
-                    })
+                    });
+
 
                     varient += `
                     <div class="edit-vdata" data-id="${item.vid}">
@@ -1237,6 +1292,14 @@ const seeVarient = async (p_id, image_path) => {
                         ${unitList}
                         </select>
                         </div>
+                        
+                        ${branchId !== 0 ? `<div>
+                            <p>Stock</p>
+                        <input type="number" value="${item.stock !== null ?  item.stock: 0}" id="v_stock${item.vid}" placeholder="stock" readonly>
+                        </div>`: " "
+                        }
+                        
+
                         <div>
                         <p>MRP</p>
                         <input type="number" value="${item.v_mrp}" id="v_mrp${item.vid}" placeholder="Mrp" readonly>
@@ -1250,10 +1313,6 @@ const seeVarient = async (p_id, image_path) => {
                         <input type="number" value="${item.v_purchase_price}" id="v_purchase_price${item.vid}" placeholder="Mrp" readonly>
                         </div>
                         <div>
-                        <p>Stock</p>
-                        <input type="number" value="${item.v_stock}" id="v_stock${item.vid}" placeholder="Mrp" readonly>
-                        </div>
-                        <div>
                         <p>Limit</p>
                         <input type="number" value="${item.v_p_limit}" id="v_p_limit${item.vid}" placeholder="Limit" readonly>
                         </div>
@@ -1261,11 +1320,16 @@ const seeVarient = async (p_id, image_path) => {
                         <div class="veditdelete"> 
                             <button class="flex edit" onclick="editVarient(${item.vid})"><i class="bi bi-pencil"></i></button>
                             <button class="flex update" onclick="updateVarient(${item.vid})"><i class="bi bi-save"></i></button>
-                            <button class="flex delete" onclick="deleteVarient(${item.vid})"><i class="bi bi-trash"></i></button>
+                            ${branchId == 0 ? `
+                            <button class="flex delete toggleDisplay" onclick="deleteVarient(${item.vid})">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        ` : ""}
                         </div>
                     </div>
                     `;
                 });
+
 
                 $(".v-model-result").html('');
                 $(".v-model-result").html(varient);
@@ -1283,13 +1347,22 @@ const seeVarient = async (p_id, image_path) => {
 }
 
 const editVarient = (vid) => {
+    let branchId = localStorage.getItem("role_id");
+    if (branchId == 0) {
 
-    $(`.edit-vdata[data-id="${vid}"] input`).removeAttr('readonly');
-    $(`.edit-vdata[data-id="${vid}"] input`).css('border', '1px solid #000');
-    $(`.edit-vdata[data-id="${vid}"] select`).removeAttr('disabled');
+        $(`.edit-vdata[data-id="${vid}"] input`).css('border', '1px solid #000');
+        $(`.edit-vdata[data-id="${vid}"] select`).removeAttr('disabled');
+        $(`.edit-vdata[data-id="${vid}"] input`).removeAttr('readonly');
+    } else {
+        $(`#v_stock${vid}`).removeAttr('readonly');
+        $(`#v_stock${vid}`).css('border', '1px solid #000');
+
+
+    }
+    $(`.edit-vdata[data-id="${vid}"] .edit`).hide();
     $(`.edit-vdata[data-id="${vid}"] select`).css('border', '1px solid #000');
     $(`.edit-vdata[data-id="${vid}"] .update`).show();
-    $(`.edit-vdata[data-id="${vid}"] .edit`).hide();
+
 
 }
 
@@ -1299,15 +1372,41 @@ const updateVarient = (vid) => {
     const vmrp = $(`#v_mrp${vid}`).val();
     const vsellingPrice = $(`#v_seliing_price${vid}`).val();
     const vpurchasePrice = $(`#v_purchase_price${vid}`).val();
-    const vstock = $(`#v_stock${vid}`).val();
+    const vstock = $(`#v_stock${vid}`).val() || "";
     const vlimit = $(`#v_p_limit${vid}`).val();
+    const branchId = localStorage.getItem("role_id");
+    const productId = $("#productId").val();
+
+    const varientUpdate =
+        branchId > 0 ? {
+            type: "updateBranchVarient",
+            branchId,
+            vid: vid,
+            vquantity: vquantity,
+            productId,
+            vunit: vunit,
+            vmrp: vmrp,
+            vstock:vstock,
+            vsellingPrice: vsellingPrice,
+            vpurchasePrice: vpurchasePrice,
+            vlimit: vlimit
+        } : {
+            type: "updateVarient",
+            vid: vid,
+            vquantity: vquantity,
+            vunit: vunit,
+            vmrp: vmrp,
+            vsellingPrice: vsellingPrice,
+            vpurchasePrice: vpurchasePrice,
+            vlimit: vlimit
+        }
 
 
 
     $.ajax({
         url: apiurl,
         type: 'POST',
-        data: { type: 'updateVarient', vid: vid, vquantity: vquantity, vunit: vunit, vmrp: vmrp, vsellingPrice: vsellingPrice, vpurchasePrice: vpurchasePrice, vstock: vstock, vlimit: vlimit },
+        data: varientUpdate,
         success: function (response) {
             if (response == 'success') {
                 successAlert('successfully updated');
@@ -1322,7 +1421,6 @@ const updateVarient = (vid) => {
                 $(`#v_mrp${vid}`).val(vmrp);
                 $(`#v_seliing_price${vid}`).val(vsellingPrice);
                 $(`#v_purchase_price${vid}`).val(vpurchasePrice);
-                $(`#v_stock${vid}`).val(vstock);
                 $(`#v_p_limit${vid}`).val(vlimit);
             } else {
                 errorAlert('Something went wrong');
@@ -1591,16 +1689,16 @@ const editProduct = async (item, pageNumber, pageSize) => {
     let brandList = ' <option value="" selected disabled hidden>Select Brand</option>';
     let filteredData = brandListData.filter((brditem) => brditem.categoryId == item.under_category);
     // console.log(filteredData,brandListData)
-    if(filteredData.length>0){
-      filteredData.forEach((brand, index) => {
-        const isSelected = (brand.id === item.brand_name) ? 'selected' : '';
-        brandList += `
+    if (filteredData.length > 0) {
+        filteredData.forEach((brand, index) => {
+            const isSelected = (brand.id === item.brand_name) ? 'selected' : '';
+            brandList += `
         <option ${isSelected} value="${brand.id}">${brand.name}</option>
         `;
-      });
+        });
     }
-    else{
-        brandList+=` <option value="" selected disabled hidden>no data found</option>`;
+    else {
+        brandList += ` <option value="" selected disabled hidden>no data found</option>`;
     }
 
     const units = [
@@ -1797,8 +1895,8 @@ const handleMainCategoryList2 = () => {
     })
 }
 
-const handleCategoryList2 = () =>{
-     let categoryid = $("#edit-category").val();
+const handleCategoryList2 = () => {
+    let categoryid = $("#edit-category").val();
 
     $.ajax({
         url: apiurl,

@@ -1,9 +1,10 @@
 const loadOrder = async (page = 1, pageSize = 10) => {
 
+    let branchId = localStorage.getItem("role_id");
     $.ajax({
         url: apiurl,
         type: 'POST',
-        data: { type: 'loadPosOrder' },
+        data: { type: 'loadPosOrder',branchId },
         success: function (response) {
             if (response != 'error' && response != null) {
                 let data = JSON.parse(response);

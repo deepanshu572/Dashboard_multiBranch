@@ -295,6 +295,7 @@ if($type == 'adminLogin'){
         
         $admin_status = isset($adminData['status']) ? $adminData['status'] : 1;
         $admin_role = isset($adminData['role']) ? $adminData['role'] : 'admin';
+        $role_id = isset($adminData['role_id']) ? $adminData['role_id'] : 0;
         $admin_permissions = isset($adminData['permissions']) ? $adminData['permissions'] : 'all';
 
         if($admin_status == 0 || $admin_status == '0') {
@@ -303,6 +304,7 @@ if($type == 'adminLogin'){
             // Set Server-Side Session
             $_SESSION['admin_login_status'] = true;
             $_SESSION['admin_role'] = $admin_role;
+            $_SESSION['role_id'] = $role_id;
             $_SESSION['admin_permissions'] = $admin_permissions;
             $_SESSION['admin_username'] = $adminData['username'];
 
@@ -314,6 +316,7 @@ if($type == 'adminLogin'){
             echo json_encode([
                 "status" => "success",
                 "role" => $admin_role,
+                "role_id" => $role_id,
                 "permissions" => $admin_permissions,
                 "username" => $adminData['username'],
                 "session_id" => session_id()
@@ -769,7 +772,7 @@ else if ($type == 'logout') {
     $mrp           = $_POST['mrp'] ?? null;
     $sellingPrice  = $_POST['sellingPrice'] ?? null;
     $purchasePrice = $_POST['purchasePrice'] ?? null;
-    $stock         = $_POST['stock'] ?? null;
+    // $stock         = $_POST['stock'] ?? null;
     $quantity      = $_POST['quantity'] ?? null;
     $unit          = mysqli_real_escape_string($con, $_POST['unit'] ?? '');
     $review        = $_POST['review'] ?? null;
@@ -805,11 +808,11 @@ else if ($type == 'logout') {
     // ✅ Insert product
     $sql = "INSERT INTO `product`
             (`name`, `image_path`, `under_category`,`under_middle_category`, `under_subcategory`, `brand_name`, 
-             `mrp`, `selling_price`, `purchase_price`, `stock`, `quantity`, `unit`, 
+             `mrp`, `selling_price`, `purchase_price`, `quantity`, `unit`, 
              `review_val`, `review_nop`, `information`, `highlight`, `isvarient`, `date`, `status`, `sku_number`,`p_limit`,`keyword`,`added_by`) 
             VALUES (
                 '$productName', '$imgurl', '$category','$middleCategory', '$subCategory', '$brandName',
-                '$mrp', '$sellingPrice', '$purchasePrice', '$stock', '$quantity', '$unit',
+                '$mrp', '$sellingPrice', '$purchasePrice', '$quantity', '$unit',
                 '$review', '$reviewNop', '$informationData', '$highlightData', 'true',
                 '$date', 'true', '$skuNumber','$product_limit','$product_keyword','$staff_username'
             )";
@@ -824,8 +827,8 @@ else if ($type == 'logout') {
         mysqli_query($con, $imgquery);
 
                 $addVariant = "INSERT INTO `varient`
-                               (`v_mrp`, `product_id`, `v_seliing_price`, `v_purchase_price`, `v_stock`, `v_quantity`, `v_unit`,`v_p_limit`)
-                               VALUES ('$mrp', '$lastId', '$sellingPrice', '$purchasePrice', '$stock', '$quantity', '$unit','')"; 
+                               (`v_mrp`, `product_id`, `v_seliing_price`, `v_purchase_price`, `v_quantity`, `v_unit`,`v_p_limit`)
+                               VALUES ('$mrp', '$lastId', '$sellingPrice', '$purchasePrice', '$quantity', '$unit','')"; 
                 $run1 = mysqli_query($con, $addVariant);
 
                 if($run1){
@@ -935,6 +938,7 @@ else if ($type == 'logout') {
                 echo "error";
             }
         }
+
         
         else if($type=='loadPosProduct'){
             $query="SELECT * FROM `product` ORDER BY `p_id` DESC";
@@ -945,9 +949,50 @@ else if ($type == 'logout') {
                 while($row=mysqli_fetch_assoc($run)){
                     $rows[]=$row;
                 }; 	
-                echo json_encode($rows);
+                   echo json_encode([
+                    "status"=>"success",
+                    "message"=>"load pos products !",
+                    "data"=>$rows
+                ]); 
+                }else{
+                 echo json_encode([
+                    "status"=>"failed",
+                    "message"=>"something wents wrong ! " . mysqli_error($con),
+                    "data"=>[]
+                ]);            
+                }
+        }
+        else if($type =="loadPosBranchproduct"){
+            $branchId=$_POST['branchId'];
+           $query = "SELECT
+            p.*,
+            SUM(bs.stock) AS total_stock
+        FROM branch_stock bs
+        INNER JOIN product p
+            ON bs.product_id = p.p_id
+        WHERE
+            bs.branch_id = '$branchId'
+            AND bs.stock > 0
+        GROUP BY bs.product_id";
+            
+            // echo $query; exit();
+            $res=mysqli_query($con,$query);
+            if(mysqli_num_rows($res)>0){
+                $data=[];
+                while ($row=mysqli_fetch_assoc($res)) {
+                     $data[]=$row;
+                }
+                echo json_encode([
+                    "status"=>"success",
+                    "message"=>"load branch products !",
+                    "data"=>$data
+                ]);
             }else{
-                echo "error";
+                echo json_encode([
+                    "status"=>"failed",
+                    "message"=>"something wents wrong ! ",
+                    "data"=>[]
+                ]);
             }
         }
 
@@ -985,8 +1030,19 @@ else if ($type == 'logout') {
 
          else if($type=='seeVarient'){
             $p_id=$_POST['p_id'];
-            $query="SELECT * FROM `varient` WHERE product_id ='$p_id'";
-
+            $branchId=$_POST['branchId'];
+            // $query="SELECT * FROM `varient` WHERE product_id ='$p_id'";
+            $query = "SELECT
+                v.*,
+                bs.stock
+            FROM varient v
+            LEFT JOIN branch_stock bs
+                ON bs.varient_id = v.vid
+                AND bs.product_id = v.product_id
+                AND bs.branch_id = '$branchId'
+            WHERE v.product_id = '$p_id'
+            ";
+            // echo $query; exit();
             $run=mysqli_query($con,$query);
         
             if($run){
@@ -1421,9 +1477,9 @@ else if ($type == 'logout') {
 
             
             else if($type=='loadAllPosUser'){
-                // $b_id=$_POST['b_id'];
+                $branchId=$_POST['branchId'];
                 
-                $query ="SELECT * FROM `pos_user` ORDER BY `id` DESC";
+                $query ="SELECT * FROM `pos_user` WHERE `branch_id`='$branchId' ORDER BY `id` DESC";
                 $run=mysqli_query($con,$query);
                 if(mysqli_num_rows($run)>0){
                     while($row=mysqli_fetch_assoc($run)){
@@ -1435,11 +1491,21 @@ else if ($type == 'logout') {
                 }
             }
             
-            else if($type=='loadOrder'){
-                // $b_id=$_POST['b_id'];
-                
+            else if($type=='loadOrder'){  
                 $query ="SELECT * FROM `order` ORDER BY `id` DESC"; 
-                // echo $query; exit();
+                $run=mysqli_query($con,$query);
+                if(mysqli_num_rows($run)>0){
+                    while($row=mysqli_fetch_assoc($run)){
+                        $rows[]=$row;
+                    }; 	
+                    echo json_encode($rows);
+                }else{
+                    echo "error";
+                }
+            }
+              else if($type=='loadBranchOrder'){
+                $branchId=$_POST['branchId'];
+                $query="SELECT * FROM `order` WHERE `branch_id`='$branchId' ORDER BY `id` DESC";
                 $run=mysqli_query($con,$query);
                 if(mysqli_num_rows($run)>0){
                     while($row=mysqli_fetch_assoc($run)){
@@ -2030,51 +2096,89 @@ else if ($type == 'logout') {
  
 
             
-            else if($type == 'updateVarient'){   
+else if($type == 'updateVarient'){   
 
-    $vid = mysqli_real_escape_string($con, $_POST['vid']);  
-    $vquantity = mysqli_real_escape_string($con, $_POST['vquantity']); 
-    $vunit = mysqli_real_escape_string($con, $_POST['vunit']); 
-    $vmrp = mysqli_real_escape_string($con, $_POST['vmrp']); 
-    $vsellingPrice = mysqli_real_escape_string($con, $_POST['vsellingPrice']); 
-    $vpurchasePrice = mysqli_real_escape_string($con, $_POST['vpurchasePrice']); 
-    $vstock = mysqli_real_escape_string($con, $_POST['vstock']); 
-    $vlimit = mysqli_real_escape_string($con, $_POST['vlimit']); 
+            $vid = mysqli_real_escape_string($con, $_POST['vid']);  
+            $vquantity = mysqli_real_escape_string($con, $_POST['vquantity']); 
+            $vunit = mysqli_real_escape_string($con, $_POST['vunit']); 
+            $vmrp = mysqli_real_escape_string($con, $_POST['vmrp']); 
+            $vsellingPrice = mysqli_real_escape_string($con, $_POST['vsellingPrice']); 
+            $vpurchasePrice = mysqli_real_escape_string($con, $_POST['vpurchasePrice']); 
+            // $vstock = mysqli_real_escape_string($con, $_POST['vstock']); 
+            $vlimit = mysqli_real_escape_string($con, $_POST['vlimit']); 
 
-    // 🔹 Step 1: Update varient table
-    $query = "
-        UPDATE `varient` 
-        SET 
-            `v_mrp`='$vmrp',
-            `v_seliing_price`='$vsellingPrice',
-            `v_purchase_price`='$vpurchasePrice',
-            `v_stock`='$vstock',
-            `v_quantity`='$vquantity',
-            `v_unit`='$vunit',
-             `v_p_limit`='$vlimit'
-        WHERE `vid` = '$vid'
-    "; 
+            // 🔹 Step 1: Update varient table
+            $query = "
+                UPDATE `varient` 
+                SET 
+                    `v_mrp`='$vmrp',
+                    `v_seliing_price`='$vsellingPrice',
+                    `v_purchase_price`='$vpurchasePrice',
+                    `v_quantity`='$vquantity',
+                    `v_unit`='$vunit',
+                    `v_p_limit`='$vlimit'
+                WHERE `vid` = '$vid'
+            "; 
 
-    $run = mysqli_query($con, $query); 
+            $run = mysqli_query($con, $query); 
 
-    // 🔹 Step 2: If variant update success, then update cart
-    if ($run) {
-        $updateCart = "
-            UPDATE `cart`
-            SET 
-                `mrp` = '$vmrp',
-                `selling_price` = '$vsellingPrice',
-                `purchase_price` = '$vpurchasePrice'
-            WHERE 
-                `vid` = '$vid'
-                AND `status` = 'true'
-        ";
+            // 🔹 Step 2: If variant update success, then update cart
+            if ($run) {
+                $updateCart = "
+                    UPDATE `cart`
+                    SET 
+                        `mrp` = '$vmrp',
+                        `selling_price` = '$vsellingPrice',
+                        `purchase_price` = '$vpurchasePrice'
+                    WHERE 
+                        `vid` = '$vid'
+                        AND `status` = 'true'
+                ";
         mysqli_query($con, $updateCart);
 
         echo "success"; 
     } else {
         echo "error";
     }
+}
+else if($type == 'updateBranchVarient'){
+
+    $pid = mysqli_real_escape_string($con, $_POST['productId']);
+    $vid = mysqli_real_escape_string($con, $_POST['vid']);
+    $vstock = mysqli_real_escape_string($con, $_POST['vstock']);
+    $branchId = mysqli_real_escape_string($con, $_POST['branchId']);
+
+    $checkQuery = "SELECT id
+                   FROM branch_stock
+                   WHERE branch_id = '$branchId'
+                   AND product_id = '$pid'
+                   AND varient_id = '$vid'";
+
+    $checkRun = mysqli_query($con, $checkQuery);
+
+    if (mysqli_num_rows($checkRun) > 0) {
+
+        $query = "UPDATE branch_stock
+                  SET stock = '$vstock'
+                  WHERE branch_id = '$branchId'
+                  AND product_id = '$pid'
+                  AND varient_id = '$vid'";
+
+
+    } else {
+
+        $query = "INSERT INTO branch_stock
+                  (branch_id, product_id, varient_id, stock)
+                  VALUES
+                  ('$branchId', '$pid', '$vid', '$vstock')";
+    }
+
+    if(mysqli_query($con, $query)){
+        echo "success";
+    }else{
+        echo mysqli_error($con);
+    }
+
 }
 
             
@@ -2170,7 +2274,6 @@ else if ($type == 'logout') {
                         `product_id`, 
                         `v_seliing_price`, 
                         `v_purchase_price`, 
-                        `v_stock`, 
                         `v_quantity`, 
                         `v_unit`
                     ) VALUES (
@@ -2178,11 +2281,11 @@ else if ($type == 'logout') {
                         '$lastId', 
                         '$sellingPrice', 
                         '$purchasePrice', 
-                        '$stock', 
                         '$quantity', 
                         '$unit'
                     )
                 ";
+                // echo $addVari ant; exit();
 
                 $run1 = mysqli_query($con, $addVariant);  
                 $variantId = mysqli_insert_id($con);
@@ -2932,9 +3035,12 @@ else if ($type == 'logout') {
                         $full_name=$_POST['full_name'];
                         $email=$_POST['email'];
                         $phone=$_POST['phone'];
-                         $date = date("Y-m-d H:i:s");
+                        $date = date("Y-m-d H:i:s");
+                        $branch_id=$_POST['role_id'];
+
                          
-                        $query ="INSERT INTO `pos_user`(`username`, `mobile_number`, `email`, `dor`) VALUES ('$full_name','$phone','$email','$date')";
+                        $query ="INSERT INTO `pos_user`(`branch_id`,`username`, `mobile_number`, `email`, `dor`) VALUES ('$branch_id','$full_name','$phone','$email','$date')";
+                        // echo $query; exit();
                         $run=mysqli_query($con,$query);
                         if($run){
                             echo "success";
@@ -3383,10 +3489,11 @@ else if($type == 'loadHeroBanner'){
         
             // pos order section 
             
-            else if ($type == 'addToCart') {
+else if ($type == 'addToCart') {
 
     // 🟢 Step 1: Get all request data safely
     $customerId = mysqli_real_escape_string($con, $_POST['customerId']);
+    $branchId = mysqli_real_escape_string($con, $_POST['branchId']);
     $cartData = json_decode($_POST['cartData'], true);
     $cartSubTotal = mysqli_real_escape_string($con, $_POST['cartSubTotal']);
     $totalCartSaving = mysqli_real_escape_string($con, $_POST['totalCartSaving']);
@@ -3417,6 +3524,7 @@ else if($type == 'loadHeroBanner'){
 
     $insertOrder = "
         INSERT INTO `pos_order`(
+            `branch_id`,
             `customer_id`, 
             `order_type`, 
             `cart_data`, 
@@ -3431,6 +3539,7 @@ else if($type == 'loadHeroBanner'){
             `date`,
             `added_by`
         ) VALUES (
+            '$branchId',
             '$customerId',
             '$orderType',
             '$cartDataJson',
@@ -3485,9 +3594,10 @@ else if($type == 'loadHeroBanner'){
 
         
         else if($type=='loadPosOrder'){
-                // $b_id=$_POST['b_id'];
+                $branchId=$_POST['branchId'];
                 
-                $query ="SELECT * FROM `pos_order` ORDER BY `id` DESC"; 
+                $query ="SELECT * FROM `pos_order` WHERE `branch_id`='$branchId' ORDER BY `id` DESC"; 
+                // echo $query; exit();
                 $run=mysqli_query($con,$query);
                 if(mysqli_num_rows($run)>0){
                     while($row=mysqli_fetch_assoc($run)){

@@ -2,13 +2,30 @@
 let products = []; let subcategories = [];
 
 const loadProduct = async () => {
+    let branchId = localStorage.getItem("role_id")|| 0;
+    
+const productData =
+    branchId > 0
+        ? {
+            type: "loadPosBranchproduct",
+            branchId
+        }
+        : {
+            type: "loadPosProduct"
+        };
+
     await $.ajax({
         url: apiurl,
         type: 'POST',
-        data: { 'type': 'loadPosProduct' },
+        data: productData,
+        dataType:"JSON",
         success: function (response) {
-            if (response != null && response != 'error') {
-                products = JSON.parse(response);
+            
+            if (response.status == "success") {
+                products = response.data;
+
+                console.log(products,response.data);
+
                 //  renderProducts();
                 filterProducts();
             }
@@ -44,6 +61,7 @@ let currentPage = 1;
 let filteredProducts = [...products];
 
 function renderProducts() {
+    console.log(products,filteredProducts);
     const start = (currentPage - 1) * itemsPerPage;
     const end = start + itemsPerPage;
     const visibleProducts = filteredProducts.slice(start, end);
@@ -206,10 +224,11 @@ function renderSubcategories(categoryId) {
 // load all user 
 
 const loadAllUserList = () => {
+    let branchId = localStorage.getItem("role_id");
     $.ajax({
         url: apiurl,
         type: 'POST',
-        data: { type: 'loadAllPosUser' },
+        data: { type: 'loadAllPosUser',branchId },
         success: function (response) {
             if (response != 'error' && response != null) {
 
@@ -623,6 +642,7 @@ const addProductInCart = async (customerId) => {
     let totalCatAmount = $(".totalCatAmount").html().replace('₹', '').trim();
     let orderType = $(".o1.active").closest(".ots").find("p").text().trim();
     let paymentMethode = $(".payment-btn.active").html().trim();
+    let branchId = localStorage.getItem("role_id");
 
     console.log(customerId, cartData, cartSubTotal, totalCartSaving, discountPrice, percentageDiscountType, delCharge, totalCatAmount ,orderType ,paymentMethode);
     // exit;
@@ -632,7 +652,7 @@ const addProductInCart = async (customerId) => {
     $.ajax({
         url: apiurl,
         type: 'POST',
-        data: { type: 'addToCart', customerId: customerId, cartData: JSON.stringify(cartData) , cartSubTotal: cartSubTotal, totalCartSaving: totalCartSaving, discountPrice: discountPrice, percentageDiscountType: percentageDiscountType, delCharge: delCharge, totalCatAmount: totalCatAmount ,orderType ,paymentMethode},
+        data: { type: 'addToCart',branchId, customerId: customerId, cartData: JSON.stringify(cartData) , cartSubTotal: cartSubTotal, totalCartSaving: totalCartSaving, discountPrice: discountPrice, percentageDiscountType: percentageDiscountType, delCharge: delCharge, totalCatAmount: totalCatAmount ,orderType ,paymentMethode},
         success: function (response) {
             if (response != 'error' && response != null) {
                 let data = JSON.parse(response);
@@ -976,12 +996,13 @@ document.querySelector('.customer-form').addEventListener('submit', function (e)
         return;
     }
 
+    let branch_id = localStorage.getItem("role_id");
 
 
     $.ajax({
         url:apiurl,
         type:'POST',
-        data:{type:'addNewCustomer',full_name:full_name  ,email:email ,phone:phone},
+        data:{type:'addNewCustomer',full_name:full_name  ,email:email ,phone:phone,role_id:branch_id},
         success:function(response){
             if(response=='success'){
                 successAlert('successfully added');
