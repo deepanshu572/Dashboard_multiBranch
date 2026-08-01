@@ -1031,7 +1031,9 @@ else if ($type == 'logout') {
          else if($type=='seeVarient'){
             $p_id=$_POST['p_id'];
             $branchId=$_POST['branchId'];
-            // $query="SELECT * FROM `varient` WHERE product_id ='$p_id'";
+            if($branchId == 0){
+              $query="SELECT * FROM `varient` WHERE product_id ='$p_id'";
+            }else{
             $query = "SELECT
                 v.*,
                 bs.stock
@@ -1042,6 +1044,8 @@ else if ($type == 'logout') {
                 AND bs.branch_id = '$branchId'
             WHERE v.product_id = '$p_id'
             ";
+            }
+            
             // echo $query; exit();
             $run=mysqli_query($con,$query);
         
@@ -1503,9 +1507,11 @@ else if ($type == 'logout') {
                     echo "error";
                 }
             }
+            
               else if($type=='loadBranchOrder'){
                 $branchId=$_POST['branchId'];
-                $query="SELECT * FROM `order` WHERE `branch_id`='$branchId' ORDER BY `id` DESC";
+                $query="SELECT * FROM `order` WHERE `branch_id` = '$branchId' ORDER BY `id` DESC";
+                // echo $query; exit();
                 $run=mysqli_query($con,$query);
                 if(mysqli_num_rows($run)>0){
                     while($row=mysqli_fetch_assoc($run)){
@@ -2029,7 +2035,6 @@ else if ($type == 'logout') {
                     `mrp`='$mrp',
                     `selling_price`='$sellingPrice',
                     `purchase_price`='$purchasePrice',
-                    `stock`='$stock',
                     `quantity`='$quantity',
                     `unit`='$unit',
                     `review_val`='$review',
@@ -2059,7 +2064,6 @@ else if ($type == 'logout') {
                     `mrp`='$mrp',
                     `selling_price`='$sellingPrice',
                     `purchase_price`='$purchasePrice',
-                    `stock`='$stock',
                     `quantity`='$quantity',
                     `unit`='$unit',
                     `review_val`='$review',
@@ -2368,6 +2372,64 @@ else if($type == 'updateBranchVarient'){
                 }
             } else {
                 $data['pos_orders'] = [];
+            }
+        
+            echo json_encode($data);
+        }
+              
+          else if($type == 'loadAllBranchData'){   
+
+          $branch_id=$_POST['branchId'];
+              
+            //   echo 'hello' ; die(); 
+            $data = [];
+        
+            // Fetch from product table
+            $query = "SELECT * FROM `product`";  
+            $run = mysqli_query($con, $query);
+            if($run){
+                while($row = mysqli_fetch_assoc($run)){
+                    $data['products'][] = $row;
+                }
+            }
+        
+            // Fetch from order table
+            $query = "SELECT * FROM `order` WHERE `branch_id` = '$branch_id'";  
+            $run = mysqli_query($con, $query); 
+            if($run){
+                while($row = mysqli_fetch_assoc($run)){
+                    $data['orders'][] = $row;
+                }
+            }
+        
+            // Fetch from user table
+            $query = "SELECT
+                    p.*
+                FROM branch_stock bs
+                INNER JOIN product p
+                    ON bs.product_id = p.p_id
+                WHERE
+                    bs.branch_id = '$branch_id'
+                    AND bs.stock > 0
+                GROUP BY bs.product_id";
+                // echo $query; exit();
+
+                    $run = mysqli_query($con, $query);
+            if($run){
+                while($row = mysqli_fetch_assoc($run)){
+                    $data['pos_orders'][] = $row;
+                }
+            }
+
+            // Fetch from pos_order table
+            $query = "SELECT * FROM `pos_user` WHERE `branch_id` = '$branch_id'";  
+            $run = mysqli_query($con, $query);
+            if($run){
+                while($row = mysqli_fetch_assoc($run)){
+                    $data['users'][] = $row;
+                }
+            } else {
+                $data['users'] = [];
             }
         
             echo json_encode($data);
@@ -2808,8 +2870,18 @@ else if($type == 'updateBranchVarient'){
              if ($type== 'getProductVarient') {
             
               $p_id=$_POST['p_id'];
-            $query = "SELECT * FROM varient WHERE product_id='$p_id'";  
-        
+            $branch_id = mysqli_real_escape_string($con, $_POST['branch_id']);
+
+            $query = "SELECT 
+                v.*,
+                COALESCE(bs.stock, 0) AS stock
+            FROM varient v
+            LEFT JOIN branch_stock bs 
+                ON bs.product_id = v.product_id
+                AND bs.varient_id = v.vid
+                AND bs.branch_id = '$branch_id'
+            WHERE v.product_id = '$p_id'
+            ";        
             // Execute query
             $result = mysqli_query($con, $query);
         
@@ -3210,7 +3282,9 @@ else if($type == 'updateBranchVarient'){
                  
                    //  load sales report
               else if($type=='loadSalesReport'){
-                    $query="SELECT 
+                $branchId = $_POST['branchId'] ?? 0;
+                if($branchId == 0) {
+                     $query="SELECT 
                         cart.*, 
                         `order`.dor, 
                         `order`.del_charge, 
@@ -3225,6 +3299,24 @@ else if($type == 'updateBranchVarient'){
                     WHERE 
                         cart.status = 'false'
                     ";
+                }else{
+                    $query="SELECT 
+                        cart.*, 
+                        `order`.dor, 
+                        `order`.del_charge, 
+                        `order`.handling_charge, 
+                        `order`.coupon_amount,
+                        `order`.payment_method, 
+                        `order`.status AS order_status
+                    FROM 
+                        cart
+                    JOIN 
+                        `order` ON cart.idfr = `order`.idfr
+                    WHERE 
+                        cart.status = 'false'
+                        AND `cart`.branch_id = '$branchId'
+                    ";
+                }
                     // echo $query; exit();
                 
                     $run=mysqli_query($con,$query);
@@ -3265,7 +3357,12 @@ else if($type == 'updateBranchVarient'){
                  
                   else if($type =='loadTitle'){
         // $categoryid=$_POST['categoryid'];
-                $query="SELECT * FROM `header_title`";  
+                $query="SELECT 
+                    ht.*,
+                    c.name AS category_name
+                FROM header_title ht
+                INNER JOIN category c
+                    ON ht.category_Id = c.id";  
             
                 $run=mysqli_query($con,$query);
             
@@ -3301,10 +3398,10 @@ else if($type == 'updateBranchVarient'){
                 $headline=$_POST['headline'];
                 $title=$_POST['title'];
                 $header_title=$_POST['header_title'];
-                
+                $category=$_POST['category'];
                 $query="SELECT * FROM `header_title`";  
             
-                 $updateQuery = "UPDATE `header_title` SET `$title`='$header_title' WHERE `title_type`='$headline'";
+                 $updateQuery = "UPDATE `header_title` SET `$title`='$header_title' WHERE `title_type`='$headline' AND `category_Id`='$category'";
                         $updateRun = mysqli_query($con, $updateQuery);
                     
                         if ($updateRun) {
@@ -3566,23 +3663,22 @@ else if ($type == 'addToCart') {
             $vid = mysqli_real_escape_string($con, $item['v_id']);
             $nop = mysqli_real_escape_string($con, $item['nop']);
 
-            if ($vid == 0 || $vid == '0' || $vid == '') {
-                // 🔹 Minus from product table
-                $updateProductStock = "
-                    UPDATE `product` 
-                    SET `stock` = GREATEST(`stock` - $nop, 0)
-                    WHERE `p_id` = '$p_id'
-                ";
-                mysqli_query($con, $updateProductStock);
-            } else {
+            // if ($vid == 0 || $vid == '0' || $vid == '') {
+            //     // 🔹 Minus from product table
+            //     $updateProductStock = "
+            //         UPDATE `product` 
+            //         SET `stock` = GREATEST(`stock` - $nop, 0)
+            //         WHERE `p_id` = '$p_id'
+            //     ";
+            //     mysqli_query($con, $updateProductStock);
+            // } else {
                 // 🔹 Minus from variant table
-                $updateVariantStock = "
-                    UPDATE `varient` 
-                    SET `v_stock` = GREATEST(`v_stock` - $nop, 0)
-                    WHERE `vid` = '$vid'
+                $updateVariantStock = "UPDATE `branch_stock` 
+                    SET `stock` = GREATEST(`stock` - $nop, 0)
+                    WHERE `varient_id` = '$vid' AND `product_id` = '$p_id' AND `branch_id` = '$branchId'
                 ";
                 mysqli_query($con, $updateVariantStock);
-            }
+            // }
         }
 
         echo json_encode(["status" => "success", "message" => "Order placed and stock updated"]);
@@ -4114,11 +4210,21 @@ else if ($type == "saveMainBanner") {
 
 
     else if ($type == 'getRecentOrders') {
+        $branchId=$_POST['branchId'] ?? 0;
+        if($branchId == 0){
+            $query = "SELECT id, dor, total, status 
+                      FROM `order`
+                      ORDER BY id DESC
+                      LIMIT 3";
+        } else {
+            $query = "SELECT id, dor, total, status 
+                      FROM `order`
+                      WHERE branch_id='$branchId'
+                      ORDER BY id DESC
+                      LIMIT 3";
+        }
 
-    $query = "SELECT id, dor, total, status 
-              FROM `order`
-              ORDER BY id DESC
-              LIMIT 3";
+  
 
     $run = mysqli_query($con, $query);
 
@@ -4130,6 +4236,7 @@ else if ($type == "saveMainBanner") {
 
     echo json_encode($data);
 }
+
 
     // ==========================================
     //        STAFF MANAGEMENT APIs
@@ -4423,7 +4530,7 @@ else if($type=='updateStatus'){
 
 else if($type == "updateBranch"){
     $id = $_POST['id'];
-
+    $password = $_POST['password'];
     $name = $_POST['name'];
     $description = $_POST['description'];
     $phone_no = $_POST['phone_no'];
@@ -4440,6 +4547,7 @@ else if($type == "updateBranch"){
         `phone_no` = '$phone_no',
         `email` = '$email',
         `address` = '$address',
+        `password` = '$password',
         `city` = '$city',
         `state` = '$state',
         `pincode` = '$pincode'

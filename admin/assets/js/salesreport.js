@@ -6,10 +6,11 @@ let salesTable = null;
    LOAD SALES REPORT
 ================================ */
 function loadSalesReport() {
+    let branchId = localStorage.getItem('role_id') || 0;
     $.ajax({
         url: apiurl,
         type: 'POST',
-        data: { type: 'loadSalesReport' },
+        data: { type: 'loadSalesReport', branchId},
         success: function (response) {
             fullSalesData = JSON.parse(response);
             preprocessSalesData();

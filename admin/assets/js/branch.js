@@ -198,6 +198,7 @@ let editBranchMap = null;
         }
 
 function editBranch(item) {
+    $("#edit-branch-password").val(item.password);
 
     $("#edit-branch-id").val(item.id);
     $("#edit-branch-name").val(item.name);
@@ -272,6 +273,7 @@ function editBranch(item) {
                     phone_no: $("#edit-branch-phone").val(),
                     email: $("#edit-branch-email").val(),
                     address: $("#edit-branch-address").val(),
+                    password: $("#edit-branch-password").val(),
                     city: $("#edit-branch-city").val(),
                     state: $("#edit-branch-state").val(),
                     pincode: $("#edit-branch-pincode").val(),

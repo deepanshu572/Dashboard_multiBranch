@@ -284,7 +284,7 @@ function addToCart(item) {
 
     let p_id = item.p_id;
     const product = products.filter(p => p.p_id == p_id)[0]; // Get the product details
-    console.log(item);
+    console.log(item,products);
 
     // Retrieve cartData from localStorage
     let nop = $(`.nop${p_id}`).html();
@@ -314,6 +314,7 @@ function addToCart(item) {
             purchase_price: product.purchase_price,
             mrp: product.mrp,
             unit: product.unit,
+            stock: product.stock,
             qty: product.quantity,
             nop: 1 // Initialize quantity
         });
@@ -424,9 +425,16 @@ function updateCartQuantity(p_id, newQuantity, v_id) {
     let cartData = JSON.parse(localStorage.getItem('cartData')) || [];
     const existingProduct = cartData.find(p => p.p_id == p_id && p.v_id == v_id);
 
+    console.log()
     if (existingProduct) {
         newQuantity = parseInt(newQuantity);
-        if (newQuantity <= 0) {
+        if(existingProduct?.stock < newQuantity){
+            errorAlert('Out of stock');
+                    $(`.quantity${p_id}vid${v_id}`).val(existingProduct?.stock);
+      
+            return;
+        }
+        if (newQuantity <= 0 ) {
             // Remove product if quantity is 0 or less
             cartData = cartData.filter(p => p.p_id != p_id);
             $(`.add-to-cart${p_id}`).show();
@@ -765,6 +773,7 @@ const setDeliveryCharge = () => {
 // add to cart option
 
 const addToCartHasOption = async (items) => {
+    let branch_id = localStorage.getItem("role_id")|| 0;
     items = JSON.stringify(items).replace(/`/g, "'");
     items = JSON.parse(items);
     let p_id = items.p_id;
@@ -776,25 +785,26 @@ const addToCartHasOption = async (items) => {
     await $.ajax({
         url: apiurl,
         type: 'POST',
-        data: { type: 'getProductVarient', p_id: p_id },
+        data: { type: 'getProductVarient', p_id: p_id,branch_id },
         success: function (response) {
             if (response != 'error' && response != null) {
                 let data = JSON.parse(response);
                 let varientGrid = '';
-                data.push(
-                    {
-                        product_id: p_id,
-                        v_mrp: items.mrp,
-                        v_purchase_price: items.purchase_price,
-                        v_quantity: items.quantity,
-                        v_seliing_price: items.selling_price,
-                        v_stock: items.stock,
-                        v_unit: items.unit,
-                        vid: 0
-                    }
-                )
+                // data.push(
+                //     {
+                //         product_id: p_id,
+                //         v_mrp: items.mrp,
+                //         v_purchase_price: items.purchase_price,
+                //         v_quantity: items.quantity,
+                //         v_seliing_price: items.selling_price,
+                //         v_stock: items.stock,
+                //         v_unit: items.unit,
+                //         vid: 0
+                //     }
+                // )
                 data = data.sort((a, b) => a.v_seliing_price - b.v_seliing_price);
                 data.map((item, index) => {
+                    console.log(item)
                     let items = JSON.stringify(item);
                     let percentage = ((item.v_mrp - item.v_seliing_price) / item.v_mrp) * 100;
                     percentage = percentage.toFixed(0);
@@ -851,7 +861,7 @@ function addtoCartVarient(item) {
     let p_id = item.product_id;
     let vid = item.vid;
     const product = products.filter(p => p.p_id == p_id)[0]; // Get the product details
-    console.log(item);
+    console.log(item,products,product);
 
     // Retrieve cartData from localStorage
     let nop = $(`.vnop${vid}`).html();
@@ -863,7 +873,7 @@ function addtoCartVarient(item) {
     if (existingProduct) {
         // If it exists, increase the quantity
         existingProduct.nop++;
-        if (item.v_stock < existingProduct.nop) {
+        if (item.stock < existingProduct.nop) {
             errorAlert('Out of stock');
             return;
         }
@@ -879,12 +889,13 @@ function addtoCartVarient(item) {
             purchase_price: item.v_purchase_price,
             mrp: item.v_mrp,
             unit: item.v_unit,
+            stock:product.total_stock,
             qty: item.v_quantity,
             nop: 1 // Initialize quantity
         });
         $(`.vnop${vid}`).html('1');
 
-        if (item.v_stock < 2) {
+        if (item.stock < 2) {
             errorAlert('Out of stock');
             return;
         }
@@ -917,7 +928,7 @@ const addVarientInc = (item) => {
     existingProduct;
     existingProduct.nop++;
 
-    if (item.v_stock < existingProduct.nop) {
+    if (item.stock < existingProduct.nop) {
         errorAlert('Out of stock');
         return;
     }

@@ -92,7 +92,7 @@
                     <p>Dashboard</p>
                 </div>
 
-                <div class="sidebar-box  gap-10">
+                <div class="sidebar-box  gap-10 posBox">
                     <div class="flex space-between">
                         <div class="flex flex-start gap-10 posBox">
                             <i class="bi bi-bag"></i>
@@ -107,7 +107,7 @@
 
                 </div>
 
-                <div class="sidebar-box  gap-10">
+                <div class="sidebar-box  gap-10 orderBox">
                     <div class="flex space-between">
                         <div class="flex flex-start gap-10 ">
                             <i class="bi bi-cart2"></i>
@@ -260,7 +260,7 @@
                             <input type="text" id="branch-phone" placeholder="Enter phone number" required>
                         </div>
 
-                     <div class="form-group k_form_group">
+                        <div class="form-group k_form_group">
                             <label for="branch-address">Address</label>
                             <input type="text" id="branch-address" placeholder="Enter address">
                         </div>
@@ -269,7 +269,7 @@
                     <!-- Row 2 -->
                     <div class="flex flex-start gap-30 k_form_group_container">
 
-                   
+
 
                         <div class="form-group k_form_group">
                             <label for="branch-city">City</label>
@@ -315,15 +315,15 @@
                                 <option value="true">Active</option>
                                 <option value="false">Inactive</option>
                             </select>
-                        </div>     
-                        
-                         <div class="form-group k_form_group">
-                                <label for="branch-pincode">Pincode</label>
-                                <input type="text" id="branch-pincode" placeholder="Enter pincode">
-                            </div>
+                        </div>
 
-                        <div class="form-group k_form_group" >
-                           
+                        <div class="form-group k_form_group">
+                            <label for="branch-pincode">Pincode</label>
+                            <input type="text" id="branch-pincode" placeholder="Enter pincode">
+                        </div>
+
+                        <div class="form-group k_form_group">
+
                         </div>
 
 
@@ -334,7 +334,7 @@
                     <div class="flex flex-start gap-30 k_form_group_container align-items-start">
                         <div class="form-group k_form_group">
 
-                         
+
                             <div class="form-group k_form_group">
                                 <label for="branch-latitude">Latitude</label>
                                 <input type="text" id="branch-latitude" placeholder="Ex: 23.6749065">
@@ -428,8 +428,8 @@
                     </div>
 
                     <div class="form-group k_form_group">
-                        <label>Email</label>
-                        <input type="text" id="edit-branch-email">
+                        <label>Address</label>
+                        <input type="text" id="edit-branch-address">
                     </div>
 
                 </div>
@@ -438,18 +438,23 @@
 
                 <div class="flex flex-start gap-30 k_form_group_container">
 
+
                     <div class="form-group k_form_group">
-                        <label>Address</label>
-                        <input type="text" id="edit-branch-address">
+                        <label>Email</label>
+                        <input type="text" id="edit-branch-email">
+                    </div>
+                    <div class="form-group k_form_group">
+                        <label>Password</label>
+                        <input type="text" id="edit-branch-password">
                     </div>
 
+
+                </div>
+                <div class="flex flex-start gap-30 k_form_group_container">
                     <div class="form-group k_form_group">
                         <label>City</label>
                         <input type="text" id="edit-branch-city">
                     </div>
-                </div>
-                <div class="flex flex-start gap-30 k_form_group_container">
-
                     <div class="form-group k_form_group">
                         <label>State</label>
                         <input type="text" id="edit-branch-state">
@@ -475,21 +480,19 @@
                         <label>Latitude</label>
                         <input type="text" id="edit-branch-latitude">
                     </div>
-                </div>
-                <div class="flex flex-start gap-30 k_form_group_container">
-
-
                     <div class="form-group k_form_group">
                         <label>Coverage</label>
                         <input type="text" id="coverage-branch">
                     </div>
+                </div>
 
-                   
-                    
+
+                <div class="flex flex-start gap-30 k_form_group_container">
+
                     <div class="form-group k_form_group">
-                            <div id="editMap" style="height:300px;border-radius:10px;"></div>
+                        <div id="editMap" style="height:300px;border-radius:10px;"></div>
 
-                        </div>
+                    </div>
 
                 </div>
 
@@ -522,100 +525,100 @@
     <script>
         function initBranchMap(config) {
 
-    const mapContainer = config.mapId;
-    const latInput = config.latInput;
-    const lngInput = config.lngInput;
+            const mapContainer = config.mapId;
+            const latInput = config.latInput;
+            const lngInput = config.lngInput;
 
-    const defaultLat = parseFloat($(latInput).val()) || 23.3441;
-    const defaultLng = parseFloat($(lngInput).val()) || 85.3096;
+            const defaultLat = parseFloat($(latInput).val()) || 23.3441;
+            const defaultLng = parseFloat($(lngInput).val()) || 85.3096;
 
-    const map = L.map(mapContainer).setView([defaultLat, defaultLng], 13);
+            const map = L.map(mapContainer).setView([defaultLat, defaultLng], 13);
 
-    L.tileLayer(
-        'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-        {
-            maxZoom: 19,
-            attribution: '&copy; OpenStreetMap contributors'
+            L.tileLayer(
+                'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                {
+                    maxZoom: 19,
+                    attribution: '&copy; OpenStreetMap contributors'
+                }
+            ).addTo(map);
+
+            const marker = L.marker([defaultLat, defaultLng], {
+                draggable: true
+            }).addTo(map);
+
+            $(latInput).val(defaultLat.toFixed(6));
+            $(lngInput).val(defaultLng.toFixed(6));
+
+            function updateLocation(lat, lng) {
+                $(latInput).val(lat.toFixed(6));
+                $(lngInput).val(lng.toFixed(6));
+            }
+
+            map.on("click", function (e) {
+
+                marker.setLatLng(e.latlng);
+
+                updateLocation(
+                    e.latlng.lat,
+                    e.latlng.lng
+                );
+
+            });
+
+            marker.on("dragend", function () {
+
+                const pos = marker.getLatLng();
+
+                updateLocation(
+                    pos.lat,
+                    pos.lng
+                );
+
+            });
+
+            L.Control.geocoder({
+                defaultMarkGeocode: false
+            })
+                .on("markgeocode", function (e) {
+
+                    const latlng = e.geocode.center;
+
+                    map.setView(latlng, 16);
+
+                    marker.setLatLng(latlng);
+
+                    updateLocation(
+                        latlng.lat,
+                        latlng.lng
+                    );
+
+                })
+                .addTo(map);
+
+            return {
+                map,
+                marker,
+
+                setLocation(lat, lng) {
+
+                    lat = parseFloat(lat);
+                    lng = parseFloat(lng);
+
+                    marker.setLatLng([lat, lng]);
+                    map.setView([lat, lng], 16);
+
+                    $(latInput).val(lat.toFixed(6));
+                    $(lngInput).val(lng.toFixed(6));
+                }
+            };
         }
-    ).addTo(map);
-
-    const marker = L.marker([defaultLat, defaultLng], {
-        draggable: true
-    }).addTo(map);
-
-    $(latInput).val(defaultLat.toFixed(6));
-    $(lngInput).val(defaultLng.toFixed(6));
-
-    function updateLocation(lat, lng) {
-        $(latInput).val(lat.toFixed(6));
-        $(lngInput).val(lng.toFixed(6));
-    }
-
-    map.on("click", function(e) {
-
-        marker.setLatLng(e.latlng);
-
-        updateLocation(
-            e.latlng.lat,
-            e.latlng.lng
-        );
-
-    });
-
-    marker.on("dragend", function() {
-
-        const pos = marker.getLatLng();
-
-        updateLocation(
-            pos.lat,
-            pos.lng
-        );
-
-    });
-
-    L.Control.geocoder({
-        defaultMarkGeocode: false
-    })
-    .on("markgeocode", function(e) {
-
-        const latlng = e.geocode.center;
-
-        map.setView(latlng, 16);
-
-        marker.setLatLng(latlng);
-
-        updateLocation(
-            latlng.lat,
-            latlng.lng
-        );
-
-    })
-    .addTo(map);
-
-   return {
-    map,
-    marker,
-
-    setLocation(lat, lng) {
-
-        lat = parseFloat(lat);
-        lng = parseFloat(lng);
-
-        marker.setLatLng([lat, lng]);
-        map.setView([lat, lng], 16);
-
-        $(latInput).val(lat.toFixed(6));
-        $(lngInput).val(lng.toFixed(6));
-    }
-};
-}
 
 
-const addBranchMap = initBranchMap({
-    mapId: "addMap",
-    latInput: "#branch-latitude",
-    lngInput: "#branch-longitude"
-});
+        const addBranchMap = initBranchMap({
+            mapId: "addMap",
+            latInput: "#branch-latitude",
+            lngInput: "#branch-longitude"
+        });
 
         // function categoryTracker(categoryId) {
         //     console.log('Selected Category ID:', categoryId);

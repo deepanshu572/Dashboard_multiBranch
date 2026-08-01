@@ -252,10 +252,14 @@ let donutChart; // Move this to global scope
 
 
 const getOrderData = () => {
+    let branchId = localStorage.getItem('role_id') || 0;
+
+    const orderData = 
+          branchId == 0 ? { type: 'loadOrder' } : { type: 'loadBranchOrder',  branchId };
     $.ajax({
         url: apiurl,
         type: 'POST',
-        data: { type: 'loadOrder' },
+        data: orderData,
         success: function (response) {
             if (response !== 'error' && response !== null) {
                 let orders = JSON.parse(response);

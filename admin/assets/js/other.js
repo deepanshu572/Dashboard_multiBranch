@@ -918,6 +918,13 @@ const handleTitle = () => {
 
     $(".left-section").html(`
         <div class="input-field">
+            <label for="category">Select Category</label>
+            <select id="category" name="category">
+            
+            </select>
+        </div>
+      
+        <div class="input-field">
             <label for="headline">Select Headline</label>
             <select id="headline" name="title">
                 <option value="best_selling">Best Selling</option>
@@ -947,6 +954,24 @@ const handleTitle = () => {
     `);
     $(".otherResultHeader").html(`Header Title`);
     loadTitle();
+    
+    $.ajax({
+        url: apiurl,
+        type: 'POST',
+        data: { type: 'loadCategory' },
+        success: function (response) {
+            if (response != null || response != 'error') {
+                let data = JSON.parse(response);
+                let html = `<option value="">Select Category</option>`;
+                data.forEach(item => {
+                    html += `<option value="${item.id}">${item.name || item.category_name}</option>`;
+                });
+                $("#category").html(html);
+            } else {
+                $("#category").html("<option value=''>No categories found</option>");
+            }
+        }
+    })
 }
 
 const loadTitle = () => {
@@ -961,6 +986,7 @@ const loadTitle = () => {
       <table border="1" cellspacing="0" cellpadding="6" style="width:100%; border-collapse: collapse; margin-top:10px;">
         <thead style="background:#005555; color:white;">
           <tr>
+            <th>Category</th>
             <th>Title Type</th>
             <th>Title1</th>
             <th>Title2</th>
@@ -976,6 +1002,8 @@ const loadTitle = () => {
                 data.forEach(item => {
                     html += `
         <tr>
+        
+          <td>${item.category_name}</td>
           <td>${item.title_type}</td>
           <td>${item.title1 || ""}</td>
           <td>${item.title2 || ""}</td>
@@ -1002,11 +1030,12 @@ const saveTitle = () => {
     let headline = $("#headline").val();
     let title = $("#title").val();
     let header_title = $("#header_title").val();
+    let category = $("#category").val();
 
     $.ajax({
         url: apiurl,
         type: 'POST',
-        data: { type: 'saveTitle', headline: headline, title: title, header_title: header_title },
+        data: { type: 'saveTitle', headline: headline, title: title, header_title: header_title, category: category },
         success: function (response) {
             if (response == 'success') {
                 successAlert('Title Saved Successfully');

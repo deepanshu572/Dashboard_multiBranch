@@ -1293,7 +1293,7 @@ const seeVarient = async (p_id, image_path) => {
                         </select>
                         </div>
                         
-                        ${branchId !== 0 ? `<div>
+                        ${branchId != 0 ? `<div>
                             <p>Stock</p>
                         <input type="number" value="${item.stock !== null ?  item.stock: 0}" id="v_stock${item.vid}" placeholder="stock" readonly>
                         </div>`: " "
@@ -1777,21 +1777,14 @@ const editProduct = async (item, pageNumber, pageSize) => {
                             <input type="number" id="edit-selling-price" name="selling-price" placeholder="Selling Price"
                             value="${item.selling_price}" required>
                 </div>
-            </div>
-        </div>
-        <div class="edit-field"> 
-          <div class="flex space-between gap-20">
-                 <div class="form-group">
+                <div class="form-group">
                             <label for="edit-purchase-price">Purchase Price</label>
                             <input type="number" id="edit-purchase-price" name="purchase-price" placeholder="Purchase Price"
                                value="${item.purchase_price}" required>
                 </div>
-                <div class="form-group">
-                            <label for="edit-stock">Stock</label>
-                            <input type="number" id="edit-stock" name="stock" placeholder="Stock" value="${item.stock}" required>
-                </div>
             </div>
         </div>
+       
 
         <div class="edit-field"> 
           <div class="flex space-between gap-20">
@@ -1954,7 +1947,7 @@ function updateProduct(p_id) {
     const mrp = $('#edit-mrp').val();
     const sellingPrice = $('#edit-selling-price').val();
     const purchasePrice = $('#edit-purchase-price').val();
-    const stock = $('#edit-stock').val();
+    // const stock = $('#edit-stock').val();
     const quantity = $('#edit-quantity').val();
     const unit = $('#edit-unit').val();
     const review = $('#edit-review').val();
@@ -1966,9 +1959,9 @@ function updateProduct(p_id) {
 
     // Validate required fields
 
-    console.log(category, subCategory, brandName, productName, mrp, sellingPrice, purchasePrice, stock, quantity, unit, review, reviewNop, skuNumber);
+    console.log(category, subCategory, brandName, productName, mrp, sellingPrice, purchasePrice, quantity, unit, review, reviewNop, skuNumber);
 
-    if (!productName || !mrp || !sellingPrice || !category || !purchasePrice || !stock || !quantity || !unit || !review || !reviewNop) {
+    if (!productName || !mrp || !sellingPrice || !category || !purchasePrice  || !quantity || !unit || !review || !reviewNop) {
         warningAlert('Please fill out all required fields.');
         return;
     }
@@ -2001,7 +1994,7 @@ function updateProduct(p_id) {
         formData.append('mrp', mrp);
         formData.append('sellingPrice', sellingPrice);
         formData.append('purchasePrice', purchasePrice);
-        formData.append('stock', stock);
+        // formData.append('stock', stock);
         formData.append('quantity', quantity);
         formData.append('unit', unit);
         formData.append('review', review);

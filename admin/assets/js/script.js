@@ -454,106 +454,119 @@ const applyRBAC = () => {
     }
     
     // Granular menu hiding based on `permissions` string parsing
-    if (role === 'staff' && permissions && permissions !== 'all') {
+    if (role === 'branch' && permissions && permissions !== 'all') {
         let permsArray = permissions.split(',');
-        // console.log("===================");
-        // console.log(permsArr);
-        // console.log("===================");
-        
+        console.log("===================");
+        console.log(permsArray);
+        console.log("===================");
+        $(".sidebar-box").hide(); // Hide all first, then selectively show based on permissions
+        $(".dashBox").show(); // Dashboard is always visible
+        $(".posBox").show(); // Dashboard is always visible
+        $(".productBox").show(); // Product is always visible
+
+        $(".orderBox").show();
+        $(".salesReportBox").show();
+
+
+
         // --- Product & Category Setup ---
-        if (!permsArray.includes('add_category') && !permsArray.includes('Category')) $(".categoryBox").hide();
-        if (!permsArray.includes('add_subcategory') && !permsArray.includes('Category')) $(".subCategoryBox").hide();
-        if (!permsArray.includes('add_brands') && !permsArray.includes('Product')) $(".brandsBox").hide();
-        if (!permsArray.includes('add_product') && !permsArray.includes('Product')) $(".productBox").hide();
+        // if (!permsArray.includes('add_category') && !permsArray.includes('Category')) $(".categoryBox").hide();
+        // if (!permsArray.includes('add_subcategory') && !permsArray.includes('Category')) $(".subCategoryBox").hide();
+        // // if (!permsArray.includes('add_brands') && !permsArray.includes('Product')) $(".brandsBox").hide();
+        // if (!permsArray.includes('add_product') && !permsArray.includes('Product')) $(".productBox").hide();
         
-        if (!permsArray.includes('add_category') && !permsArray.includes('add_subcategory') && !permsArray.includes('Category')) {
-            $(".categoryBox").parent().parent().hide(); // Hide parent dropdown
-        }
+        // if (!permsArray.includes('add_category') && !permsArray.includes('add_subcategory') && !permsArray.includes('Category')) {
+        //     $(".categoryBox").parent().parent().hide(); // Hide parent dropdown
+        // }
 
-        // --- POS Billing ---
-        if (!permsArray.includes('pos_new_sale')) $(".posBoxNewList").hide();
-        if (!permsArray.includes('pos_orders')) $(".posBoxOrders").hide();
-        if (!permsArray.includes('pos_new_sale') && !permsArray.includes('pos_orders')) {
-            $(".posBox").parent().parent().hide(); // Hide parent dropdown
-        }
+        // // --- POS Billing ---
+        // if (!permsArray.includes('pos_new_sale')) $(".posBoxNewList").hide();
+        // if (!permsArray.includes('pos_orders')) $(".posBoxOrders").hide();
+        // if (!permsArray.includes('pos_new_sale') && !permsArray.includes('pos_orders')) {
+        //     $(".posBox").parent().parent().hide(); // Hide parent dropdown
+        // }
 
-        // --- Order Management ---
-        if (!permsArray.includes('orders_all') && !permsArray.includes('Order')) $(".orderBoxAll").hide();
-        if (!permsArray.includes('orders_pending') && !permsArray.includes('Order')) $(".orderBoxPending").hide();
-        if (!permsArray.includes('orders_confirmed') && !permsArray.includes('Order')) $(".orderBoxConfirmed").hide();
-        if (!permsArray.includes('orders_packaging') && !permsArray.includes('Order')) $(".orderBoxPackaging").hide();
-        if (!permsArray.includes('orders_delivered') && !permsArray.includes('Order')) $(".orderBoxDelivered").hide();
-        if (!permsArray.includes('orders_returned') && !permsArray.includes('Order')) $(".orderBoxReturned").hide();
-        if (!permsArray.includes('orders_canceled') && !permsArray.includes('Order')) $(".orderBoxCanceled").hide();
+        // // --- Order Management ---
+        // if (!permsArray.includes('orders_all') && !permsArray.includes('Order')) $(".orderBoxAll").hide();
+        // if (!permsArray.includes('orders_pending') && !permsArray.includes('Order')) $(".orderBoxPending").hide();
+        // if (!permsArray.includes('orders_confirmed') && !permsArray.includes('Order')) $(".orderBoxConfirmed").hide();
+        // if (!permsArray.includes('orders_packaging') && !permsArray.includes('Order')) $(".orderBoxPackaging").hide();
+        // if (!permsArray.includes('orders_delivered') && !permsArray.includes('Order')) $(".orderBoxDelivered").hide();
+        // if (!permsArray.includes('orders_returned') && !permsArray.includes('Order')) $(".orderBoxReturned").hide();
+        // if (!permsArray.includes('orders_canceled') && !permsArray.includes('Order')) $(".orderBoxCanceled").hide();
         
-        if (!permsArray.includes('orders_all') && !permsArray.includes('orders_pending') && 
-            !permsArray.includes('orders_confirmed') && !permsArray.includes('orders_packaging') &&
-            !permsArray.includes('orders_delivered') && !permsArray.includes('orders_returned') &&
-            !permsArray.includes('orders_canceled') && !permsArray.includes('Order')) {
-            $(".orderBoxAll").parent().parent().hide(); // Hide parent 'Orders' dropdown
-        }
+        // if (!permsArray.includes('orders_all') && !permsArray.includes('orders_pending') && 
+        //     !permsArray.includes('orders_confirmed') && !permsArray.includes('orders_packaging') &&
+        //     !permsArray.includes('orders_delivered') && !permsArray.includes('orders_returned') &&
+        //     !permsArray.includes('orders_canceled') && !permsArray.includes('Order')) {
+        //     $(".orderBoxAll").parent().parent().hide(); // Hide parent 'Orders' dropdown
+        // }
 
-        // --- Promotions ---
-        if (!permsArray.includes('banners')) $(".bannerBox").hide();
-        if (!permsArray.includes('coupons')) $(".couponsBox").hide();
-        if (!permsArray.includes('flash_sale')) $(".flashSaleBox").hide();
-        if (!permsArray.includes('category_discount')) $(".categoryDiscountBox").hide();
+        // // --- Promotions ---
+        // if (!permsArray.includes('banners')) $(".bannerBox").hide();
+        // if (!permsArray.includes('coupons')) $(".couponsBox").hide();
+        // if (!permsArray.includes('flash_sale')) $(".flashSaleBox").hide();
+        // if (!permsArray.includes('category_discount')) $(".categoryDiscountBox").hide();
 
-        // --- User Management ---
-        if (!permsArray.includes('user_management')) {
-            $(".customerListBox").parent().parent().hide(); // Hide parent dropdown
-        }
+        // // --- User Management ---
+        // if (!permsArray.includes('user_management')) {
+        //     $(".customerListBox").parent().parent().hide(); // Hide parent dropdown
+        // }
 
-        // --- General ---
-        if (!permsArray.includes('dashboard_stats')) {
-            $(".dashBox").hide();
-            if (window.location.pathname.includes('dashboard.html')) {
-                $(".dashboard-card-grid, .order-chart, .sales-chart").hide();
-            }
-        }
-        if (!permsArray.includes('sales_report')) $(".salesReportBox").hide();
-        if (!permsArray.includes('delivery_report')) $(".deliveryReportBox").hide();
-        if (!permsArray.includes('delivery_man')) $(".deliveryManBox").hide();
-        if (!permsArray.includes('product_review')) $(".productReviewBox").hide();
-        if (!permsArray.includes('push_notification')) $(".pushNotificationBox").hide();
+        // // --- General ---
+        // if (!permsArray.includes('dashboard_stats')) {
+        //     $(".dashBox").hide();
+        //     if (window.location.pathname.includes('dashboard.html')) {
+        //         $(".dashboard-card-grid, .order-chart, .sales-chart").hide();
+        //     }
+        // }
+        // if (!permsArray.includes('sales_report')) $(".salesReportBox").hide();
+        // if (!permsArray.includes('delivery_report')) $(".deliveryReportBox").hide();
+        // if (!permsArray.includes('delivery_man')) $(".deliveryManBox").hide();
+        // if (!permsArray.includes('product_review')) $(".productReviewBox").hide();
+        // if (!permsArray.includes('push_notification')) $(".pushNotificationBox").hide();
         
-        // Hide activity report for all regular staff
-        $(".activityReportBox").hide();
+        // // Hide activity report for all regular staff
+        // $(".activityReportBox").hide();
 
-        // --- Other Setup (Settings) ---
-        // If they have NO permissions inside Other Setup, hide the main Other Setup sidebar link entirely
-        const otherSetupPerms = [
-            'other_delivery_charge', 'other_min_order', 'other_handle_charge', 'other_gift_product',
-            'other_billing_det', 'other_brands_of_day', 'other_password', 'other_time_slot',
-            'other_title', 'other_main_title', 'other_hero_banner', 'other_main_banner',
-            'other_area', 'other_gift_price', 'other_shop_status', 'other_advanced_set', 'other_contact_info'
-        ];
+        // // --- Other Setup (Settings) ---
+        // // If they have NO permissions inside Other Setup, hide the main Other Setup sidebar link entirely
+        // const otherSetupPerms = [
+        //     'other_delivery_charge', 'other_min_order', 'other_handle_charge', 'other_gift_product',
+        //     'other_billing_det', 'other_brands_of_day', 'other_password', 'other_time_slot',
+        //     'other_title', 'other_main_title', 'other_hero_banner', 'other_main_banner',
+        //     'other_area', 'other_gift_price', 'other_shop_status', 'other_advanced_set', 'other_contact_info'
+        // ];
         
-        let hasAnyOtherPerm = otherSetupPerms.some(p => permsArray.includes(p));
-        if (!hasAnyOtherPerm) {
-            $(".otherSetupBox").hide();
-        }
+        // let hasAnyOtherPerm = otherSetupPerms.some(p => permsArray.includes(p));
+        // if (!hasAnyOtherPerm) {
+        //     $(".otherSetupBox").hide();
+        // }
 
-        // Granular hiding of specific List Items inside `other.html` dropdown
-        if (window.location.pathname.includes('other.html')) {
-            if (!permsArray.includes('other_delivery_charge')) $("li[onclick*='delChargeForm']").hide();
-            if (!permsArray.includes('other_min_order')) $("li[onclick*='minOrderValueForm']").hide();
-            if (!permsArray.includes('other_handle_charge')) $("li[onclick*='handlingChargeForm']").hide();
-            if (!permsArray.includes('other_gift_product')) $("li[onclick*='addGiftProductForm']").hide();
-            if (!permsArray.includes('other_billing_det')) $("li[onclick*='setBillingDetailsForm']").hide();
-            if (!permsArray.includes('other_brands_of_day')) $("li[onclick*='setBrandsOfTheForm']").hide();
-            if (!permsArray.includes('other_password')) $("li[onclick*='openModal']").hide();
-            if (!permsArray.includes('other_time_slot')) $("li[onclick*='handleTimeSlot']").hide();
-            if (!permsArray.includes('other_title')) $("li[onclick*='handleTitle']").hide();
-            if (!permsArray.includes('other_main_title')) $("li[onclick*='handleMainTitle']").hide();
-            if (!permsArray.includes('other_hero_banner')) $("li[onclick*='handleHeroBanner']").hide();
-            if (!permsArray.includes('other_main_banner')) $("li[onclick*='handleMainBanner']").hide();
-            if (!permsArray.includes('other_area')) $("li[onclick*='handleArea']").hide();
-            if (!permsArray.includes('other_gift_price')) $("li[onclick*='setGiftPrice']").hide();
-            if (!permsArray.includes('other_shop_status')) $("li[onclick*='shopModelOpen']").hide();
-            if (!permsArray.includes('other_advanced_set')) $("li[onclick*='shopAdvancedSettings']").hide();
-            if (!permsArray.includes('other_contact_info')) $("li[onclick*='shopContactOpen']").hide();
-        }
+        // // Granular hiding of specific List Items inside `other.html` dropdown
+        // if (window.location.pathname.includes('other.html')) {
+        //     if (!permsArray.includes('other_delivery_charge')) $("li[onclick*='delChargeForm']").hide();
+        //     if (!permsArray.includes('other_min_order')) $("li[onclick*='minOrderValueForm']").hide();
+        //     if (!permsArray.includes('other_handle_charge')) $("li[onclick*='handlingChargeForm']").hide();
+        //     if (!permsArray.includes('other_gift_product')) $("li[onclick*='addGiftProductForm']").hide();
+        //     if (!permsArray.includes('other_billing_det')) $("li[onclick*='setBillingDetailsForm']").hide();
+        //     if (!permsArray.includes('other_brands_of_day')) $("li[onclick*='setBrandsOfTheForm']").hide();
+        //     if (!permsArray.includes('other_password')) $("li[onclick*='openModal']").hide();
+        //     if (!permsArray.includes('other_time_slot')) $("li[onclick*='handleTimeSlot']").hide();
+        //     if (!permsArray.includes('other_title')) $("li[onclick*='handleTitle']").hide();
+        //     if (!permsArray.includes('other_main_title')) $("li[onclick*='handleMainTitle']").hide();
+        //     if (!permsArray.includes('other_hero_banner')) $("li[onclick*='handleHeroBanner']").hide();
+        //     if (!permsArray.includes('other_main_banner')) $("li[onclick*='handleMainBanner']").hide();
+        //     if (!permsArray.includes('other_area')) $("li[onclick*='handleArea']").hide();
+        //     if (!permsArray.includes('other_gift_price')) $("li[onclick*='setGiftPrice']").hide();
+        //     if (!permsArray.includes('other_shop_status')) $("li[onclick*='shopModelOpen']").hide();
+        //     if (!permsArray.includes('other_advanced_set')) $("li[onclick*='shopAdvancedSettings']").hide();
+        //     if (!permsArray.includes('other_contact_info')) $("li[onclick*='shopContactOpen']").hide();
+        // }
+    }
+    else{
+                $(".posBox").hide(); // Dashboard is always visible
+
     }
 }
 

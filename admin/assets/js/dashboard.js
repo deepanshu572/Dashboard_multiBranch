@@ -1,6 +1,6 @@
 const checkAuthAndAccess = () => {
     let role = localStorage.getItem('admin_role');
-    
+
     // Hide Activity Log for restricted staff
     if (role !== 'admin') {
         $("#activityLogSection").hide();
@@ -14,17 +14,17 @@ const loadActivityLogs = () => {
         url: apiurl,
         type: 'POST',
         data: { type: 'loadActivityLogs' },
-        success: function(response) {
+        success: function (response) {
             try {
                 let data = JSON.parse(response);
                 let html = '';
-                
+
                 if (data.length > 0) {
                     data.forEach(log => {
                         let fullDetails = 'N/A';
                         let truncatedDetails = 'N/A';
                         let isLong = false;
-                        
+
                         // Enhanced JSON details parsing for human readability
                         try {
                             if (log.details) {
@@ -38,7 +38,7 @@ const loadActivityLogs = () => {
                                         let delParts = [];
                                         const oldData = parsedDetails.previous;
                                         const contextKeys = ['name', 'productName', 'title', 'brand_name', 'brandName', 'code', 'category_name'];
-                                        
+
                                         for (let key in oldData) {
                                             if (!ignoreKeys.includes(key) && oldData[key]) {
                                                 let cleanKey = key.replace(/([A-Z])/g, ' $1').replace(/_/g, ' ').replace(/^./, s => s.toUpperCase()).trim();
@@ -55,12 +55,12 @@ const loadActivityLogs = () => {
                                         let diffParts = [];
                                         const newData = parsedDetails.new;
                                         const oldData = parsedDetails.previous;
-                                        
+
                                         for (let key in newData) {
                                             if (!ignoreKeys.includes(key) && newData[key] !== undefined) {
                                                 let oldVal = (oldData[key] !== undefined && oldData[key] !== null) ? oldData[key] : 'N/A';
                                                 let newVal = newData[key];
-                                                
+
                                                 if (String(oldVal) !== String(newVal)) {
                                                     let cleanKey = key.replace(/([A-Z])/g, ' $1').replace(/_/g, ' ').replace(/^./, s => s.toUpperCase()).trim();
                                                     diffParts.push(`<div class="detail-item"><b class="detail-label">${cleanKey}:</b> <span style="color: #ef4444; font-size: 11px; text-decoration: line-through;">${oldVal}</span> <span style="color: #10b981;">-> ${newVal}</span></div>`);
@@ -80,7 +80,7 @@ const loadActivityLogs = () => {
                                                         let items = cartParsed.map(item => `${item.qty || item.nop}x ${item.name}`).join(', ');
                                                         flatParts.push(`<div class="detail-item"><b class="detail-label">Items:</b> <span class="detail-val">${items}</span></div>`);
                                                         itemsForTruncation.push(`Items: ${items}`);
-                                                    } catch (ce) {}
+                                                    } catch (ce) { }
                                                 } else {
                                                     let cleanKey = key.replace(/([A-Z])/g, ' $1').replace(/_/g, ' ').replace(/^./, str => str.toUpperCase()).trim();
                                                     let valStr = String(parsedDetails[key]);
@@ -103,7 +103,7 @@ const loadActivityLogs = () => {
                                     }
                                 }
                             }
-                        } catch(e) {
+                        } catch (e) {
                             fullDetails = log.details || 'N/A';
                             if (fullDetails.length > 60) {
                                 truncatedDetails = fullDetails.substring(0, 57) + '...';
@@ -127,14 +127,14 @@ const loadActivityLogs = () => {
                             let dateObj = new Date(safeDateString);
                             if (!isNaN(dateObj)) {
                                 formattedDate = dateObj.toLocaleString('en-US', {
-                                    month: 'short', 
-                                    day: 'numeric', 
+                                    month: 'short',
+                                    day: 'numeric',
                                     hour: 'numeric',
                                     minute: '2-digit',
                                     hour12: true
                                 });
                             }
-                        } catch(e) {}
+                        } catch (e) { }
 
                         html += `
                         <tr style="border-bottom: 1px solid #eee;">
@@ -147,10 +147,10 @@ const loadActivityLogs = () => {
                 } else {
                     html = '<tr><td colspan="4" style="text-align:center; padding: 20px;">No recent activity</td></tr>';
                 }
-                
+
                 $("#activityLogTableBody").html(html);
-                
-            } catch(e) {
+
+            } catch (e) {
                 console.error("Error parsing logs", e);
                 $("#activityLogTableBody").html('<tr><td colspan="4" style="text-align:center; padding: 20px;">Error loading logs</td></tr>');
             }
@@ -162,42 +162,58 @@ const loadActivityLogs = () => {
 checkAuthAndAccess();
 
 const loadAllData = async () => {
-    const myFormData = new FormData();
-    myFormData.append('type', 'loadAllData');
-    const response = await fetch(apiurl, {
-        method: 'POST',
-        body: myFormData
-    });
-    const data = await response.json();
-  
-    console.log(data);
+    let branchId = localStorage.getItem('role_id') || 0;
 
-    $(".userCount").html(data.users ? data.users.length : 0);
-    $(".orderCount").html(data.orders ? data.orders.length : 0);
-    const posOrderCount = data.pos_orders ? data.pos_orders.length : 0;
-    $(".posProductCount").html(posOrderCount);
-    $(".productCount").html(data.products ? data.products.length : 0);
+    const allData =
+        branchId !=0  ? { type: 'loadAllBranchData', branchId } : { type: 'loadAllData' };
+
+    $.ajax({
+        url: apiurl,
+        type: 'POST',
+        data: allData,
+        success: function (response) {
+            const data = JSON.parse(response);
+            console.log(data);
+            if(branchId ==0){
+                $(".userCount").html(data.users ? data.users.length : 0);
+                $(".pos_card").hide();
+            }else{
+                $(".user_card").hide();
+            }
+            $(".orderCount").html(data.orders ? data.orders.length : 0);
+            const posOrderCount = data.pos_orders ? data.pos_orders.length : 0;
+            $(".posProductCount").html(posOrderCount);
+            $(".productCount").html(data.products ? data.products.length : 0);
+        }
+    });
+
+
 }
 
 
 const loadRecentOrders = async () => {
 
-    
+    let branchId = localStorage.getItem('role_id') || 0;
 
-fetch(apiurl, {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/x-www-form-urlencoded"
-  },
-  body: "type=getRecentOrders"
-})
-.then(res => res.json())
-.then(data => {
+    const recentOrdersData =
+        branchId == 0 ? { type: 'getRecentOrders' } : { type: 'getRecentOrders', branchId };
 
-  let html = "";
 
-  data.forEach(order => {
-    html += `
+
+    fetch(apiurl, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: new URLSearchParams(recentOrdersData)
+    })
+        .then(res => res.json())
+        .then(data => {
+
+            let html = "";
+
+            data.forEach(order => {
+                html += `
       <div class="shop_model_order_item">
         <div>
           <div class="shop_model_order_id">Order #${order.id}</div>
@@ -211,19 +227,19 @@ fetch(apiurl, {
         </span>
       </div>
     `;
-  });
+            });
 
-  document.getElementById("shop_model_recent_orders").innerHTML = html;
-});
+            document.getElementById("shop_model_recent_orders").innerHTML = html;
+        });
 
 
 }
 
 // Global function to toggle activity details
-window.toggleDetails = function(btn) {
+window.toggleDetails = function (btn) {
     const container = $(btn).closest('.detail-container');
     container.toggleClass('expanded');
-    
+
     if (container.hasClass('expanded')) {
         $(btn).text('See Less');
     } else {
