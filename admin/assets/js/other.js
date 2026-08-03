@@ -1027,7 +1027,7 @@ const loadTitle = () => {
 
 
 const saveTitle = () => {
-    let headline = $("#headline").val();
+    let headline = $("#headline").val()
     let title = $("#title").val();
     let header_title = $("#header_title").val();
     let category = $("#category").val();
@@ -1490,6 +1490,14 @@ const handleMainBanner = () => {
             <label for="hero_bg_child">Add Hero Child banner</label>
             <input type="file" class="input-box" id="hero_bg_child" >
         </div>
+         <div class="input-field">
+           <label for="hero_bg">Select icon theme</label>
+           <input type="text" id="categoryIconTheme" value="black" hidden />
+           <select name="categoryTheme" id="categoryIcon" onchange="handleCategoryIcon(event)">
+           <option value="black">black</option>
+           <option value="white">white</option>
+           </select>
+        </div>
         <div>
             <button class="set-btn" onclick="saveMainBanner()">Save Main Bannner</button>
         </div>
@@ -1500,6 +1508,9 @@ const handleMainBanner = () => {
     getMainCategory();
 }
 
+function handleCategoryIcon(e) {
+    $("#categoryIconTheme").val(e.target.value);
+}
 function handleCategory(e) {
     $("#categoryIdBanner").val(e.target.value);
 }
@@ -1539,26 +1550,29 @@ const loadMainBanner = () => {
             if (response != null || response != 'error') {
                 let data = JSON.parse(response);
                 let html = `
-      <table border="1" cellspacing="0" cellpadding="6" style="width:100%; border-collapse: collapse; margin-top:10px;">
-        <thead style="background:#005555; color:white;">
-          <tr>
-            <th>Type</th>
-            <th>Image</th>
-            <th>child</th>
-          </tr>
-        </thead>
-        <tbody>
-    `;
+                <table border="1" cellspacing="0" cellpadding="6" style="width:100%; border-collapse: collapse; margin-top:10px;">
+                    <thead style="background:#005555; color:white;">
+                    <tr>
+                        <th>Type</th>
+                        <th>Image</th>
+                        <th>child</th>
+                        <th>color</th>
+                        <th>Icon color</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                `;
 
                 data.forEach(item => {
                     html += `
-        <tr>
-          <td>${item.category_name}</td>
-          <td><img class="main_banner" src="${imgurl + item.img_path}" /></td>
-          <td><img class="main_banner" src="${imgurl + item.child_img}" /></td>
-          
-        </tr>
-      `;
+                    <tr>
+                    <td>${item.category_name}</td>
+                    <td><img class="main_banner" src="${imgurl + item.img_path}" /></td>
+                    <td><img class="main_banner" src="${imgurl + item.child_img}" /></td>
+                    <td><input type="color" value="${item.color_code}" disabled /></td>
+                    <td>${item.icon_color}</td>
+                    </tr>
+                `;
                 });
 
                 html += `</tbody></table>`;
@@ -1578,8 +1592,9 @@ function saveMainBanner() {
     const child = document.getElementById("hero_bg_child").files[0];
     const color = $("#hero_color").val();
     const categoryId = $("#categoryIdBanner").val();
+    const iconColor = $("#categoryIconTheme").val();
 
-    if (!hero && !child && !color) {
+    if (!hero && !child && !color && !iconColor) {
         Swal.fire({
             icon: "warning",
             title: "No Image Selected",
@@ -1619,7 +1634,7 @@ function saveMainBanner() {
     formData.append("type", "saveMainBanner");
     formData.append("categoryId", categoryId);
     formData.append("color", color);
-    
+    formData.append("iconColor", iconColor);
 
     const convertToBase64 = (file) => {
         return new Promise((resolve) => {

@@ -3734,6 +3734,7 @@ else if ($type == "saveMainBanner") {
 
     $categoryId = mysqli_real_escape_string($con, $_POST['categoryId']);
     $color = mysqli_real_escape_string($con, $_POST['color']);
+    $iconColor = mysqli_real_escape_string($con, $_POST['iconColor']);
 
     // Check if category already exists
     $check = mysqli_query($con, "SELECT * FROM main_banner WHERE category_id='$categoryId'");
@@ -3743,6 +3744,10 @@ else if ($type == "saveMainBanner") {
     // Always update color code
     mysqli_query($con, "UPDATE main_banner
                         SET color_code='$color'
+                        WHERE category_id='$categoryId'");    
+                        
+    mysqli_query($con, "UPDATE main_banner
+                        SET icon_color='$iconColor'
                         WHERE category_id='$categoryId'");
 
     // Update Hero Banner
@@ -3792,7 +3797,7 @@ else if ($type == "saveMainBanner") {
         base64_to_jpeg($_POST['hero_bg_child_base64'], "uploads/".$child_img_name);
     }
 
-    $query = "INSERT INTO main_banner(category_id, img_path, child_img, color_code)
+    $query = "INSERT INTO main_banner(category_id, img_path, child_img, color_code, icon_color)
               VALUES('$categoryId', '$hero_img_path', '$child_img_path', '$color')";
     mysqli_query($con, $query);
 }

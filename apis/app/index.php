@@ -83,7 +83,8 @@ header("Access-Control-Allow-Origin:*");
     }
      else if($type == "getTopHeroBanner"){
         $id=$_POST['categoryId'];
-        $query = "SELECT * FROM `banner` WHERE `type`='main' AND `status`='true' AND `under_category`='$id'";
+        // $query = "SELECT * FROM `banner` WHERE `type`='main' AND `status`='true' AND `under_category`='$id'";
+        $query="SELECT * FROM `main_banner` WHERE `category_Id`='$id'";
          $res = mysqli_query($con,$query);
        if(mysqli_num_rows($res)>0){
             $data=[];
@@ -134,7 +135,8 @@ header("Access-Control-Allow-Origin:*");
          }
     }
     else if($type == "getTopRightBanner"){
-        $query = "SELECT * FROM `banner` WHERE `type`='topRight' AND `status`='true'";
+        $id=$_POST['categoryId'];
+        $query = "SELECT * FROM `hero_banner` WHERE `under_category`='$id'";
          $res = mysqli_query($con,$query);
        if(mysqli_num_rows($res)>0){
             $data=[];
