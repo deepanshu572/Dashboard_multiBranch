@@ -4664,9 +4664,10 @@ else if($type == "getmiddleCategory2"){
         `middle_category` mc
     JOIN 
         `category` c
-        ON mc.category_id = c.id
+        ON mc.under_category = c.id
         ORDER BY `mc`.`id` DESC
     ";
+    // echo $query; exit();
     
     $res = mysqli_query($con,$query);
 
@@ -4710,7 +4711,7 @@ else if($type == "handleMiddleCategory"){
 
 
 
-    $query = "INSERT INTO `middle_category`(`category_id`, `name`, `img_path`, `status`) 
+    $query = "INSERT INTO `middle_category`(`category_id`, `name`, `image_path`, `status`) 
     VALUES ('$categoryId','$middleCategory','$logoNameDB','true')";
     $res = mysqli_query($con,$query);
 
@@ -4779,7 +4780,7 @@ else if($type == 'editMiddleSubCategoryWithImage'){
     $logoNameDB = "api/uploads/" . $logoName;
 
         $query = "UPDATE `middle_category` SET `category_id`='$categoryId', `name`='$middleCategory', 
-        `img_path`='$logoNameDB' WHERE `id`='$id'";
+        `image_path`='$logoNameDB' WHERE `id`='$id'";
         $run = mysqli_query($con, $query);
 
         if($run){

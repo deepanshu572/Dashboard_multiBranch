@@ -109,7 +109,7 @@ header("Access-Control-Allow-Origin:*");
     }
     else if($type == "getFlashSalePrd"){
                 $id=$_POST['categoryId'];
-// 9,8,7,20
+      // 9,8,7,20
         
         $query = "SELECT * FROM `product` WHERE `flash_sale`='true' AND `status`='true' AND `under_category`='$id'";
          $res = mysqli_query($con,$query);
@@ -164,7 +164,7 @@ header("Access-Control-Allow-Origin:*");
 
         $categoryId = $_POST['categoryId'];
 
-        $query = "SELECT * FROM `subcategory`
+        $query = "SELECT * FROM `middle_category`
                 WHERE `title1` = 'true'
                 AND `status` = 'true'
                 AND `under_category` = '$categoryId'";
@@ -200,7 +200,7 @@ header("Access-Control-Allow-Origin:*");
     $categoryId = $_POST['categoryId'];
 
     $query = "SELECT *
-              FROM `subcategory`
+              FROM `middle_category`
               WHERE `status` = 'true'
               AND `under_category` = '$categoryId'";
 
@@ -255,27 +255,55 @@ else if($type=="getAllProduct"){
 }
   else if($type == "getProducts"){
     $categoryId = $_POST['categoryId'];
+    $branchId = $_POST['branchId'];
 
-     $query1 = "SELECT 
-            p.*,
-            (
-                SELECT COUNT(*)
-                FROM `varient` v
-                WHERE v.product_id = p.p_id
-            ) AS varient_count
-          FROM `product` p
-          WHERE p.`status` = 'true'
-          AND p.`under_category` = '$categoryId'
-          AND (
-                p.`title1` = 'true'
-                OR p.`title2` = 'true'
-                OR p.`title3` = 'true'
-                OR p.`title4` = 'true'
-                OR p.`title5` = 'true'
-                OR p.`title6` = 'true'
-    )";
+     $query1 = "SELECT  p.*,
+     (
+        SELECT COUNT(*)
+        FROM varient vc
+        WHERE vc.product_id = p.p_id
+    ) AS varient_count,
+
+    v.vid,
+    v.product_id,
+    v.v_unit,
+    v.v_mrp,
+    v.v_seliing_price,
+    v.v_purchase_price,
+    v.v_quantity,
+
+    IFNULL(bs.stock, 0) AS stock
+
+FROM product p
+
+LEFT JOIN varient v 
+    ON v.vid = (
+        SELECT v2.vid
+        FROM varient v2
+        WHERE v2.product_id = p.p_id
+        ORDER BY v2.vid ASC
+        LIMIT 1
+    )
+
+LEFT JOIN branch_stock bs
+    ON bs.product_id = p.p_id
+    AND bs.varient_id = v.vid
+    AND bs.branch_id = '$branchId'
+
+WHERE p.status = 'true'
+AND p.under_category = '$categoryId'
+AND (
+    p.title1 = 'true'
+    OR p.title2 = 'true'
+    OR p.title3 = 'true'
+    OR p.title4 = 'true'
+    OR p.title5 = 'true'
+    OR p.title6 = 'true'
+)";
+// echo $query1; exit();
+
     $query2 = "SELECT * FROM product";
-      $categoryId = $_POST['categoryId'];
+    $categoryId = $_POST['categoryId'];
 
    $res1 = mysqli_query($con, $query1);
     $res2 = mysqli_query($con, $query2);
@@ -1313,8 +1341,9 @@ else if ($type == "getSingleOrder") {
 else if($type == "getSingleCategory"){
 
     $catId = $_POST['cid'];
+    $middleCatId = $_POST['mid'] ?? '';
 
-    $query1 = "SELECT * FROM `subcategory` WHERE `under_category`='$catId' AND `status`='true'";
+    $query1 = "SELECT * FROM `subcategory` WHERE `middle_category`='$middleCatId' AND `status`='true'";
     $query2 = "  SELECT 
             p.*,
             (
@@ -1583,7 +1612,7 @@ else if($type == "handleUpdateProfile"){
 else if($type == "getcategory99store1"){
     $id = $_POST['categoryId'];
 
-     $query = "SELECT * FROM `subcategory`
+     $query = "SELECT * FROM `middle_category`
               WHERE `title1` = 'true'
               AND `status` = 'true'
               AND `under_category` = '$id'";
@@ -1613,7 +1642,7 @@ else if($type == "getcategory99store1"){
 else if($type == "getCategory99store2"){
     $id = $_POST['categoryId'];
 
-     $query = "SELECT * FROM `subcategory`
+     $query = "SELECT * FROM `middle_category`
               WHERE `title2` = 'true'
               AND `status` = 'true'
               AND `under_category` = '$id'";
@@ -1644,7 +1673,7 @@ else if($type == "getCategory99store2"){
 else if($type == "getCategory99store3"){
     $id = $_POST['categoryId'];
 
-     $query = "SELECT * FROM `subcategory`
+     $query = "SELECT * FROM `middle_category`
               WHERE `title3` = 'true'
               AND `status` = 'true'
               AND `under_category` = '$id'";
@@ -1674,7 +1703,7 @@ else if($type == "getCategory99store3"){
 else if($type == "getCategory99store4"){
     $id = $_POST['categoryId'];
 
-     $query = "SELECT * FROM `subcategory`
+     $query = "SELECT * FROM `middle_category`
               WHERE `title4` = 'true'
               AND `status` = 'true'
               AND `under_category` = '$id'";
@@ -1704,7 +1733,7 @@ else if($type == "getCategory99store4"){
 else if($type == "getCategory99store5"){
     $id = $_POST['categoryId'];
 
-     $query = "SELECT * FROM `subcategory`
+     $query = "SELECT * FROM `middle_category`
               WHERE `title5` = 'true'
               AND `status` = 'true'
               AND `under_category` = '$id'";
@@ -1734,7 +1763,7 @@ else if($type == "getCategory99store5"){
 else if($type == "getcategoryBeauty1"){
        $id = $_POST['categoryId'];
 
-     $query = "SELECT * FROM `subcategory`
+     $query = "SELECT * FROM `middle_category`
               WHERE `title1` = 'true'
               AND `status` = 'true'
               AND `under_category` = '$id'";
@@ -1765,7 +1794,7 @@ else if($type == "getcategoryBeauty1"){
 else if($type == "getcategoryBeauty2"){
        $id = $_POST['categoryId'];
 
-     $query = "SELECT * FROM `subcategory`
+     $query = "SELECT * FROM `middle_category`
               WHERE `title2` = 'true'
               AND `status` = 'true'
               AND `under_category` = '$id'";
@@ -1796,7 +1825,7 @@ else if($type == "getcategoryBeauty2"){
 else if($type == "getcategoryBeauty3"){
        $id = $_POST['categoryId'];
 
-     $query = "SELECT * FROM `subcategory`
+     $query = "SELECT * FROM `middle_category`
               WHERE `title3` = 'true'
               AND `status` = 'true'
               AND `under_category` = '$id'";
@@ -1827,7 +1856,7 @@ else if($type == "getcategoryBeauty3"){
 else if($type == "getcategoryBeauty4"){
        $id = $_POST['categoryId'];
 
-     $query = "SELECT * FROM `subcategory`
+     $query = "SELECT * FROM `middle_category`
               WHERE `title4` = 'true'
               AND `status` = 'true'
               AND `under_category` = '$id'";
@@ -1858,7 +1887,7 @@ else if($type == "getcategoryBeauty4"){
 else if($type == "getcategoryBeauty5"){
        $id = $_POST['categoryId'];
 
-     $query = "SELECT * FROM `subcategory`
+     $query = "SELECT * FROM `middle_category`
               WHERE `title5` = 'true'
               AND `status` = 'true'
               AND `under_category` = '$id'";
@@ -1979,7 +2008,7 @@ else if($type == "bannerBeauty3"){
 else if($type == "getfashionCategory1"){
        $id = $_POST['categoryId'];
 
-     $query = "SELECT * FROM `subcategory`
+     $query = "SELECT * FROM `middle_category`
               WHERE `title1` = 'true'
               AND `status` = 'true'
               AND `under_category` = '$id'";
@@ -2010,7 +2039,7 @@ else if($type == "getfashionCategory1"){
 else if($type == "getfashionCategory2"){
        $id = $_POST['categoryId'];
 
-     $query = "SELECT * FROM `subcategory`
+     $query = "SELECT * FROM `middle_category`
               WHERE `title2` = 'true'
               AND `status` = 'true'
               AND `under_category` = '$id'";
@@ -2041,7 +2070,7 @@ else if($type == "getfashionCategory2"){
 else if($type == "getfashionCategory3"){
        $id = $_POST['categoryId'];
 
-     $query = "SELECT * FROM `subcategory`
+     $query = "SELECT * FROM `middle_category`
               WHERE `title3` = 'true'
               AND `status` = 'true'
               AND `under_category` = '$id'";
@@ -2072,7 +2101,7 @@ else if($type == "getfashionCategory3"){
 else if($type == "getfashionCategory4"){
        $id = $_POST['categoryId'];
 
-     $query = "SELECT * FROM `subcategory`
+     $query = "SELECT * FROM `middle_category`
               WHERE `title4` = 'true'
               AND `status` = 'true'
               AND `under_category` = '$id'";
@@ -2103,7 +2132,7 @@ else if($type == "getfashionCategory4"){
 else if($type == "getfashionCategory5"){
        $id = $_POST['categoryId'];
 
-     $query = "SELECT * FROM `subcategory`
+     $query = "SELECT * FROM `middle_category`
               WHERE `title5` = 'true'
               AND `status` = 'true'
               AND `under_category` = '$id'";
@@ -2227,8 +2256,7 @@ else if($type == "getSubcategoryWithProduct") {
     $categoryId = $_POST['categoryId'] ?? '';
 
     // Step 1: Get first 4 subcategories
-    $subQuery = mysqli_query($con,"
-        SELECT id, name, image_path
+    $subQuery = mysqli_query($con,"SELECT id, name, image_path
         FROM subcategory
         WHERE under_category='$categoryId'
         AND status='true'
@@ -2289,7 +2317,7 @@ else if($type == "getSubcategoryWithProduct") {
 }
 else if($type == "getPharmacyCategory1"){
     $id = $_POST['categoryId'];
-     $query = "SELECT * FROM `subcategory`
+     $query = "SELECT * FROM `middle_category`
               WHERE `title1` = 'true'
               AND `status` = 'true'
               AND `under_category` = '$id'";
@@ -2387,7 +2415,7 @@ else if($type == "getPharmacyBanner3"){
 }
 else if($type == "getPharmacyCategory2"){
     $id = $_POST['categoryId'];
-     $query = "SELECT * FROM `subcategory`
+     $query = "SELECT * FROM `middle_category`
               WHERE `title2` = 'true'
               AND `status` = 'true'
               AND `under_category` = '$id'";
@@ -2416,7 +2444,7 @@ else if($type == "getPharmacyCategory2"){
 }
 else if($type == "getPharmacyCategory3"){
     $id = $_POST['categoryId'];
-     $query = "SELECT * FROM `subcategory`
+     $query = "SELECT * FROM `middle_category`
               WHERE `title3` = 'true'
               AND `status` = 'true'
               AND `under_category` = '$id'";
@@ -2445,7 +2473,7 @@ else if($type == "getPharmacyCategory3"){
 }
 else if($type == "getPharmacyCategory4"){
     $id = $_POST['categoryId'];
-     $query = "SELECT * FROM `subcategory`
+     $query = "SELECT * FROM `middle_category`
               WHERE `title4` = 'true'
               AND `status` = 'true'
               AND `under_category` = '$id'";
@@ -2474,7 +2502,7 @@ else if($type == "getPharmacyCategory4"){
 }
 else if($type == "getPharmacyCategory5"){
     $id = $_POST['categoryId'];
-     $query = "SELECT * FROM `subcategory`
+     $query = "SELECT * FROM `middle_category`
               WHERE `title5` = 'true'
               AND `status` = 'true'
               AND `under_category` = '$id'";
@@ -2503,7 +2531,7 @@ else if($type == "getPharmacyCategory5"){
 }
 else if($type == "getCategoryKids1"){
     $id = $_POST['categoryId'];
-     $query = "SELECT * FROM `subcategory`
+     $query = "SELECT * FROM `middle_category`
               WHERE `title1` = 'true'
               AND `status` = 'true'
               AND `under_category` = '$id'";
@@ -2532,7 +2560,7 @@ else if($type == "getCategoryKids1"){
 }
 else if($type=="getCategoryKids2"){
      $id = $_POST['categoryId'];
-     $query = "SELECT * FROM `subcategory`
+     $query = "SELECT * FROM `middle_category`
               WHERE `title2` = 'true'
               AND `status` = 'true'
               AND `under_category` = '$id'";
@@ -2559,7 +2587,7 @@ else if($type=="getCategoryKids2"){
 }
 else if($type=="getCategoryKids3"){
      $id = $_POST['categoryId'];
-     $query = "SELECT * FROM `subcategory`
+     $query = "SELECT * FROM `middle_category`
               WHERE `title3` = 'true'
               AND `status` = 'true'
               AND `under_category` = '$id'";
@@ -2586,7 +2614,7 @@ else if($type=="getCategoryKids3"){
 }
 else if($type=="getCategoryKids4"){
      $id = $_POST['categoryId'];
-     $query = "SELECT * FROM `subcategory`
+     $query = "SELECT * FROM `middle_category`
               WHERE `title4` = 'true'
               AND `status` = 'true'
               AND `under_category` = '$id'";
@@ -2613,7 +2641,7 @@ else if($type=="getCategoryKids4"){
 }
 else if($type=="getCategoryKids5"){
      $id = $_POST['categoryId'];
-     $query = "SELECT * FROM `subcategory`
+     $query = "SELECT * FROM `middle_category`
               WHERE `title5` = 'true'
               AND `status` = 'true'
               AND `under_category` = '$id'";
@@ -2783,7 +2811,7 @@ else if($type == "get99storeBanner3"){
 
 else if($type == "getCategoryElectricity1"){
     $id = $_POST['categoryId'];
-     $query = "SELECT * FROM `subcategory`
+     $query = "SELECT * FROM `middle_category`
               WHERE `title1` = 'true'
               AND `status` = 'true'
               AND `under_category` = '$id'";
@@ -2879,7 +2907,7 @@ else if($type == "getElectricityBanner3"){
 }
 else if($type == "getCategoryElectricity2"){
     $id = $_POST['categoryId'];
-     $query = "SELECT * FROM `subcategory`
+     $query = "SELECT * FROM `middle_category`
               WHERE `title2` = 'true'
               AND `status` = 'true'
               AND `under_category` = '$id'";
@@ -2906,7 +2934,7 @@ else if($type == "getCategoryElectricity2"){
 }
 else if($type == "getCategoryElectricity3"){
     $id = $_POST['categoryId'];
-     $query = "SELECT * FROM `subcategory`
+     $query = "SELECT * FROM `middle_category`
               WHERE `title3` = 'true'
               AND `status` = 'true'
               AND `under_category` = '$id'";
@@ -2933,7 +2961,7 @@ else if($type == "getCategoryElectricity3"){
 }
 else if($type == "getCategoryElectricity4"){
     $id = $_POST['categoryId'];
-     $query = "SELECT * FROM `subcategory`
+     $query = "SELECT * FROM `middle_category`
               WHERE `title4` = 'true'
               AND `status` = 'true'
               AND `under_category` = '$id'";
@@ -2960,7 +2988,7 @@ else if($type == "getCategoryElectricity4"){
 }
 else if($type == "getCategoryElectricity5"){
     $id = $_POST['categoryId'];
-     $query = "SELECT * FROM `subcategory`
+     $query = "SELECT * FROM `middle_category`
               WHERE `title5` = 'true'
               AND `status` = 'true'
               AND `under_category` = '$id'";
@@ -3151,32 +3179,60 @@ else if($type == "getGroceryBanner3"){
 }
 else if($type == "getRecentOrder"){
     $user_id=$_POST['userId'];
+    $branchId=$_POST['branchId'];
 
-  $query = "SELECT
+ $query = "SELECT
     p.*,
+
     (
         SELECT COUNT(*)
-        FROM varient v
-        WHERE v.product_id = p.p_id
-    ) AS varient_count
-    FROM product p
-    WHERE p.status = 'true'
-    AND p.p_id IN (
-        SELECT c.p_id
-        FROM cart c
-        WHERE c.status = 'false'
-        AND c.idfr IN (
-            SELECT o.idfr
-            FROM `order` o
-            WHERE o.user_id = '$user_id'
-        )
+        FROM varient vc
+        WHERE vc.product_id = p.p_id
+    ) AS varient_count,
+
+   v.vid,
+    v.product_id,
+    v.v_unit,
+    v.v_mrp,
+    v.v_seliing_price,
+    v.v_purchase_price,
+    v.v_quantity,
+
+    IFNULL(bs.stock, 0) AS stock
+
+FROM product p
+
+LEFT JOIN varient v
+    ON v.vid = (
+        SELECT v2.vid
+        FROM varient v2
+        WHERE v2.product_id = p.p_id
+        ORDER BY v2.vid ASC
+        LIMIT 1
     )
-    ORDER BY p.p_id DESC";
+
+LEFT JOIN branch_stock bs
+    ON bs.product_id = p.p_id
+    AND bs.varient_id = v.vid
+    AND bs.branch_id = '$branchId'
+
+WHERE p.status = 'true'
+AND p.p_id IN (
+    SELECT c.p_id
+    FROM cart c
+    WHERE c.status = 'false'
+    AND c.idfr IN (
+        SELECT o.idfr
+        FROM `order` o
+        WHERE o.user_id = '$user_id'
+    )
+)
+
+ORDER BY p.p_id DESC"; 
 
 
-    $res = mysqli_query($con,$query);
-    //   echo $query; exit();
-  if(mysqli_num_rows($res)>0){
+  $res=mysqli_query($con,$query);
+if(mysqli_num_rows($res)>0){
     $data=[];
 
     while ($row=mysqli_fetch_assoc($res)) {
@@ -3265,4 +3321,68 @@ else if($type=="getSingleBrandOfTheDay"){
         ]);
     }
 }
+
+
+
+// else if($type=="getCurrentBranch"){
+//     $userLat = $_POST['latitude'];
+//     $userLng = $_POST['longitude'];
+    
+//     $query = "SELECT * FROM branch WHERE status='1'";
+//     $res = mysqli_query($con, $query);
+
+//     $nearestBranch = null;
+//     $minDistance = PHP_FLOAT_MAX;
+
+//     while ($branch = mysqli_fetch_assoc($res)) {
+
+//         $distance = getDistance(
+//             $userLat,
+//             $userLng,
+//             $branch['latitude'],
+//             $branch['longitude']
+//         );
+
+//         if (
+//             $distance <= $branch['coverage_radius'] &&
+//             $distance < $minDistance
+//         ) {
+//             $minDistance = $distance;
+//             $nearestBranch = $branch;
+//         }
+//     }
+
+//     if ($nearestBranch) {
+//         echo json_encode([
+//             "status" => true,
+//             "branch_id" => $nearestBranch['id'],
+//             "branch_name" => $nearestBranch['name'],
+//             "distance" => round($minDistance, 2)
+//         ]);
+//     } else {
+//         echo json_encode([
+//             "status" => false,
+//             "message" => "No branch available in your area."
+//         ]);
+//     }
+// }
+
+
+// function getDistance($lat1, $lon1, $lat2, $lon2)
+// {
+//     $earthRadius = 6371; // Earth radius in KM
+
+//     $dLat = deg2rad($lat2 - $lat1);
+//     $dLon = deg2rad($lon2 - $lon1);
+
+//     $a = sin($dLat / 2) * sin($dLat / 2) +
+//          cos(deg2rad($lat1)) * cos(deg2rad($lat2)) *
+//          sin($dLon / 2) * sin($dLon / 2);
+
+//     $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
+
+//     return $earthRadius * $c; // Distance in KM
+// }
+
+
   ?>
