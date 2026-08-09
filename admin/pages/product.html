@@ -3,6 +3,7 @@
 
 
 <!-- Mirrored from /dashboard/pages/product.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 05 May 2026 18:40:22 GMT -->
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -88,7 +89,7 @@
                     </div>
 
                 </div>
-                 <div class="sidebar-box flex flex-start gap-10 branchBox ">
+                <div class="sidebar-box flex flex-start gap-10 branchBox ">
                     <i class="bi bi-shop"></i>
                     <p>Branch</p>
                 </div>
@@ -225,12 +226,13 @@
 
                         <div class="form-group k_form_group">
                             <label for="sub-category">Middle-Category</label>
-                            <select id="middle-category" name="middle-category" required onchange="handleMiddleCategoryList()">
+                            <select id="middle-category" name="middle-category" required
+                                onchange="handleMiddleCategoryList()">
                                 <option value="">Select Middle-Category</option>
                                 <!-- Populate based on category selection dynamically if needed -->
                             </select>
-                        </div>  
-                         <div class="form-group k_form_group">
+                        </div>
+                        <div class="form-group k_form_group">
                             <label for="sub-category">Sub-Category</label>
                             <select id="sub-category" name="sub-category" required>
                                 <option value="">Select Sub-Category</option>
@@ -247,36 +249,56 @@
                             </select>
                         </div>
 
+                        
+                    </div>
+                    <div class="flex flex-start gap-30 k_form_group_container">
                         <div class="form-group k_form_group">
                             <label for="product-name">Product Name</label>
                             <input type="text" id="product-name" name="product-name" placeholder="Product Name"
                                 required>
                         </div>
+                        <div class="form-group k_form_group">
+                            <label for="review">Review Value</label>
+                            <input type="number" step="0.01" id="review" max="5" maxlength="1"
+                                oninput="validateInput(this)" placeholder="Review Value (0-5)" required>
+                        </div>
+
+                        <div class="form-group k_form_group">
+                            <label for="review-nop">Number of People (Review)</label>
+                            <input type="number" step="0.01" id="review-nop" name="selling-price"
+                                placeholder="Number of People (Review)" required>
+                        </div>
                     </div>
 
-                    <div class="flex flex-start gap-30 k_form_group_container">
-                        <!-- Pricing Information -->
-                        <div class="form-group k_form_group">
-                            <label for="mrp">MRP</label>
-                            <input type="number" step="0.01" id="mrp" name="mrp" placeholder="MRP" required>
-                        </div>
+                    <div class="">
+                        <h3 style="margin-bottom: 10px;">Add Variant</h3>
 
-                        <div class="form-group k_form_group">
-                            <label for="selling-price">Selling Price</label>
-                            <input type="number" step="0.01" id="selling-price" name="selling-price"
-                                placeholder="Selling Price" required>
-                        </div>
+                        <div class="flex flex-start gap-30 k_form_group_container">
 
-                        <div class="form-group k_form_group">
-                            <label for="purchase-price">Purchase Price</label>
-                            <input type="number" step="0.01" id="purchase-price" name="purchase-price"
-                                placeholder="Purchase Price" required>
-                        </div>
-                        <!-- <div class="form-group k_form_group">
+                            <!-- Pricing Information -->
+                            <div class="form-group k_form_group">
+                                <label for="mrp">MRP</label>
+                                <input type="number" step="0.01" id="mrp" name="mrp" placeholder="MRP" required>
+                            </div>
+
+                            <div class="form-group k_form_group">
+                                <label for="selling-price">Selling Price</label>
+                                <input type="number" step="0.01" id="selling-price" name="selling-price"
+                                    placeholder="Selling Price" required>
+                            </div>
+
+                            <div class="form-group k_form_group">
+                                <label for="purchase-price">Purchase Price</label>
+                                <input type="number" step="0.01" id="purchase-price" name="purchase-price"
+                                    placeholder="Purchase Price" required>
+                            </div>
+                            <!-- <div class="form-group k_form_group">
                             <label for="stock">Stock</label>
                             <input type="number" step="0.01" id="stock" name="stock" placeholder="Stock" required>
                         </div> -->
+                        </div>
                     </div>
+
 
                     <div class="flex flex-start gap-30 k_form_group_container">
                         <div class="form-group k_form_group">
@@ -334,122 +356,9 @@
                             </select>
                         </div>
 
-                        <div class="form-group k_form_group">
-                            <label for="review">Review Value</label>
-                            <input type="number" step="0.01" id="review" max="5" maxlength="1"
-                                oninput="validateInput(this)" placeholder="Review Value (0-5)" required>
-                        </div>
 
-                        <div class="form-group k_form_group">
-                            <label for="review-nop">Number of People (Review)</label>
-                            <input type="number" step="0.01" id="review-nop" name="selling-price"
-                                placeholder="Number of People (Review)" required>
-                        </div>
 
                     </div>
-
-                    <!-- ----- variant section ------ -->
-                    <!-- <div class="">
-                        <h3>Add Variant</h3>
-                        <div class="vareint-result" id="vareint-result">
-
-                        </div>
-
-                        <div class="flex flex-start gap-30 flex-wrap k_form_group_container">
-
-                            <div class="form-group k_form_group">
-                                <label for="vquantity">Quantity</label>
-                                <input type="text" step="0.01" id="vquantity" name="quantity" placeholder="Quantity">
-                            </div>
-
-                            <div class="form-group k_form_group">
-                                <label for="vunit">Select Unit</label>
-                                <select id="vunit" name="vunit">
-                                    <option value="">Select Unit</option>
-                                    Grocery & General Food Items
-                                    <option value="gm">gm</option>
-                                    <option value="kg">kg</option>
-                                    <option value="ml">ml</option>
-                                    <option value="liter">liter</option>
-                                    <option value="packet">Packet</option>
-                                    <option value="bottle">Bottle</option>
-                                    <option value="can">Can</option>
-                                    <option value="jar">Jar</option>
-                                    <option value="tin">Tin</option>
-                                    <option value="sachet">Sachet</option>
-                                    <option value="bar">Bar</option>
-                                    <option value="box">Box</option>
-                                    <option value="tray">Tray</option>
-
-                                    Fruits & Vegetables
-                                    <option value="pieces">Pieces</option>
-                                    <option value="bunch">Bunch</option>
-                                    <option value="dozen">Dozen</option>
-                                    <option value="bundle">Bundle</option>
-                                    <option value="pair">Pair</option>
-
-                                    Clothes
-                                    <option value="piece">Piece</option>
-                                    <option value="set">Set</option>
-                                    <option value="pair">Pair</option>
-                                    <option value="pack">Pack</option>
-                                    <option value="s">S</option>
-                                    <option value="m">M</option>
-                                    <option value="l">L</option>
-                                    <option value="xl">XL</option>
-                                    <option value="xxl">XXL</option>
-
-                                    Electronics
-                                    <option value="unit">Unit</option>
-
-                                    <option value="half plate">Half Plate</option>
-                                    <option value="full plate">Full Plate</option>
-                                    <option value="glass">glass</option>
-                                    <option value="cup">cup</option>
-                                    <option value="plate">plate</option>
-
-                                </select>
-                            </div>
-
-                            <div class="form-group k_form_group">
-                                <label for="vmrp">MRP</label>
-                                <input type="number" step="0.01" id="vmrp" name="mrp" placeholder="MRP">
-                            </div>
-
-                            <div class="form-group k_form_group">
-                                <label for="vselling-price">Selling Price</label>
-                                <input type="number" step="0.01" id="vselling-price" name="selling-price"
-                                    placeholder="Selling Price">
-                            </div>
-                        </div>
-
-                        <div class="flex flex-start gap-30 flex-wrap k_form_group_container">
-                            <div class="form-group k_form_group">
-                                <label for="vpurchase-price">Purchase Price</label>
-                                <input type="number" step="0.01" id="vpurchase-price" name="purchase-price"
-                                    placeholder="Purchase Price">
-                            </div>
-                            Stock and Quantity
-                            <div class="form-group k_form_group">
-                                <label for="vstock">Stock</label>
-                                <input type="number" step="0.01" id="vstock" name="stock" placeholder="Stock">
-                            </div>
-
-                            <div class="form-group k_form_group">
-                                <label for="vlimit">Limit</label>
-                                <input type="number" step="0.01" id="vlimit" name="limit"
-                                    placeholder="Limit (Optional)">
-                            </div>
-
-                            <div class="form-group k_form_group">
-                                <label for="vstock"></label> &nbsp;
-                                <input type="button" id="addmore" value="Add">
-                            </div>
-
-                        </div>
-
-                    </div> -->
-
                     <!-- --- product details----- -->
 
                     <div class="">
@@ -560,14 +469,14 @@
 
                     <div class="product_filter_section">
 
-                       
+
                         <select id="rowsPerPage">
                             <option value="10" selected>10</option>
                             <option value="25">25</option>
                             <option value="50">50</option>
                             <option value="100">100</option>
                         </select>
-                       
+
 
                         <div class="select_title">
                             <select name="" id="select_title" onchange="filterProduct()">
@@ -623,7 +532,8 @@
                         </div>
 
                         <div class="search-container flex gap-10" style="flex-wrap: wrap;">
-                            <select id="filter-created-by" style="padding: 8px; border-radius: 4px; border: 1px solid #ccc; outline: none; font-size: 14px; background: white; display: none;">
+                            <select id="filter-created-by"
+                                style="padding: 8px; border-radius: 4px; border: 1px solid #ccc; outline: none; font-size: 14px; background: white; display: none;">
                                 <option value="all">All Creators</option>
                             </select>
                             <input type="text" id="search-input" placeholder="Search by Name" />
@@ -882,4 +792,5 @@
 
 
 <!-- Mirrored from /dashboard/pages/product.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 05 May 2026 18:40:22 GMT -->
+
 </html>

@@ -443,7 +443,7 @@ else if($type == "getNewFindPrd"){
 
     // Header Titles
     $headerQuery = "SELECT * FROM `header_title`
-                    WHERE `title_type`='new_finds'";
+                    WHERE `title_type`='new_finds' AND `category_Id`='categoryId'";
     $headerRes = mysqli_query($con, $headerQuery);
 
     $headers = [];
@@ -491,9 +491,10 @@ else if($type == "getNewFindPrd"){
     ]);
 }
   else if($type == "getAllHeading"){
+    $categoryId=$_POST['categoryId'];
 
     $query = "SELECT * FROM `header_title`
-        WHERE `title_type` IN ('top_subcategory', 'top_product','new_finds')";
+        WHERE `title_type` IN ('top_subcategory', 'top_product','new_finds') AND `category_Id`='$categoryId'";
     $res = mysqli_query($con, $query);
 
     $categoryHeading = [];

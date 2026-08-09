@@ -768,11 +768,7 @@ const renderProduct = (page, pageSize) => {
                    <th>SL</th>
                    <th>Image</th>
                    <th>Name</th>
-                   <th>MRP</th>
-                   <th>Selling <br> price</th>
-                   <th>Purchase <br> price</th>
-                   <th>Stock <br> Limit</th>
-                   <th>Quantity</th>
+                   
                    <th>Created By</th>
                    <th>Other</th>
                </tr>
@@ -786,11 +782,6 @@ const renderProduct = (page, pageSize) => {
                    <th>SL</th>
                    <th>Image</th>
                    <th>Name</th>
-                   <th>MRP</th>
-                   <th>Selling <br> price</th>
-                   <th>Purchase <br> price</th>
-                   <th>Stock <br> Limit</th>
-                   <th>Quantity</th>
                    <th>Created By</th>
                    <th>Status</th>
                    <th>Select <br> Bestseller</th>
@@ -812,11 +803,6 @@ const renderProduct = (page, pageSize) => {
             <td class="sl">${(page - 1) * pageSize + index + 1}</td>
             <td><img src="${imgurl + item.image_path}" alt="${item.name}"></td>
             <td>${item.name}</td>
-            <td>${item.mrp}</td>
-            <td>${item.selling_price}</td>
-            <td>${item.purchase_price}</td>
-            <td>S - ${item.stock} <br> L - ${item.p_limit}</td>
-            <td>${item.quantity} ${item.unit}</td>
             <td style="color:#4F46E5; font-size:12px;"><b>@${item.added_by || 'admin'}</b></td>
             
            
@@ -837,11 +823,7 @@ const renderProduct = (page, pageSize) => {
             <td class="sl">${(page - 1) * pageSize + index + 1}</td>
             <td><img src="${imgurl + item.image_path}" alt="${item.name}"></td>
             <td>${item.name}</td>
-            <td>${item.mrp}</td>
-            <td>${item.selling_price}</td>
-            <td>${item.purchase_price}</td>
-            <td>S - ${item.stock} <br> L - ${item.p_limit}</td>
-            <td>${item.quantity} ${item.unit}</td>
+
             <td style="color:#4F46E5; font-size:12px;"><b>@${item.added_by || 'admin'}</b></td>
             <td>
             <label class="switch">

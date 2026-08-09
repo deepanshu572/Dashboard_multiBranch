@@ -808,11 +808,11 @@ else if ($type == 'logout') {
     // ✅ Insert product
     $sql = "INSERT INTO `product`
             (`name`, `image_path`, `under_category`,`under_middle_category`, `under_subcategory`, `brand_name`, 
-             `mrp`, `selling_price`, `purchase_price`, `quantity`, `unit`, 
+             
              `review_val`, `review_nop`, `information`, `highlight`, `isvarient`, `date`, `status`, `sku_number`,`p_limit`,`keyword`,`added_by`) 
             VALUES (
                 '$productName', '$imgurl', '$category','$middleCategory', '$subCategory', '$brandName',
-                '$mrp', '$sellingPrice', '$purchasePrice', '$quantity', '$unit',
+                
                 '$review', '$reviewNop', '$informationData', '$highlightData', 'true',
                 '$date', 'true', '$skuNumber','$product_limit','$product_keyword','$staff_username'
             )";
