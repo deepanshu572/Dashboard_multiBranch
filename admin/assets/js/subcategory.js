@@ -163,13 +163,8 @@ const renderSubCategory = (data) => {
                 <th>Main <br> Category</th>
                 <th>Middle <br> Category</th>
                 <th>Name</th>
+                <th>Product Count</th>
                 <th>Status</th>
-                <th>No Of Product</th>
-                <th>Title 1</th>
-                <th>Title 2</th>
-                <th>Title 3</th>
-                <th>Title 4</th>
-                <th>Title 5</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -187,6 +182,7 @@ const renderSubCategory = (data) => {
                         <td>${item.middle_category_name}</td>
 
             <td>${item.name}</td>
+            <td>${item.product_count}</td>
             <td>
                 <label class="switch">
                     <input type="checkbox" ${item.status == 'true' ? "checked" : ""}
@@ -194,40 +190,7 @@ const renderSubCategory = (data) => {
                     <span class="slider"></span>
                 </label>
             </td>
-            <td>${item.product_count}</td>
-            <td>
-                <label class="switch">
-                    <input type="checkbox" ${item.title1 == 'true' ? "checked" : ""}
-                    onclick="handleCheckboxChange(this,'title1','${item.id}')">
-                    <span class="slider"></span>
-                </label>
-            </td>
-            <td>
-                <label class="switch">
-                    <input type="checkbox" ${item.title2 == 'true' ? "checked" : ""}
-                    onclick="handleCheckboxChange(this,'title2','${item.id}')">
-                    <span class="slider"></span>
-                </label>
-            </td>
-            <td>
-                <label class="switch">
-                    <input type="checkbox" ${item.title3 == 'true' ? "checked" : ""} 
-                    onclick="handleCheckboxChange(this,'title3','${item.id}')">
-                    <span class="slider"></span>
-                </label>
-            </td>
-            <td>
-                <label class="switch">
-                    <input type="checkbox" ${item.title4 == 'true' ? "checked" : ""}  onclick="handleCheckboxChange(this,'title4','${item.id}')">
-                    <span class="slider"></span>
-                </label>
-            </td>
-            <td>
-                <label class="switch">
-                    <input type="checkbox" ${item.title5 == 'true' ? "checked" : ""}  onclick="handleCheckboxChange(this,'title5','${item.id}')">
-                    <span class="slider"></span>
-                </label>
-            </td>
+         
            
             <td>
                 <button class="edit flex" onclick='editSubCategory(${items})'><i class="bi bi-pencil"></i></button>

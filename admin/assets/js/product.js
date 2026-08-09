@@ -1,6 +1,6 @@
 // Image upload and preview
 
-let categoryData = []; let subCategoryData = [];
+let categoryData = []; let subCategoryData = []; let middleCategoryData=[];
 
 let singleImageName = '';
 let imageExtension = '';
@@ -564,6 +564,7 @@ const getMiddleCategory = () => {
             if (response.status == "success") {
                 let data = response.data;
                 middleCategoryListData = data;
+                middleCategoryData=data;
             }
             else {
                 console.log("something wents wrong in getMiddleCategory !");
@@ -1642,7 +1643,7 @@ let isediting = false;
 
 const editProduct = async (item, pageNumber, pageSize) => {
     await loadBrandList(item.under_category);
-    await getMiddleCategory();
+    // await getMiddleCategory();
     console.log(item);
 
     isediting = true;
@@ -1677,7 +1678,7 @@ const editProduct = async (item, pageNumber, pageSize) => {
 
 
     let middleCategory = `<option selected disable hidden value="">Select Middle Category</option>`;
-    let middlecategoryFilterData = middleCategoryListData.filter((sub) => sub.category_id == item.under_category);
+    let middlecategoryFilterData = middleCategoryListData.filter((sub) => sub.under_category == item.under_category);
     middlecategoryFilterData.forEach((middleCat, index) => {
         // Check if the category.id matches under_category
         const isSelected = (middleCat.id === item.under_middle_category) ? 'selected' : '';
@@ -1765,42 +1766,9 @@ const editProduct = async (item, pageNumber, pageSize) => {
                         </div>
                 </div>
         </div>
-        <div class="edit-field"> 
-          <div class="flex space-between gap-20">
-                <div class="form-group">
-                            <label for="edit-mrp">MRP</label>
-                            <input type="number" id="edit-mrp" name="mrp" placeholder="MRP" value="${item.mrp}" required>
-                </div>
-
-                <div class="form-group">
-                            <label for="edit-selling-price">Selling Price</label>
-                            <input type="number" id="edit-selling-price" name="selling-price" placeholder="Selling Price"
-                            value="${item.selling_price}" required>
-                </div>
-                <div class="form-group">
-                            <label for="edit-purchase-price">Purchase Price</label>
-                            <input type="number" id="edit-purchase-price" name="purchase-price" placeholder="Purchase Price"
-                               value="${item.purchase_price}" required>
-                </div>
-            </div>
-        </div>
        
 
-        <div class="edit-field"> 
-          <div class="flex space-between gap-20">
-                 <div class="form-group">
-                            <label for="edit-quantity">Quantity</label>
-                            <input type="text" id="edit-quantity" name="quantity" placeholder="Quantity" value="${item.quantity}" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="edit-unit">Select Unit</label>
-                            <select id="edit-unit" name="unit" required>
-                            ${unitList}
-                            </select>
-                </div>
-            </div>
-        </div>
+     
 
         <div class="edit-field"> 
          <div class="flex space-between gap-20">
@@ -1944,12 +1912,12 @@ function updateProduct(p_id) {
     const subCategory = $('#edit-sub-category').val();
     const brandName = $('#edit_brand_name').val();
     const productName = $('#edit-product-name').val();
-    const mrp = $('#edit-mrp').val();
-    const sellingPrice = $('#edit-selling-price').val();
-    const purchasePrice = $('#edit-purchase-price').val();
+    // const mrp = $('#edit-mrp').val();
+    // const sellingPrice = $('#edit-selling-price').val();
+    // const purchasePrice = $('#edit-purchase-price').val();
     // const stock = $('#edit-stock').val();
-    const quantity = $('#edit-quantity').val();
-    const unit = $('#edit-unit').val();
+    // const quantity = $('#edit-quantity').val();
+    // const unit = $('#edit-unit').val();
     const review = $('#edit-review').val();
     const reviewNop = $('#edit-review-nop').val();
     const skuNumber = $('#edit-sku-number').val();
@@ -1959,9 +1927,9 @@ function updateProduct(p_id) {
 
     // Validate required fields
 
-    console.log(category, subCategory, brandName, productName, mrp, sellingPrice, purchasePrice, quantity, unit, review, reviewNop, skuNumber);
+    // console.log(category, subCategory, brandName, productName, mrp, sellingPrice, purchasePrice, quantity, unit, review, reviewNop, skuNumber);
 
-    if (!productName || !mrp || !sellingPrice || !category || !purchasePrice  || !quantity || !unit || !review || !reviewNop) {
+    if (!productName || !category || !review || !reviewNop) {
         warningAlert('Please fill out all required fields.');
         return;
     }
@@ -1991,12 +1959,12 @@ function updateProduct(p_id) {
         formData.append('subCategory', subCategory);
         formData.append('brandName', brandName);
         formData.append('productName', productName);
-        formData.append('mrp', mrp);
-        formData.append('sellingPrice', sellingPrice);
-        formData.append('purchasePrice', purchasePrice);
+        // formData.append('mrp', mrp);
+        // formData.append('sellingPrice', sellingPrice);
+        // formData.append('purchasePrice', purchasePrice);
         // formData.append('stock', stock);
-        formData.append('quantity', quantity);
-        formData.append('unit', unit);
+        // formData.append('quantity', quantity);
+        // formData.append('unit', unit);
         formData.append('review', review);
         formData.append('reviewNop', reviewNop);
         formData.append('skuNumber', skuNumber);

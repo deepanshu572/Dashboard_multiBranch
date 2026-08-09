@@ -477,9 +477,9 @@ else if ($type == 'logout') {
     $imgurl = 'api/uploads/'.$img_nm;
     $image = base64_to_jpeg($imgurlbase64 , 'uploads/'.$img_nm);
 
-    $query = "INSERT INTO `subcategory`(`under_category`,`middle_category`, `name`, `image_path`,`status`, `title1`, `title2`, `title3`, `title4`,`title5`, `date`, `added_by`) 
-              VALUES ('$underCategory','$middleCategory','$subCategoryName','$imgurl','true','false','false','false','false','false','$date', '$staff_username')";
-    
+    $query = "INSERT INTO `subcategory`(`under_category`,`middle_category`, `name`, `image_path`,`status`) 
+              VALUES ('$underCategory','$middleCategory','$subCategoryName','$imgurl','true')";
+    // echo $query; exit(); // Debugging line to check the query
     $run = mysqli_query($con, $query);
     
     if($run){
@@ -523,7 +523,7 @@ else if ($type == 'logout') {
 
     else if($type == "loadMiddleCategoryList"){
          $categoryid=$_POST['categoryid'];
-        $query="SELECT * FROM `middle_category` WHERE `category_id` = '$categoryid' AND `status` ='true'";
+        $query="SELECT * FROM `middle_category` WHERE `under_category` = '$categoryid' AND `status` ='true'";
     
         $run=mysqli_query($con,$query);
     
@@ -1992,12 +1992,12 @@ else if ($type == 'logout') {
     $subCategory = mysqli_real_escape_string($con, $_POST['subCategory']);
     $brandName = mysqli_real_escape_string($con, $_POST['brandName']);
     $productName = mysqli_real_escape_string($con, $_POST['productName']);
-    $mrp = mysqli_real_escape_string($con, $_POST['mrp']);
-    $sellingPrice = mysqli_real_escape_string($con, $_POST['sellingPrice']);
-    $purchasePrice = mysqli_real_escape_string($con, $_POST['purchasePrice']);
-    $stock = mysqli_real_escape_string($con, $_POST['stock']);
-    $quantity = mysqli_real_escape_string($con, $_POST['quantity']);
-    $unit = mysqli_real_escape_string($con, $_POST['unit']);
+    // $mrp = mysqli_real_escape_string($con, $_POST['mrp']);
+    // $sellingPrice = mysqli_real_escape_string($con, $_POST['sellingPrice']);
+    // $purchasePrice = mysqli_real_escape_string($con, $_POST['purchasePrice']);
+    // $stock = mysqli_real_escape_string($con, $_POST['stock']);
+    // $quantity = mysqli_real_escape_string($con, $_POST['quantity']);
+    // $unit = mysqli_real_escape_string($con, $_POST['unit']);
     $review = mysqli_real_escape_string($con, $_POST['review']);
     $reviewNop = mysqli_real_escape_string($con, $_POST['reviewNop']);
     $skuNumber = mysqli_real_escape_string($con, $_POST['skuNumber']);
@@ -2032,11 +2032,6 @@ else if ($type == 'logout') {
                     `under_middle_category`='$mainCategory',
                     `under_subcategory`='$subCategory',
                     `brand_name`='$brandName',
-                    `mrp`='$mrp',
-                    `selling_price`='$sellingPrice',
-                    `purchase_price`='$purchasePrice',
-                    `quantity`='$quantity',
-                    `unit`='$unit',
                     `review_val`='$review',
                     `review_nop`='$reviewNop',
                     `sku_number`='$skuNumber',
@@ -2061,11 +2056,6 @@ else if ($type == 'logout') {
                     `under_subcategory`='$subCategory',
                     `under_middle_category`='$mainCategory',
                     `brand_name`='$brandName',
-                    `mrp`='$mrp',
-                    `selling_price`='$sellingPrice',
-                    `purchase_price`='$purchasePrice',
-                    `quantity`='$quantity',
-                    `unit`='$unit',
                     `review_val`='$review',
                     `review_nop`='$reviewNop',
                     `sku_number`='$skuNumber',
@@ -2079,18 +2069,18 @@ else if ($type == 'logout') {
 
     if ($run) {
         // ✅ Step 5: Cart table update
-        $updateCart = "
-            UPDATE `cart` 
-            SET 
-                `mrp` = '$mrp',
-                `selling_price` = '$sellingPrice',
-                `purchase_price` = '$purchasePrice'
-            WHERE 
-                `p_id` = '$p_id' 
-                AND `status` = 'true' 
-                AND (`vid` = '0' OR `vid` = '' OR `vid` IS NULL)
-        ";
-        mysqli_query($con, $updateCart);
+        // $updateCart = "
+        //     UPDATE `cart` 
+        //     SET 
+        //         `mrp` = '$mrp',
+        //         `selling_price` = '$sellingPrice',
+        //         `purchase_price` = '$purchasePrice'
+        //     WHERE 
+        //         `p_id` = '$p_id' 
+        //         AND `status` = 'true' 
+        //         AND (`vid` = '0' OR `vid` = '' OR `vid` IS NULL)
+        // ";
+        // mysqli_query($con, $updateCart);
 
         echo "success";
     } else {
@@ -4633,7 +4623,8 @@ else if($type == "getMainCategory"){
 }
 else if($type == "getmiddleCategory"){
     $categoryId = $_POST['categoryId'];
-    $query = "SELECT * FROM `middle_category` WHERE `category_id`='$categoryId'";
+    $query = "SELECT * FROM `middle_category` WHERE `under_category`='$categoryId'";
+    // echo $query; exit();
 
     $res = mysqli_query($con,$query);
 
@@ -4711,7 +4702,7 @@ else if($type == "handleMiddleCategory"){
 
 
 
-    $query = "INSERT INTO `middle_category`(`category_id`, `name`, `image_path`, `status`) 
+    $query = "INSERT INTO `middle_category`(`under_category`, `name`, `image_path`, `status`) 
     VALUES ('$categoryId','$middleCategory','$logoNameDB','true')";
     $res = mysqli_query($con,$query);
 
@@ -4748,7 +4739,7 @@ else if($type=="updateMiddleCategory"){
     $categoryId = $_POST['categoryId'];
 
 
-    $query = "UPDATE `middle_category` SET `category_id`='$categoryId', `name`='$middleCategory' WHERE `id`='$id'";
+    $query = "UPDATE `middle_category` SET `under_category`='$categoryId', `name`='$middleCategory' WHERE `id`='$id'";
        $run = mysqli_query($con, $query);
 
     if($run){
@@ -4779,7 +4770,7 @@ else if($type == 'editMiddleSubCategoryWithImage'){
 
     $logoNameDB = "api/uploads/" . $logoName;
 
-        $query = "UPDATE `middle_category` SET `category_id`='$categoryId', `name`='$middleCategory', 
+        $query = "UPDATE `middle_category` SET `under_category`='$categoryId', `name`='$middleCategory', 
         `image_path`='$logoNameDB' WHERE `id`='$id'";
         $run = mysqli_query($con, $query);
 

@@ -108,10 +108,50 @@ header("Access-Control-Allow-Origin:*");
          }
     }
     else if($type == "getFlashSalePrd"){
-                $id=$_POST['categoryId'];
+        $categoryId = $_POST['categoryId'];
+         $branchId = $_POST['branchId'];
       // 9,8,7,20
         
-        $query = "SELECT * FROM `product` WHERE `flash_sale`='true' AND `status`='true' AND `under_category`='$id'";
+        // $query = "SELECT * FROM `product` WHERE `flash_sale`='true' AND `status`='true' AND `under_category`='$id'";
+
+         $query = "SELECT  p.*,
+            (
+                SELECT COUNT(*)
+                FROM varient vc
+                WHERE vc.product_id = p.p_id
+            ) AS varient_count,
+
+            v.vid,
+            v.product_id,
+            v.v_unit,
+            v.v_mrp,
+            v.v_seliing_price,
+            v.v_purchase_price,
+            v.v_quantity,
+
+            IFNULL(bs.stock, 0) AS stock
+
+            FROM product p
+
+            LEFT JOIN varient v 
+                ON v.vid = (
+                    SELECT v2.vid
+                    FROM varient v2
+                    WHERE v2.product_id = p.p_id
+                    ORDER BY v2.vid ASC
+                    LIMIT 1
+                )
+
+            LEFT JOIN branch_stock bs
+                ON bs.product_id = p.p_id
+                AND bs.varient_id = v.vid
+                AND bs.branch_id = '$branchId'
+
+            WHERE p.status = 'true'
+            AND p.under_category = '$categoryId'
+            AND p.flash_sale = 'true'";
+
+
          $res = mysqli_query($con,$query);
        if(mysqli_num_rows($res)>0){
             $data=[];
@@ -491,6 +531,7 @@ else if($type == "getNewFindPrd"){
     $user_id        = $_POST['user_id'] ?? '';
     $p_id           = $_POST['p_id'] ?? '';
     $vid            = $_POST['vid'] ?? '';
+    $branch_id     = $_POST['branch_id'] ?? '';
     $name           = $_POST['name'] ?? '';
     $image_path     = $_POST['image_path'] ?? '';
     $quantity       = $_POST['quantity'] ?? '';
@@ -509,7 +550,8 @@ else if($type == "getNewFindPrd"){
         $checkQuery = "SELECT * FROM `cart`
                     WHERE `user_id`='$user_id'
                     AND `p_id`='$p_id'
-                    AND `vid`='$vid' 
+                    AND `vid`='$vid'
+                    AND `branch_id`='$branch_id'
                     AND `status` = 'true'";
 
     } else {
@@ -517,6 +559,7 @@ else if($type == "getNewFindPrd"){
         $checkQuery = "SELECT * FROM `cart`
                     WHERE `user_id`='$user_id'
                     AND `p_id`='$p_id'
+                    AND `branch_id`='$branch_id'
                      AND `status` = 'true'";
     }
 
@@ -535,6 +578,7 @@ else if($type == "getNewFindPrd"){
                     WHERE `user_id`='$user_id'
                     AND `p_id`='$p_id'
                     AND `vid`='$vid'
+                    AND `branch_id`='$branch_id'
                      AND `status` = 'true'";
 
    } else {
@@ -543,8 +587,11 @@ else if($type == "getNewFindPrd"){
                     SET `nop`='$nop'
                     WHERE `user_id`='$user_id'
                     AND `p_id`='$p_id'
+                    AND `branch_id`='$branch_id'
                      AND `status` = 'true'";
   }
+
+        //   echo $updateQuery; exit();
 
         $updateRes = mysqli_query($con, $updateQuery);
 
@@ -566,6 +613,7 @@ else if($type == "getNewFindPrd"){
         $insertQuery = "INSERT INTO `cart`
         (
             `user_id`,
+            `branch_id`,
             `idfr`,
             `p_id`,
             `vid`,
@@ -585,6 +633,7 @@ else if($type == "getNewFindPrd"){
         VALUES
         (
             '$user_id',
+            '$branch_id',
             '$idfr',
             '$p_id',
             '$vid',
@@ -601,6 +650,7 @@ else if($type == "getNewFindPrd"){
             '$status',
             NOW()
         )";
+        // echo $insertQuery; exit();
 
         $insertRes = mysqli_query($con, $insertQuery);
 
@@ -624,23 +674,31 @@ else if($type == "getNewFindPrd"){
     $p_id     = $_POST['p_id'] ?? '';
     $vid      = $_POST['varId'] ?? '';
     $nop = $_POST['nop'] ?? '';
+        $branch_id     = $_POST['branch_id'] ?? '';
+
 
     if($nop <= 0){
-
-        if (!empty($vid)) {
-        $updateQuery = "UPDATE `cart`
-                        SET `status` = 'false'
+        $updateQuery = "DELETE FROM cart 
                         WHERE `user_id` = '$user_id'
-                        AND `p_id` = '$p_id'
-                        AND `vid` = '$vid'
-                        AND `status` = 'true'";
-    } else {
-        $updateQuery = "UPDATE `cart`
-                        SET `status` = 'false'
-                        WHERE `user_id` = '$user_id'
-                        AND `p_id` = '$p_id'
-                        AND `status` = 'true'";
-    }
+                         AND `p_id` = '$p_id'
+                         AND `vid` = '$vid'
+                         AND `branch_id` = '$branch_id'";
+    //     if (!empty($vid)) {
+    //     $updateQuery = "UPDATE `cart`
+    //                     SET `status` = 'false'
+    //                     WHERE `user_id` = '$user_id'
+    //                     AND `p_id` = '$p_id'
+    //                     AND `vid` = '$vid'
+    //                     AND `branch_id` = '$branch_id'
+    //                     AND `status` = 'true'";
+    // } else {
+    //     $updateQuery = "UPDATE `cart`
+    //                     SET `status` = 'false'
+    //                     WHERE `user_id` = '$user_id'
+    //                     AND `p_id` = '$p_id'
+    //                     AND `branch_id` = '$branch_id'
+    //                     AND `status` = 'true'";
+    // }
 
         $res = mysqli_query($con, $updateQuery);
 
@@ -659,12 +717,14 @@ else if($type == "getNewFindPrd"){
                             WHERE `user_id`='$user_id'
                             AND `p_id`='$p_id'
                             AND `vid`='$vid'
+                            AND `branch_id`='$branch_id'
                              AND `status` = 'true'";
         }else{
             $updateQuery = "UPDATE `cart`
                             SET `nop`='$nop'
                             WHERE `user_id`='$user_id'
                             AND `p_id`='$p_id'
+                            AND `branch_id`='$branch_id'
                              AND `status` = 'true'";
         }
 
@@ -679,8 +739,17 @@ else if($type == "getNewFindPrd"){
     }
 }
   else if($type == "getSingleVarientId"){
+        $branch_id = $_POST['branchId'] ?? '';
     $id=$_POST['id'];
-    $query = "SELECT * FROM `varient` WHERE `product_id`='$id'";
+    // $query = "SELECT * FROM `varient` WHERE `product_id`='$id'";
+    $query = "SELECT 
+            v.*,
+            bs.stock
+          FROM `varient` v
+          LEFT JOIN `branch_stock` bs
+            ON bs.varient_id = v.vid
+            AND bs.branch_id = '$branch_id'
+             WHERE v.product_id = '$id'";
     $res = mysqli_query($con,$query);
     
     if (mysqli_num_rows($res)>0) {
@@ -787,8 +856,15 @@ else if($type == "getNewFindPrd"){
     }
  }
  else if($type == "getAllVarient"){
-    $query = "SELECT * FROM `varient`";
-    $res= mysqli_query($con,$query);
+    $branch_id = $_POST['branchId'] ?? '';
+    $query = "SELECT 
+            v.*,
+            bs.stock
+          FROM `varient` v
+          LEFT JOIN `branch_stock` bs
+            ON bs.varient_id = v.vid
+            AND bs.branch_id = '$branch_id'";
+                $res= mysqli_query($con,$query);
 
     // Data Found
     if (mysqli_num_rows($res) > 0) {
@@ -1180,20 +1256,19 @@ else if($type == "usedCoupons"){
 
 }
 else if ($type == "handleOrder") {
-
-    $user_id        = $_POST['user_id'] ?? '';
-    $payment_method = $_POST['payMethod'] ?? '';
-    $address_id     = $_POST['selectAddress'] ?? '';
-    $order_type     = $_POST['orderType'] ?? '';
-    $selected_slot  = $_POST['selectedSlot'] ?? '';
-    $coupon_id      = $_POST['couponId'] ?? '';
-    $total          = $_POST['totalAmount'] ?? 0;
+    $branch_id       = $_POST['branchId'] ?? '';
+    $user_id         = $_POST['user_id'] ?? '';
+    $payment_method  = $_POST['payMethod'] ?? '';
+    $address_id      = $_POST['selectAddress'] ?? '';
+    $order_type      = $_POST['orderType'] ?? '';
+    $selected_slot   = $_POST['selectedSlot'] ?? '';
+    $coupon_id       = $_POST['couponId'] ?? '';
+    $total           = $_POST['totalAmount'] ?? 0;
     $handling_charge = $_POST['handlingCharge'] ?? 0;
     $coupon_amount   = $_POST['couponAmt'] ?? 0;
+    $delivery_charge = $_POST['deliveryCharge'] ?? 0;
 
-    $delivery_charge = $_POST['deliveryCharge'] ?? 0 ;
-
-    $status = "pending";
+    $status    = "pending";
     $new_order = "true";
 
     $date = date("Y-m-d");
@@ -1208,6 +1283,7 @@ else if ($type == "handleOrder") {
     (
         `user_id`,
         `idfr`,
+        `branch_id`,
         `address_id`,
         `total`,
         `date`,
@@ -1226,6 +1302,7 @@ else if ($type == "handleOrder") {
     (
         '$user_id',
         '$idfr',
+        '$branch_id',
         '$address_id',
         '$total',
         '$date',
@@ -1240,25 +1317,40 @@ else if ($type == "handleOrder") {
         '$new_order',
         '$dor'
     )";
-    
-    $query2 = "UPDATE varient v
-    JOIN cart c ON v.vid = c.vid
-    SET v.v_stock = v.v_stock - c.nop
-    WHERE c.idfr = '$idfr'";  
-    $query3 = "UPDATE `cart` SET `status` = 'false' WHERE `cart`.`idfr` = '$idfr'";
-    
-    // echo $query3; exit();
 
-   $result1 = mysqli_query($con, $query1);
-   $result2 = mysqli_query($con, $query2);
-   $result3 = mysqli_query($con, $query3);
+    /*
+     * Reduce branch stock
+     *
+     * cart.idfr identifies all products of this order.
+     * product_id + vid identifies the exact branch_stock row.
+     */
+    $query2 = "UPDATE `branch_stock` bs
+    INNER JOIN `cart` c
+        ON bs.product_id = c.p_id
+        AND bs.varient_id = c.vid
+    SET bs.stock = bs.stock - c.nop
+    WHERE bs.branch_id = '$branch_id'
+    AND c.idfr = '$idfr'";
+    // echo $query2; exit();
 
-   if ($result1 && $result2 && $result3) {
-    echo json_encode([
-        "status" => "success",
-        "message" => "Order placed successfully!"
-    ]);
+    // Mark cart items as ordered
+    $query3 = "UPDATE `cart`
+    SET `status` = 'false'
+    WHERE `idfr` = '$idfr'";
+
+    $result1 = mysqli_query($con, $query1);
+    $result2 = mysqli_query($con, $query2);
+    $result3 = mysqli_query($con, $query3);
+
+    if ($result1 && $result2 && $result3) {
+
+        echo json_encode([
+            "status" => "success",
+            "message" => "Order placed successfully!"
+        ]);
+
     } else {
+
         echo json_encode([
             "status" => "error",
             "message" => mysqli_error($con)
@@ -1342,16 +1434,43 @@ else if($type == "getSingleCategory"){
 
     $catId = $_POST['cid'];
     $middleCatId = $_POST['mid'] ?? '';
-
+    $branch_id = $_POST['branchId'] ?? '';
     $query1 = "SELECT * FROM `subcategory` WHERE `middle_category`='$middleCatId' AND `status`='true'";
-    $query2 = "  SELECT 
+   $query2 = "SELECT
             p.*,
+
             (
                 SELECT COUNT(*)
-                FROM `varient` v
-                WHERE v.product_id = p.p_id
-            ) AS varient_count
+                FROM `varient` v1
+                WHERE v1.product_id = p.p_id
+            ) AS varient_count,
+
+            v.vid,
+            v.product_id AS variant_product_id,
+            v.v_unit,
+            v.v_mrp,
+            v.v_seliing_price,
+            v.v_purchase_price,
+            v.v_quantity,
+
+            bs.stock
+
           FROM `product` p
+
+          LEFT JOIN `varient` v
+            ON v.vid = (
+                SELECT v1.vid
+                FROM `varient` v1
+                WHERE v1.product_id = p.p_id
+                ORDER BY v1.vid ASC
+                LIMIT 1
+            )
+
+          LEFT JOIN `branch_stock` bs
+            ON bs.product_id = p.p_id
+            AND bs.varient_id = v.vid
+            AND bs.branch_id = '$branch_id'
+
           WHERE p.`status` = 'true'
           AND p.`under_category` = '$catId'";
     
@@ -1393,15 +1512,30 @@ else if($type == "getSingleCategory"){
 else if($type == "handleSearch"){
     $qry = $_POST['query'];
 
-    $query =  "SELECT p.*,
+    $query = "SELECT 
+            p.*,
+
             (
                 SELECT COUNT(*)
-                FROM `varient` v
-                WHERE v.product_id = p.p_id
-            ) AS varient_count
-          FROM `product` p
-          WHERE p.`status` = 'true'
-          AND p.`name`LIKE '$qry%'";
+                FROM `varient` v1
+                WHERE v1.product_id = p.p_id
+            ) AS varient_count,
+
+            v.vid,
+            v.product_id AS variant_product_id,
+            v.v_unit,
+            v.v_mrp,
+            v.v_seliing_price,
+            v.v_purchase_price,
+            v.v_quantity
+
+        FROM `product` p
+
+        LEFT JOIN `varient` v
+            ON v.product_id = p.p_id
+
+        WHERE p.`status` = 'true'
+        AND p.`name` LIKE '$qry%'";
 
 
 
@@ -1433,30 +1567,56 @@ else if($type == "getRelatedPrd"){
 
     if (empty($sid)) {
 
-        $query = "SELECT p.*,
-                    (
-                        SELECT COUNT(*)
-                        FROM `varient` v
-                        WHERE v.product_id = p.p_id
-                    ) AS varient_count
-                FROM `product` p
-                WHERE p.`status` = 'true'
-                AND p.`under_category` = '$cid'
-                LIMIT 10";
+    $query = "SELECT 
+                p.*,
+                (
+                    SELECT COUNT(*)
+                    FROM `varient` v1
+                    WHERE v1.product_id = p.p_id
+                ) AS varient_count,
+                v.vid,
+                v.product_id AS variant_product_id,
+                v.v_unit,
+                v.v_mrp,
+                v.v_seliing_price,
+                v.v_purchase_price,
+                v.v_quantity
 
-    } else {
+            FROM `product` p
 
-        $query = "SELECT p.*,
-                    (
-                        SELECT COUNT(*)
-                        FROM `varient` v
-                        WHERE v.product_id = p.p_id
-                    ) AS varient_count
-                FROM `product` p
-                WHERE p.`status` = 'true'
-                AND p.`under_subcategory` = '$sid'
-                LIMIT 10";
-    }
+            LEFT JOIN `varient` v
+                ON v.product_id = p.p_id
+
+            WHERE p.`status` = 'true'
+            AND p.`under_category` = '$cid'
+            LIMIT 10";
+
+} else {
+
+    $query = "SELECT 
+                p.*,
+                (
+                    SELECT COUNT(*)
+                    FROM `varient` v1
+                    WHERE v1.product_id = p.p_id
+                ) AS varient_count,
+                v.vid,
+                v.product_id AS variant_product_id,
+                v.v_unit,
+                v.v_mrp,
+                v.v_seliing_price,
+                v.v_purchase_price,
+                v.v_quantity
+
+            FROM `product` p
+
+            LEFT JOIN `varient` v
+                ON v.product_id = p.p_id
+
+            WHERE p.`status` = 'true'
+            AND p.`under_subcategory` = '$sid'
+            LIMIT 10";
+}
 
     $res = mysqli_query($con,$query);
     $data=[];
@@ -1485,18 +1645,39 @@ else if($type == "getRelatedPrd"){
 else if($type == "getAllProductData"){
     $id=$_POST['id'];
     $typename=$_POST['typeName'];
-     $query = "SELECT 
+    //  $query = "SELECT 
+    //         p.*,
+    //         (
+    //             SELECT COUNT(*)
+    //             FROM `varient` v
+    //             WHERE v.product_id = p.p_id
+    //         ) AS varient_count
+    //       FROM `product` p
+    //       WHERE p.`status` = 'true'
+    //       AND p.`under_category` = '$id'
+    //       AND p.`$typename` = 'true'
+    //           ";
+        $query = "SELECT
             p.*,
             (
                 SELECT COUNT(*)
-                FROM `varient` v
-                WHERE v.product_id = p.p_id
-            ) AS varient_count
+                FROM `varient` v1
+                WHERE v1.product_id = p.p_id
+            ) AS varient_count,
+            v.vid,
+            v.product_id AS variant_product_id,
+            v.v_unit,
+            v.v_mrp,
+            v.v_seliing_price,
+            v.v_purchase_price,
+            v.v_quantity
           FROM `product` p
+          LEFT JOIN `varient` v
+            ON v.product_id = p.p_id
           WHERE p.`status` = 'true'
           AND p.`under_category` = '$id'
           AND p.`$typename` = 'true'
-              ";
+          LIMIT 10";
 
     $res = mysqli_query($con, $query);
 
@@ -1530,6 +1711,41 @@ else if($type == "getAllProductBrandData"){
           AND p.`under_category` = '$id'
           AND p.`brand_name` = '$brandId'
               ";
+
+    $branch_id = $_POST['branchId'] ?? '';
+
+    $query = "SELECT
+            p.*,
+            (
+                SELECT COUNT(*)
+                FROM `varient` v1
+                WHERE v1.product_id = p.p_id
+            ) AS varient_count,
+            v.vid,
+            v.product_id AS variant_product_id,
+            v.v_unit,
+            v.v_mrp,
+            v.v_seliing_price,
+            v.v_purchase_price,
+            v.v_quantity,
+            bs.stock
+          FROM `product` p
+          LEFT JOIN `varient` v
+            ON v.vid = (
+                SELECT v1.vid
+                FROM `varient` v1
+                WHERE v1.product_id = p.p_id
+                ORDER BY v1.vid ASC
+                LIMIT 1
+            )
+          LEFT JOIN `branch_stock` bs
+            ON bs.product_id = p.p_id
+            AND bs.varient_id = v.vid
+            AND bs.branch_id = '$branch_id'
+          WHERE p.`status` = 'true'
+          AND p.`under_category` = '$id'
+          AND p.`brand_name` = '$brandId'
+          LIMIT 10";
 
     $res = mysqli_query($con, $query);
 
@@ -3042,30 +3258,53 @@ else if($type == "getBrandProducts"){
 
    $categoryId = $_POST['categoryId'];
   $query = "SELECT
-            b.id AS brand_id,
-            b.name AS b_name,
-            b.logo_path,
-            b.product_path,
-            p.*
-          FROM brands b
-          JOIN (
-              SELECT
-                  pr.*,
-                  (
-                      SELECT COUNT(*)
-                      FROM varient v
-                      WHERE v.product_id = pr.p_id
-                  ) AS varient_count,
-                  ROW_NUMBER() OVER(PARTITION BY pr.brand_name ORDER BY pr.p_id DESC) AS rn
-              FROM product pr
-              WHERE pr.status = 'true'
-          ) p
-          ON p.brand_name = b.id
-          WHERE b.status = 'true'
-            AND b.categoryId = '$categoryId'
-            AND b.promotion = 'true'
-            AND p.rn <= 6
-          ORDER BY b.id, p.p_id DESC";
+    b.id AS brand_id,
+    b.name AS b_name,
+    b.logo_path,
+    b.product_path,
+
+    p.*,
+
+    v.vid,
+    v.product_id AS variant_product_id,
+    v.v_unit,
+    v.v_mrp,
+    v.v_seliing_price,
+    v.v_purchase_price,
+    v.v_quantity
+
+FROM brands b
+
+JOIN (
+    SELECT
+        pr.*,
+        (
+            SELECT COUNT(*)
+            FROM varient v1
+            WHERE v1.product_id = pr.p_id
+        ) AS varient_count,
+
+        ROW_NUMBER() OVER (
+            PARTITION BY pr.brand_name
+            ORDER BY pr.p_id DESC
+        ) AS rn
+
+    FROM product pr
+
+    WHERE pr.status = 'true'
+) p
+    ON p.brand_name = b.id
+
+LEFT JOIN varient v
+    ON v.product_id = p.p_id
+
+WHERE b.status = 'true'
+AND b.categoryId = '$categoryId'
+AND b.promotion = 'true'
+AND p.rn <= 6
+
+ORDER BY b.id, p.p_id DESC, v.vid ASC";
+        //   echo $query; exit();
 
      $res = mysqli_query($con, $query);
 
@@ -3106,7 +3345,8 @@ else if($type == "getBrandProducts"){
         "status" => "success",
         "data"   => $data
     ]);
-}
+
+    }
 else if($type == "getGroceryBanner1"){
     $id = $_POST['categoryId'];
     $query = "SELECT * FROM `banner` WHERE `type`='bannerSec1' AND `status`='true' AND `under_category`='$id'";
@@ -3299,8 +3539,45 @@ else if($type=="getBrandOfTheDay"){
 }
 else if($type=="getSingleBrandOfTheDay"){
     $brandId=$_POST['brandId'];
-    $query = "SELECT p.*, ( SELECT COUNT(*) FROM varient v WHERE v.product_id = p.p_id ) 
-    AS varient_count FROM product p WHERE p.brand_name = '$brandId'";
+    $branch_id=$_POST['branchId'];
+    // $query = "SELECT p.*, ( SELECT COUNT(*) FROM varient v WHERE v.product_id = p.p_id ) 
+    // AS varient_count FROM product p WHERE p.brand_name = '$brandId'";
+    $query = "SELECT
+            p.*,
+
+            (
+                SELECT COUNT(*)
+                FROM `varient` v1
+                WHERE v1.product_id = p.p_id
+            ) AS varient_count,
+
+            v.vid,
+            v.product_id AS variant_product_id,
+            v.v_unit,
+            v.v_mrp,
+            v.v_seliing_price,
+            v.v_purchase_price,
+            v.v_quantity,
+
+            bs.stock
+
+          FROM `product` p
+
+          LEFT JOIN `varient` v
+            ON v.vid = (
+                SELECT v1.vid
+                FROM `varient` v1
+                WHERE v1.product_id = p.p_id
+                ORDER BY v1.vid ASC
+                LIMIT 1
+            )
+
+          LEFT JOIN `branch_stock` bs
+            ON bs.product_id = p.p_id
+            AND bs.varient_id = v.vid
+            AND bs.branch_id = '$branch_id'
+
+          WHERE p.brand_name = '$brandId'";
     // echo $query; die();
     $res=mysqli_query($con,$query);
     if(mysqli_num_rows($res)>0){
