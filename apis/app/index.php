@@ -443,7 +443,7 @@ else if($type == "getNewFindPrd"){
 
     // Header Titles
     $headerQuery = "SELECT * FROM `header_title`
-                    WHERE `title_type`='new_finds' AND `category_Id`='categoryId'";
+                    WHERE `title_type`='new_finds' AND `category_Id`='$categoryId'";
     $headerRes = mysqli_query($con, $headerQuery);
 
     $headers = [];
@@ -1437,6 +1437,7 @@ else if($type == "getSingleCategory"){
     $middleCatId = $_POST['mid'] ?? '';
     $branch_id = $_POST['branchId'] ?? '';
     $query1 = "SELECT * FROM `subcategory` WHERE `middle_category`='$middleCatId' AND `status`='true'";
+    // echo $query1; exit();
    $query2 = "SELECT
             p.*,
 
@@ -1473,14 +1474,20 @@ else if($type == "getSingleCategory"){
             AND bs.branch_id = '$branch_id'
 
           WHERE p.`status` = 'true'
-          AND p.`under_category` = '$catId'";
-    
+          AND p.`under_category` = '$catId'
+          AND p.`under_middle_category`='$middleCatId'";
+        // echo $query2; exit();
+
+     $query3 = "SELECT * FROM `middle_category` WHERE `id`='$middleCatId'";
+
 
     $res1 = mysqli_query($con, $query1);
     $res2 = mysqli_query($con, $query2);
+    $res3 = mysqli_query($con, $query3);
 
     $subCategory = [];
     $allProduct = [];
+    $middleCatData=[];
 
     while ($row1 = mysqli_fetch_assoc($res1)) {
         $subCategory[] = $row1;
@@ -1489,14 +1496,17 @@ else if($type == "getSingleCategory"){
     while ($row2 = mysqli_fetch_assoc($res2)) {
         $allProduct[] = $row2;
     }
-
-    if (!empty($subCategory) || !empty($allProduct)) {
+    while ($row3 = mysqli_fetch_assoc($res3)) {
+        $middleCatData[] = $row3;
+    }
+    if (!empty($subCategory) || !empty($allProduct) || !empty($middleCatData)) {
 
         echo json_encode([
             "status" => "success",
             "message" => "Category data fetched successfully!",
             "data" => $allProduct,
-            "subCategory" => $subCategory
+            "subCategory" => $subCategory,
+            "middleCategoryName"=>$middleCatData
         ]);
 
     } else {
@@ -2473,53 +2483,60 @@ else if($type == "getSubcategoryWithProduct") {
     $categoryId = $_POST['categoryId'] ?? '';
 
     // Step 1: Get first 4 subcategories
-    $subQuery = mysqli_query($con,"SELECT id, name, image_path
-        FROM subcategory
+    // $subQuery = mysqli_query($con,"SELECT id, name
+    //     FROM middle_category
+    //     WHERE under_category='$categoryId'
+    //     AND status='true'
+    //     ORDER BY id
+    //     LIMIT 4
+    // ");
+    $query ="SELECT id, name
+        FROM middle_category
         WHERE under_category='$categoryId'
         AND status='true'
         ORDER BY id
         LIMIT 4
-    ");
-
+    ";
+    $subQuery = mysqli_query($con,$query);
+    
     if(mysqli_num_rows($subQuery) == 0){
         echo json_encode([
             "status"=>"failed",
             "message"=>"No subcategories found.",
             "data"=>[]
-        ]);
-        exit;
-    }
-
-    $subcategories = [];
-    $subIds = [];
-
-    while($sub = mysqli_fetch_assoc($subQuery)){
-        $sub['products'] = [];
-        $subcategories[$sub['id']] = $sub;
-        $subIds[] = $sub['id'];
-    }
-
-    // Step 2: Get all products of those subcategories
-    $ids = implode(",", $subIds);
-
-    $productQuery = mysqli_query($con,"
-        SELECT
+            ]);
+            exit;
+            }
+            
+            $subcategories = [];
+            $subIds = [];
+            
+            while($sub = mysqli_fetch_assoc($subQuery)){
+                $sub['products'] = [];
+                $subcategories[$sub['id']] = $sub;
+                $subIds[] = $sub['id'];
+                }
+                
+                // Step 2: Get all products of those subcategories
+                $ids = implode(",", $subIds);
+                
+                $productQuery = mysqli_query($con,"SELECT
             p.p_id,
             p.name,
             p.image_path,
-            p.selling_price,
-            p.mrp,
-            p.under_subcategory
+            p.under_middle_category
         FROM product p
         WHERE p.status='true'
-        AND p.under_subcategory IN ($ids)
-        ORDER BY p.under_subcategory, p.p_id
+        AND p.under_middle_category IN ($ids)
+        ORDER BY p.under_middle_category, p.p_id
     ");
+  
+// echo $productQuery; exit();
 
     // Step 3: Attach only first 4 products to each subcategory
     while($product = mysqli_fetch_assoc($productQuery)){
 
-        $subId = $product['under_subcategory'];
+        $subId = $product['under_middle_category'];
 
         if(count($subcategories[$subId]['products']) < 4){
             $subcategories[$subId]['products'][] = $product;
