@@ -827,7 +827,8 @@ else if($type == "getNewFindPrd"){
  }
  else if($type == "getCart"){
     $userId = $_POST['userId'];
-    $query="SELECT * FROM `cart` WHERE `user_id` ='$userId' AND `status`='true'";
+    $branchId = $_POST['branchId'];
+    $query="SELECT * FROM `cart` WHERE `user_id` ='$userId' AND `branch_id`='$branchId' AND `status`='true'";
 
 
     $res= mysqli_query($con,$query);
@@ -3615,6 +3616,94 @@ else if($type=="getSingleBrandOfTheDay"){
             "data"=>[]
         ]);
     }
+}
+else if($type=="findNearestBranch"){
+    $userLat = $_POST['lat'] ?? null;
+    $userLng = $_POST['lng'] ?? null;
+
+   if ($userLat === null || $userLng === null) {
+
+    echo json_encode([
+        "status" => false,
+        "message" => "Latitude and longitude required"
+    ]);
+
+    exit;
+}
+
+$userLat = (float) $userLat;
+$userLng = (float) $userLng;
+
+
+// Haversine Formula
+$query = "SELECT
+        id,
+        name,
+        address,
+        city,
+        state,
+        pincode,
+        latitude,
+        longitude,
+        coverage,
+        isOpen,
+
+        (
+            6371 * ACOS(
+                COS(RADIANS($userLat))
+                * COS(RADIANS(latitude))
+                * COS(RADIANS(longitude) - RADIANS($userLng))
+                + SIN(RADIANS($userLat))
+                * SIN(RADIANS(latitude))
+            )
+        ) AS distance
+
+    FROM branch
+
+    WHERE status = 'true'
+    AND isOpen = 'true'
+    AND latitude IS NOT NULL
+    AND longitude IS NOT NULL
+
+    ORDER BY distance ASC
+
+    LIMIT 1
+";
+
+
+$result = mysqli_query($con, $query);
+
+
+if (!$result) {
+
+    echo json_encode([
+        "status" => false,
+        "message" => mysqli_error($con)
+    ]);
+
+    exit;
+}
+
+
+$branch = mysqli_fetch_assoc($result);
+
+
+if (!$branch) {
+
+    echo json_encode([
+        "status" => false,
+        "message" => "No branch found"
+    ]);
+
+    exit;
+}
+
+
+echo json_encode([
+    "status" => "success",
+    "branch" => $branch
+]);
+
 }
 
 
