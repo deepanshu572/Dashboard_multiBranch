@@ -1,6 +1,6 @@
 // Image upload and preview
 
-let categoryData = []; let subCategoryData = []; let middleCategoryData=[];
+let categoryData = []; let subCategoryData = []; let middleCategoryData = [];
 
 let singleImageName = '';
 let imageExtension = '';
@@ -564,7 +564,7 @@ const getMiddleCategory = () => {
             if (response.status == "success") {
                 let data = response.data;
                 middleCategoryListData = data;
-                middleCategoryData=data;
+                middleCategoryData = data;
             }
             else {
                 console.log("something wents wrong in getMiddleCategory !");
@@ -1231,7 +1231,7 @@ const seeVarient = async (p_id, image_path) => {
     await $.ajax({
         url: apiurl,
         type: 'POST',
-        data: { type: 'seeVarient', p_id: p_id,branchId },
+        data: { type: 'seeVarient', p_id: p_id, branchId },
         success: function (response) {
             if (response != 'error' && response != 'null') {
                 let data = JSON.parse(response);
@@ -1278,7 +1278,7 @@ const seeVarient = async (p_id, image_path) => {
                         
                         ${branchId != 0 ? `<div>
                             <p>Stock</p>
-                        <input type="number" value="${item.stock !== null ?  item.stock: 0}" id="v_stock${item.vid}" placeholder="stock" readonly>
+                        <input type="number" value="${item.stock !== null ? item.stock : 0}" id="v_stock${item.vid}" placeholder="stock" readonly>
                         </div>`: " "
                         }
                         
@@ -1332,18 +1332,23 @@ const seeVarient = async (p_id, image_path) => {
 const editVarient = (vid) => {
     let branchId = localStorage.getItem("role_id");
     if (branchId == 0) {
-
         $(`.edit-vdata[data-id="${vid}"] input`).css('border', '1px solid #000');
         $(`.edit-vdata[data-id="${vid}"] select`).removeAttr('disabled');
         $(`.edit-vdata[data-id="${vid}"] input`).removeAttr('readonly');
+        $(`.edit-vdata[data-id="${vid}"] select`).css('border', '1px solid #000');
     } else {
         $(`#v_stock${vid}`).removeAttr('readonly');
         $(`#v_stock${vid}`).css('border', '1px solid #000');
+        $(`#v_mrp${vid}`).removeAttr('readonly');
+        $(`#v_mrp${vid}`).css('border', '1px solid #000');
+        $(`#v_seliing_price${vid}`).removeAttr('readonly');
+        $(`#v_seliing_price${vid}`).css('border', '1px solid #000');
+        $(`#v_purchase_price${vid}`).removeAttr('readonly');
+        $(`#v_purchase_price${vid}`).css('border', '1px solid #000');
 
 
     }
     $(`.edit-vdata[data-id="${vid}"] .edit`).hide();
-    $(`.edit-vdata[data-id="${vid}"] select`).css('border', '1px solid #000');
     $(`.edit-vdata[data-id="${vid}"] .update`).show();
 
 
@@ -1369,7 +1374,7 @@ const updateVarient = (vid) => {
             productId,
             vunit: vunit,
             vmrp: vmrp,
-            vstock:vstock,
+            vstock: vstock,
             vsellingPrice: vsellingPrice,
             vpurchasePrice: vpurchasePrice,
             vlimit: vlimit
@@ -1408,7 +1413,12 @@ const updateVarient = (vid) => {
             } else {
                 errorAlert('Something went wrong');
             }
-        }
+        },
+        error: function(xhr, status, error) {
+        console.log("STATUS:", xhr.status);
+        console.log("ERROR:", error);
+        console.log("RESPONSE:", xhr.responseText);
+    },
     })
 
 }

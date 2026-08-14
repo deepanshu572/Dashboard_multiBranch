@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     exit;
 }
 
-$con=mysqli_connect("localhost","root","","u907727509_Krishanthmart");          
+$con=mysqli_connect("localhost","root","","ITS_GROCERY_BRANCH");          
 // Check connection
 if (mysqli_connect_errno()) {
     header('Content-Type: application/json');
@@ -838,13 +838,19 @@ else if ($type == 'logout') {
 
                     // Add stock entry for every branch
                     $query = "INSERT INTO `branch_stock`
-                    (branch_id, product_id, varient_id, stock)
+                        (branch_id, product_id, varient_id, stock, v_mrp, v_seliing_price, v_purchase_price)
                     SELECT
                         id,
                         '$lastId',
                         '$variantId',
-                        '0'
+                        '0',
+                        '$mrp',
+                        '$sellingPrice',
+                        '$purchasePrice'
+                        
                     FROM branch";
+
+                
 
                     $run2 = mysqli_query($con, $query);
 
@@ -1035,8 +1041,15 @@ else if ($type == 'logout') {
               $query="SELECT * FROM `varient` WHERE product_id ='$p_id'";
             }else{
             $query = "SELECT
-                v.*,
-                bs.stock
+                v.v_unit,
+                v.v_p_limit,
+                v.v_quantity,
+                bs.stock,
+                bs.v_purchase_price,
+                bs.v_seliing_price,
+                bs.v_mrp,
+                bs.varient_id as vid,
+                bs.product_id
             FROM varient v
             LEFT JOIN branch_stock bs
                 ON bs.varient_id = v.vid
@@ -2142,6 +2155,12 @@ else if($type == 'updateBranchVarient'){
     $vstock = mysqli_real_escape_string($con, $_POST['vstock']);
     $branchId = mysqli_real_escape_string($con, $_POST['branchId']);
 
+    $vmrp = mysqli_real_escape_string($con, $_POST['vmrp']);
+    $vsellingPrice = mysqli_real_escape_string($con, $_POST['vsellingPrice']);
+    $vpurchasePrice = mysqli_real_escape_string($con, $_POST['vpurchasePrice']);
+
+
+    // Check whether variant already exists for this branch
     $checkQuery = "SELECT id
                    FROM branch_stock
                    WHERE branch_id = '$branchId'
@@ -2152,31 +2171,53 @@ else if($type == 'updateBranchVarient'){
 
     if (mysqli_num_rows($checkRun) > 0) {
 
+        // Update existing record
         $query = "UPDATE branch_stock
-                  SET stock = '$vstock'
+                  SET 
+                      `stock` = '$vstock',
+                      `v_mrp` = '$vmrp',
+                      `v_seliing_price` = '$vsellingPrice',
+                      `v_purchase_price` = '$vpurchasePrice'
                   WHERE branch_id = '$branchId'
                   AND product_id = '$pid'
                   AND varient_id = '$vid'";
 
-
     } else {
 
+        // Insert new record
         $query = "INSERT INTO branch_stock
-                  (branch_id, product_id, varient_id, stock)
+                  (
+                      branch_id,
+                      product_id,
+                      varient_id,
+                      stock,
+                      `v_mrp`,
+                      `v_seliing_price`,
+                      `v_purchase_price`
+                  )
                   VALUES
-                  ('$branchId', '$pid', '$vid', '$vstock')";
+                  (
+                      '$branchId',
+                      '$pid',
+                      '$vid',
+                      '$vstock',
+                      '$vmrp',
+                      '$vsellingPrice',
+                      '$vpurchasePrice'
+                  )";
     }
 
-    if(mysqli_query($con, $query)){
+    $res = mysqli_query($con, $query);
+
+    if($res){
         echo "success";
     }else{
         echo mysqli_error($con);
     }
-
 }
 
             
-            else if($type == 'deleteVarient'){   
+else if($type == 'deleteVarient'){   
 
     $vid = mysqli_real_escape_string($con, $_POST['vid']);  
 
@@ -2863,7 +2904,13 @@ else if($type == 'updateBranchVarient'){
             $branch_id = mysqli_real_escape_string($con, $_POST['branch_id']);
 
             $query = "SELECT 
-                v.*,
+                v.v_unit,
+                v.v_p_limit,
+                v.v_quantity,
+                bs.v_purchase_price,
+                bs.v_seliing_price,
+                bs.v_mrp,
+                bs.product_id,
                 COALESCE(bs.stock, 0) AS stock
             FROM varient v
             LEFT JOIN branch_stock bs 
@@ -4440,12 +4487,15 @@ else if($type == 'addBranch'){
 
         // Copy all variants into branch_stock
         $query3 = "INSERT INTO branch_stock
-        (branch_id, product_id, varient_id, stock)
+        (branch_id, product_id, varient_id, stock, v_mrp, v_seliing_price, v_purchase_price)
         SELECT
             '$lastId',
             product_id,
             vid,
-            0
+            0,
+            v_mrp,
+            v_seliing_price,
+            v_purchase_price
         FROM varient";
         // echo $query3; exit();
 
@@ -4534,6 +4584,7 @@ else if($type == "updateBranch"){
     $city = $_POST['city'];
     $state = $_POST['state'];
     $pincode = $_POST['pincode'];
+    $coverage =$_POST['coverage'];
     
 
     $query = "UPDATE `branch` SET
@@ -4545,7 +4596,8 @@ else if($type == "updateBranch"){
         `password` = '$password',
         `city` = '$city',
         `state` = '$state',
-        `pincode` = '$pincode'
+        `pincode` = '$pincode',
+        `coverage`='$coverage'
     WHERE `id` = '$id'";
     // echo $query; exit();
 
@@ -4698,12 +4750,12 @@ else if($type == "handleMiddleCategory"){
 
     $logoNameDB = "api/uploads/" . $logoName;
 
-            // echo $query exit();
-
-
-
+    
+    
+    
     $query = "INSERT INTO `middle_category`(`under_category`, `name`, `image_path`, `status`) 
     VALUES ('$categoryId','$middleCategory','$logoNameDB','true')";
+    // echo $query; exit();
     $res = mysqli_query($con,$query);
 
     if($res){

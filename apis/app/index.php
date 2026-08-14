@@ -2,7 +2,7 @@
 date_default_timezone_set("Asia/Kolkata");
 header("Access-Control-Allow-Origin:*"); 
 
- $con=mysqli_connect("localhost","root","","u907727509_Krishanthmart");
+ $con=mysqli_connect("localhost","root","","ITS_GROCERY_BRANCH");
   if (mysqli_connect_errno())
   {
   echo "Failed to connect to MySQL The Eroor is : " . mysqli_connect_error();
@@ -307,10 +307,10 @@ else if($type=="getAllProduct"){
     v.vid,
     v.product_id,
     v.v_unit,
-    v.v_mrp,
-    v.v_seliing_price,
-    v.v_purchase_price,
     v.v_quantity,
+    bs.v_mrp,
+    bs.v_seliing_price,
+    bs.v_purchase_price,
 
     IFNULL(bs.stock, 0) AS stock
 
@@ -744,7 +744,13 @@ else if($type == "getNewFindPrd"){
     $id=$_POST['id'];
     // $query = "SELECT * FROM `varient` WHERE `product_id`='$id'";
     $query = "SELECT 
-            v.*,
+             v.vid,
+            v.product_id,
+            v.v_unit,
+            v.v_quantity,
+            bs.v_mrp,
+            bs.v_seliing_price,
+            bs.v_purchase_price,
             bs.stock
           FROM `varient` v
           LEFT JOIN `branch_stock` bs
@@ -772,6 +778,7 @@ else if($type == "getNewFindPrd"){
     }
   }
   else if($type == "getSingleProduct"){
+    $branchId = $_POST['branchId'];
 
     $id = $_POST['id'];
 
@@ -798,8 +805,21 @@ else if($type == "getNewFindPrd"){
         }
 
         // Product Variants
-        $variantQuery = "SELECT * FROM `varient`
-                         WHERE `product_id`='$id'";
+       $variantQuery = "SELECT 
+                    v.vid,
+                    v.product_id,
+                    v.v_unit,
+                    v.v_quantity,
+                    bs.v_mrp,
+                    bs.v_seliing_price,
+                    bs.v_purchase_price,
+                    COALESCE(bs.stock, 0) AS stock
+                FROM varient v
+                LEFT JOIN branch_stock bs
+                    ON bs.product_id = v.product_id
+                    AND bs.varient_id = v.vid
+                    AND bs.branch_id = '$branchId'
+                WHERE v.product_id = '$id'";
 
         $variantRes = mysqli_query($con,$variantQuery);
 
@@ -860,7 +880,13 @@ else if($type == "getNewFindPrd"){
  else if($type == "getAllVarient"){
     $branch_id = $_POST['branchId'] ?? '';
     $query = "SELECT 
-            v.*,
+            v.vid,
+            v.product_id,
+            v.v_unit,
+            v.v_quantity,
+            bs.v_mrp,
+            bs.v_seliing_price,
+            bs.v_purchase_price,
             bs.stock
           FROM `varient` v
           LEFT JOIN `branch_stock` bs
@@ -1269,6 +1295,7 @@ else if ($type == "handleOrder") {
     $handling_charge = $_POST['handlingCharge'] ?? 0;
     $coupon_amount   = $_POST['couponAmt'] ?? 0;
     $delivery_charge = $_POST['deliveryCharge'] ?? 0;
+    $subTotal = $_POST['subTotal'] ?? 0;
 
     $status    = "pending";
     $new_order = "true";
@@ -1298,7 +1325,8 @@ else if ($type == "handleOrder") {
         `coupon_amount`,
         `status`,
         `new_order`,
-        `dor`
+        `dor`,
+        `sub_total`
     )
     VALUES
     (
@@ -1317,8 +1345,10 @@ else if ($type == "handleOrder") {
         '$coupon_amount',
         '$status',
         '$new_order',
-        '$dor'
+        '$dor',
+        '$subTotal'
     )";
+    // echo $query; exit();
 
     /*
      * Reduce branch stock
@@ -1451,11 +1481,11 @@ else if($type == "getSingleCategory"){
             v.vid,
             v.product_id AS variant_product_id,
             v.v_unit,
-            v.v_mrp,
-            v.v_seliing_price,
-            v.v_purchase_price,
             v.v_quantity,
 
+            bs.v_mrp,
+            bs.v_seliing_price,
+            bs.v_purchase_price,
             bs.stock
 
           FROM `product` p
@@ -1523,31 +1553,40 @@ else if($type == "getSingleCategory"){
 }
 else if($type == "handleSearch"){
     $qry = $_POST['query'];
+    $branchId = $_POST['branchId'];
 
     $query = "SELECT 
-            p.*,
+        p.*,
 
-            (
-                SELECT COUNT(*)
-                FROM `varient` v1
-                WHERE v1.product_id = p.p_id
-            ) AS varient_count,
+        (
+            SELECT COUNT(*)
+            FROM `varient` v1
+            WHERE v1.product_id = p.p_id
+        ) AS varient_count,
 
-            v.vid,
-            v.product_id AS variant_product_id,
-            v.v_unit,
-            v.v_mrp,
-            v.v_seliing_price,
-            v.v_purchase_price,
-            v.v_quantity
+        v.vid,
+        v.product_id AS variant_product_id,
+        v.v_unit,
+        v.v_quantity,
 
-        FROM `product` p
+        bs.v_mrp,
+        bs.v_seliing_price,
+        bs.v_purchase_price,
 
-        LEFT JOIN `varient` v
-            ON v.product_id = p.p_id
+        COALESCE(bs.stock, 0) AS stock
 
-        WHERE p.`status` = 'true'
-        AND p.`name` LIKE '$qry%'";
+    FROM `product` p
+
+    LEFT JOIN `varient` v
+        ON v.product_id = p.p_id
+
+    LEFT JOIN `branch_stock` bs
+        ON bs.product_id = p.p_id
+        AND bs.varient_id = v.vid
+        AND bs.branch_id = '$branchId'
+
+    WHERE p.`status` = 'true'
+    AND p.`name` LIKE '$qry%'";
 
 
 
@@ -1576,58 +1615,79 @@ else if($type == "handleSearch"){
 else if($type == "getRelatedPrd"){
     $cid = $_POST['cid'] ?? '';
     $sid = $_POST['sid'] ?? '';
-
-    if (empty($sid)) {
+    $branchId = $_POST['branchId'] ?? '';
+if (empty($sid)) {
 
     $query = "SELECT 
                 p.*,
+
                 (
                     SELECT COUNT(*)
                     FROM `varient` v1
                     WHERE v1.product_id = p.p_id
                 ) AS varient_count,
+
                 v.vid,
                 v.product_id AS variant_product_id,
                 v.v_unit,
-                v.v_mrp,
-                v.v_seliing_price,
-                v.v_purchase_price,
-                v.v_quantity
+                v.v_quantity,
+
+                bs.v_mrp,
+                bs.v_seliing_price,
+                bs.v_purchase_price,
+                COALESCE(bs.stock, 0) AS stock
 
             FROM `product` p
 
             LEFT JOIN `varient` v
                 ON v.product_id = p.p_id
 
+            LEFT JOIN `branch_stock` bs
+                ON bs.product_id = v.product_id
+                AND bs.varient_id = v.vid
+                AND bs.branch_id = '$branchId'
+
             WHERE p.`status` = 'true'
             AND p.`under_category` = '$cid'
+
             LIMIT 10";
 
 } else {
 
     $query = "SELECT 
                 p.*,
+
                 (
                     SELECT COUNT(*)
                     FROM `varient` v1
                     WHERE v1.product_id = p.p_id
                 ) AS varient_count,
+
                 v.vid,
                 v.product_id AS variant_product_id,
                 v.v_unit,
-                v.v_mrp,
-                v.v_seliing_price,
-                v.v_purchase_price,
-                v.v_quantity
+                v.v_quantity,
+
+                bs.v_mrp,
+                bs.v_seliing_price,
+                bs.v_purchase_price,
+                COALESCE(bs.stock, 0) AS stock
 
             FROM `product` p
 
             LEFT JOIN `varient` v
                 ON v.product_id = p.p_id
 
+            LEFT JOIN `branch_stock` bs
+                ON bs.product_id = v.product_id
+                AND bs.varient_id = v.vid
+                AND bs.branch_id = '$branchId'
+
             WHERE p.`status` = 'true'
             AND p.`under_subcategory` = '$sid'
+
             LIMIT 10";
+
 }
 
     $res = mysqli_query($con,$query);
@@ -1657,39 +1717,43 @@ else if($type == "getRelatedPrd"){
 else if($type == "getAllProductData"){
     $id=$_POST['id'];
     $typename=$_POST['typeName'];
-    //  $query = "SELECT 
-    //         p.*,
-    //         (
-    //             SELECT COUNT(*)
-    //             FROM `varient` v
-    //             WHERE v.product_id = p.p_id
-    //         ) AS varient_count
-    //       FROM `product` p
-    //       WHERE p.`status` = 'true'
-    //       AND p.`under_category` = '$id'
-    //       AND p.`$typename` = 'true'
-    //           ";
-        $query = "SELECT
-            p.*,
-            (
-                SELECT COUNT(*)
-                FROM `varient` v1
-                WHERE v1.product_id = p.p_id
-            ) AS varient_count,
-            v.vid,
-            v.product_id AS variant_product_id,
-            v.v_unit,
-            v.v_mrp,
-            v.v_seliing_price,
-            v.v_purchase_price,
-            v.v_quantity
-          FROM `product` p
-          LEFT JOIN `varient` v
-            ON v.product_id = p.p_id
-          WHERE p.`status` = 'true'
-          AND p.`under_category` = '$id'
-          AND p.`$typename` = 'true'
-          LIMIT 10";
+        $branch_id = $_POST['branchId'] ?? '';
+
+       $query = "SELECT
+
+    p.*,
+
+    (
+        SELECT COUNT(*)
+        FROM `varient` v1
+        WHERE v1.product_id = p.p_id
+    ) AS varient_count,
+
+    v.vid,
+    v.product_id AS variant_product_id,
+    v.v_unit,
+    v.v_quantity,
+
+    bs.v_mrp,
+    bs.v_seliing_price,
+    bs.v_purchase_price,
+    COALESCE(bs.stock, 0) AS stock
+
+    FROM `product` p
+
+    LEFT JOIN `varient` v
+        ON v.product_id = p.p_id
+
+    LEFT JOIN `branch_stock` bs
+        ON bs.product_id = v.product_id
+        AND bs.varient_id = v.vid
+        AND bs.branch_id = '$branch_id'
+
+    WHERE p.`status` = 'true'
+    AND p.`under_category` = '$id'
+    AND p.`$typename` = 'true'
+
+    LIMIT 10";
 
     $res = mysqli_query($con, $query);
 
@@ -1711,18 +1775,18 @@ else if($type == "getAllProductData"){
 else if($type == "getAllProductBrandData"){
     $id=$_POST['id'];
     $brandId=$_POST['typeName'];
-     $query = "SELECT 
-            p.*,
-            (
-                SELECT COUNT(*)
-                FROM `varient` v
-                WHERE v.product_id = p.p_id
-            ) AS varient_count
-          FROM `product` p
-          WHERE p.`status` = 'true'
-          AND p.`under_category` = '$id'
-          AND p.`brand_name` = '$brandId'
-              ";
+    //  $query = "SELECT 
+    //         p.*,
+    //         (
+    //             SELECT COUNT(*)
+    //             FROM `varient` v
+    //             WHERE v.product_id = p.p_id
+    //         ) AS varient_count
+    //       FROM `product` p
+    //       WHERE p.`status` = 'true'
+    //       AND p.`under_category` = '$id'
+    //       AND p.`brand_name` = '$brandId'
+    //           ";
 
     $branch_id = $_POST['branchId'] ?? '';
 
@@ -1736,10 +1800,10 @@ else if($type == "getAllProductBrandData"){
             v.vid,
             v.product_id AS variant_product_id,
             v.v_unit,
-            v.v_mrp,
-            v.v_seliing_price,
-            v.v_purchase_price,
             v.v_quantity,
+            bs.v_mrp,
+            bs.v_seliing_price,
+            bs.v_purchase_price,
             bs.stock
           FROM `product` p
           LEFT JOIN `varient` v
@@ -3275,54 +3339,63 @@ else if($type == "getAllbrands"){
 }
 else if($type == "getBrandProducts"){
 
+   $branch_id = $_POST['branch_id'];
    $categoryId = $_POST['categoryId'];
-  $query = "SELECT
-    b.id AS brand_id,
-    b.name AS b_name,
-    b.logo_path,
-    b.product_path,
+    $query = "SELECT
+        b.id AS brand_id,
+        b.name AS b_name,
+        b.logo_path,
+        b.product_path,
 
-    p.*,
+        p.*,
 
-    v.vid,
-    v.product_id AS variant_product_id,
-    v.v_unit,
-    v.v_mrp,
-    v.v_seliing_price,
-    v.v_purchase_price,
-    v.v_quantity
+        v.vid,
+        v.product_id AS variant_product_id,
+        v.v_unit,
+        v.v_quantity,
 
-FROM brands b
+        bs.v_mrp,
+        bs.v_seliing_price,
+        bs.v_purchase_price,
+        COALESCE(bs.stock, 0) AS stock
 
-JOIN (
-    SELECT
-        pr.*,
-        (
-            SELECT COUNT(*)
-            FROM varient v1
-            WHERE v1.product_id = pr.p_id
-        ) AS varient_count,
+    FROM brands b
 
-        ROW_NUMBER() OVER (
-            PARTITION BY pr.brand_name
-            ORDER BY pr.p_id DESC
-        ) AS rn
+    JOIN (
+        SELECT
+            pr.*,
 
-    FROM product pr
+            (
+                SELECT COUNT(*)
+                FROM varient v1
+                WHERE v1.product_id = pr.p_id
+            ) AS varient_count,
 
-    WHERE pr.status = 'true'
-) p
-    ON p.brand_name = b.id
+            ROW_NUMBER() OVER (
+                PARTITION BY pr.brand_name
+                ORDER BY pr.p_id DESC
+            ) AS rn
 
-LEFT JOIN varient v
-    ON v.product_id = p.p_id
+        FROM product pr
 
-WHERE b.status = 'true'
-AND b.categoryId = '$categoryId'
-AND b.promotion = 'true'
-AND p.rn <= 6
+        WHERE pr.status = 'true'
+    ) p
+        ON p.brand_name = b.id
 
-ORDER BY b.id, p.p_id DESC, v.vid ASC";
+    LEFT JOIN varient v
+        ON v.product_id = p.p_id
+
+    LEFT JOIN branch_stock bs
+        ON bs.product_id = v.product_id
+        AND bs.varient_id = v.vid
+        AND bs.branch_id = '$branch_id'
+
+    WHERE b.status = 'true'
+    AND b.categoryId = '$categoryId'
+    AND b.promotion = 'true'
+    AND p.rn <= 6
+
+    ORDER BY b.id, p.p_id DESC, v.vid ASC";
         //   echo $query; exit();
 
      $res = mysqli_query($con, $query);
@@ -3449,13 +3522,13 @@ else if($type == "getRecentOrder"){
         WHERE vc.product_id = p.p_id
     ) AS varient_count,
 
-   v.vid,
-    v.product_id,
-    v.v_unit,
-    v.v_mrp,
-    v.v_seliing_price,
-    v.v_purchase_price,
-    v.v_quantity,
+       v.vid,
+            v.product_id,
+            v.v_unit,
+            v.v_quantity,
+            bs.v_mrp,
+            bs.v_seliing_price,
+            bs.v_purchase_price,
 
     IFNULL(bs.stock, 0) AS stock
 
@@ -3573,11 +3646,11 @@ else if($type=="getSingleBrandOfTheDay"){
             v.vid,
             v.product_id AS variant_product_id,
             v.v_unit,
-            v.v_mrp,
-            v.v_seliing_price,
-            v.v_purchase_price,
             v.v_quantity,
 
+            bs.v_mrp,
+            bs.v_seliing_price,
+            bs.v_purchase_price,
             bs.stock
 
           FROM `product` p
@@ -3621,152 +3694,120 @@ else if($type=="findNearestBranch"){
     $userLat = $_POST['lat'] ?? null;
     $userLng = $_POST['lng'] ?? null;
 
-   if ($userLat === null || $userLng === null) {
+    if ($userLat === null || $userLng === null) {
 
-    echo json_encode([
-        "status" => false,
-        "message" => "Latitude and longitude required"
-    ]);
+        echo json_encode([
+            "status" => false,
+            "message" => "Latitude and longitude required"
+        ]);
 
-    exit;
+        exit;
+    }
+
+        $userLat = (float) $userLat;
+        $userLng = (float) $userLng;
+
+
+        // Haversine Formula
+        $query = "SELECT
+                id,
+                name,
+                address,
+                city,
+                state,
+                pincode,
+                latitude,
+                longitude,
+                coverage,
+                isOpen,
+
+                (
+                    6371 * ACOS(
+                        COS(RADIANS($userLat))
+                        * COS(RADIANS(latitude))
+                        * COS(RADIANS(longitude) - RADIANS($userLng))
+                        + SIN(RADIANS($userLat))
+                        * SIN(RADIANS(latitude))
+                    )
+                ) AS distance
+
+            FROM branch
+
+            WHERE status = 'true'
+            AND isOpen = 'true'
+            AND latitude IS NOT NULL
+            AND longitude IS NOT NULL
+
+            ORDER BY distance ASC
+
+            LIMIT 1
+        ";
+
+
+        $result = mysqli_query($con, $query);
+
+
+        if (!$result) {
+
+            echo json_encode([
+                "status" => false,
+                "message" => mysqli_error($con)
+            ]);
+
+            exit;
+        }
+
+
+        $branch = mysqli_fetch_assoc($result);
+
+
+        if (!$branch) {
+
+            echo json_encode([
+                "status" => false,
+                "message" => "No branch found"
+            ]);
+
+            exit;
+        }
+
+
+        echo json_encode([
+            "status" => "success",
+            "branch" => $branch
+        ]);
+
 }
 
-$userLat = (float) $userLat;
-$userLng = (float) $userLng;
+else if($type=="getCurrentDeliveryBranch"){
+    $branchId = $_POST['branchId'];
+    $totalSellingPrice = $_POST['totalSellingPrice'];
+    $query = "SELECT *
+          FROM `delivery_charge`
+          WHERE `branch_Id` = '$branchId'
+          AND `min_amount` <= '$totalSellingPrice'
+          ORDER BY `min_amount` DESC
+          LIMIT 1";
+        //   echo $query; exit();
 
-
-// Haversine Formula
-$query = "SELECT
-        id,
-        name,
-        address,
-        city,
-        state,
-        pincode,
-        latitude,
-        longitude,
-        coverage,
-        isOpen,
-
-        (
-            6371 * ACOS(
-                COS(RADIANS($userLat))
-                * COS(RADIANS(latitude))
-                * COS(RADIANS(longitude) - RADIANS($userLng))
-                + SIN(RADIANS($userLat))
-                * SIN(RADIANS(latitude))
-            )
-        ) AS distance
-
-    FROM branch
-
-    WHERE status = 'true'
-    AND isOpen = 'true'
-    AND latitude IS NOT NULL
-    AND longitude IS NOT NULL
-
-    ORDER BY distance ASC
-
-    LIMIT 1
-";
-
-
-$result = mysqli_query($con, $query);
-
-
-if (!$result) {
-
-    echo json_encode([
-        "status" => false,
-        "message" => mysqli_error($con)
-    ]);
-
-    exit;
+    $res = mysqli_query($con,$query);
+    if(mysqli_num_rows($res)>0){
+        $data=[];
+        while ($row=mysqli_fetch_assoc($res)) {
+            $data[]=$row;
+        }
+        echo json_encode([
+            "status"=>"success",
+            "data"=>$data,
+            "message"=>"current branch delivery charge fetched successfully !"
+        ]);
+    }else{
+         echo json_encode([
+            "status"=>"failed",
+            "data"=>[],
+            "message"=>"something wents wrong !"
+        ]);
+    }
 }
-
-
-$branch = mysqli_fetch_assoc($result);
-
-
-if (!$branch) {
-
-    echo json_encode([
-        "status" => false,
-        "message" => "No branch found"
-    ]);
-
-    exit;
-}
-
-
-echo json_encode([
-    "status" => "success",
-    "branch" => $branch
-]);
-
-}
-
-
-
-// else if($type=="getCurrentBranch"){
-//     $userLat = $_POST['latitude'];
-//     $userLng = $_POST['longitude'];
-    
-//     $query = "SELECT * FROM branch WHERE status='1'";
-//     $res = mysqli_query($con, $query);
-
-//     $nearestBranch = null;
-//     $minDistance = PHP_FLOAT_MAX;
-
-//     while ($branch = mysqli_fetch_assoc($res)) {
-
-//         $distance = getDistance(
-//             $userLat,
-//             $userLng,
-//             $branch['latitude'],
-//             $branch['longitude']
-//         );
-
-//         if (
-//             $distance <= $branch['coverage_radius'] &&
-//             $distance < $minDistance
-//         ) {
-//             $minDistance = $distance;
-//             $nearestBranch = $branch;
-//         }
-//     }
-
-//     if ($nearestBranch) {
-//         echo json_encode([
-//             "status" => true,
-//             "branch_id" => $nearestBranch['id'],
-//             "branch_name" => $nearestBranch['name'],
-//             "distance" => round($minDistance, 2)
-//         ]);
-//     } else {
-//         echo json_encode([
-//             "status" => false,
-//             "message" => "No branch available in your area."
-//         ]);
-//     }
-// }
-
-
-// function getDistance($lat1, $lon1, $lat2, $lon2)
-// {
-//     $earthRadius = 6371; // Earth radius in KM
-
-//     $dLat = deg2rad($lat2 - $lat1);
-//     $dLon = deg2rad($lon2 - $lon1);
-
-//     $a = sin($dLat / 2) * sin($dLat / 2) +
-//          cos(deg2rad($lat1)) * cos(deg2rad($lat2)) *
-//          sin($dLon / 2) * sin($dLon / 2);
-
-//     $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
-
-//     return $earthRadius * $c; // Distance in KM
-// }
-
 
   ?>

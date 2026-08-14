@@ -228,9 +228,9 @@ const applyFilters = (page = 1, pageSize = 10) => {
 
         // Payment Filter
         if (paymentFilter !== 'all') {
-            let pMethod = (item.payment_methode || "").toLowerCase().replace(/ /g, "_");
+            let pMethod = (item.payment_method || "").toLowerCase().replace(/ /g, "_");
             let pFilter = paymentFilter.toLowerCase();
-            if (item.payment_methode.toLowerCase() !== pFilter && pMethod !== pFilter) matches = false;
+            if (item.payment_method.toLowerCase() !== pFilter && pMethod !== pFilter) matches = false;
         }
 
         // Selected Date Filter (Delivery Date)
@@ -331,7 +331,7 @@ const renderOrders = (data, page, pageSize) => {
                     </td>
                     <td>₹ ${item.total}</td>
                     <td><span class="orderType"> ${item.order_type} </span></td>
-                    <td><span class="orderType"> ${item.payment_methode} </span></td>
+                    <td><span class="orderType"> ${item.payment_method} </span></td>
                     <td><span class="orderStatus ${getStatusClass(item.status)}">${item.status}</span></td>
                     <td>
                         <div class="btn-section flex gap-5">
@@ -523,7 +523,7 @@ const viewOrderDetails = (orderData) => {
     $(".orderdate").html(`${orderData.date}`);
     $(".ordertime").html(`${orderData.time}`);
     $(".orderstatus").html(`${orderData.status}`);
-    $(".paymentmethode").html(`${orderData.payment_methode}`);
+    $(".paymentmethode").html(`${orderData.payment_method}`);
     $(".promoDiscount").html(`- ₹ ${orderData.coupon_amount || 0}`);
 
     orderidfr = orderData.idfr;
