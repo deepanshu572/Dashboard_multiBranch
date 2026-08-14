@@ -1392,7 +1392,7 @@ else if ($type == "handleOrder") {
 else if($type == "getOrder"){
 
     $userId = $_POST['userId'];
-    $query = "SELECT * FROM `order` WHERE `user_id`='$userId'";
+   $query = "SELECT * FROM `order` WHERE `user_id`='$userId' ORDER BY id DESC";
     $res = mysqli_query($con,$query);
 
       if(mysqli_num_rows($res) > 0){
@@ -1419,6 +1419,30 @@ else if($type == "getOrder"){
 
     }
 }
+else if($type == "getBranch"){
+    $branchId =$_POST['branchId'];
+    $query="SELECT * FROM `branch` WHERE `id`='$branchId'";
+    $res = mysqli_query($con,$query);
+
+    $data=[];
+    if(mysqli_num_rows($res)>0){
+        while ($row=mysqli_fetch_assoc($res)) {
+             $data[]=$row;
+        }
+         echo json_encode([
+            "status" => "success",
+            "message" => "get branch data!",
+            "data"=>$data
+        ]);
+
+    }else{
+         echo json_encode([
+            "status" => "failed",
+            "message" => "something wents wrong !",
+            "data"=>[]
+        ]);
+    }
+}
 else if ($type == "getSingleOrder") {
 
     $idfr = $_POST['idfr'];
@@ -1431,6 +1455,7 @@ else if ($type == "getSingleOrder") {
 
     $cartData = [];
     $data = [];
+    $addressData = [];
 
     // Cart Data
     while ($row = mysqli_fetch_assoc($res1)) {
@@ -1440,15 +1465,26 @@ else if ($type == "getSingleOrder") {
     // Order Data
     if (mysqli_num_rows($res2) > 0) {
         $data = mysqli_fetch_assoc($res2);
+
+        $addressId = $data['address_id'];
+
+        $queryAddress = "SELECT * FROM `location` WHERE `id`='$addressId'";
+        $resAddress = mysqli_query($con, $queryAddress);
+
+        if (mysqli_num_rows($resAddress) > 0) {
+            $addressData = mysqli_fetch_assoc($resAddress);
+        }
+
     }
 
-    if (!empty($data) || !empty($cartData)) {
+    if (!empty($data) || !empty($cartData) || !empty($addressData)) {
 
         echo json_encode([
             "status" => "success",
             "message" => "Single order detail fetched successfully!",
             "data" => $data,
-            "singleOrder" => $cartData
+            "singleOrder" => $cartData,
+            "address"=>$addressData
         ]);
 
     } else {
@@ -1457,7 +1493,9 @@ else if ($type == "getSingleOrder") {
             "status" => "failed",
             "message" => "Failed to fetch single order detail!",
             "data" => [],
-            "singleOrder" => []
+            "singleOrder" => [],
+            "address"=>[]
+
         ]);
 
     }

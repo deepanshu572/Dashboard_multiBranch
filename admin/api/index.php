@@ -2320,20 +2320,33 @@ else if($type == 'deleteVarient'){
                         '$unit'
                     )
                 ";
-                // echo $addVari ant; exit();
+                // echo $addVariant; exit();
 
                 $run1 = mysqli_query($con, $addVariant);  
                 $variantId = mysqli_insert_id($con);
 
-            mysqli_query($con,"INSERT INTO `branch_stock`
-                (branch_id, product_id, varient_id, stock)
+            // mysqli_query($con,"INSERT INTO `branch_stock`
+            //     (branch_id, product_id, varient_id,stock,v_seliing_price,v_purchase_price,v_quantity)
+            //     SELECT
+            //         id,
+            //         '$lastId',
+            //         '$variantId',
+            //         '0',
+            //         '$sellingPrice', 
+            //             '$purchasePrice', 
+            //             '$quantity'
+            //     FROM branch");
+            $qry="INSERT INTO `branch_stock`
+                (branch_id, product_id, varient_id,stock,v_seliing_price,v_purchase_price)
                 SELECT
                     id,
                     '$lastId',
                     '$variantId',
-                    '0'
-                FROM branch");
-            // echo $addVariant; exit();
+                    '0',
+                    '$sellingPrice', 
+                        '$purchasePrice', 
+                FROM branch";
+            // echo $qry; exit();
 
                 if (!$run1) {
                     echo "Error inserting variant: " . mysqli_error($con);
