@@ -3781,6 +3781,45 @@ else if($type=="findNearestBranch"){
             LIMIT 1
         ";
 
+        //  $query = "SELECT *
+        // FROM (
+        //     SELECT
+        //         id,
+        //         name,
+        //         address,
+        //         city,
+        //         state,
+        //         pincode,
+        //         latitude,
+        //         longitude,
+        //         coverage,
+        //         isOpen,
+
+        //         (
+        //             6371 * ACOS(
+        //                 COS(RADIANS($userLat))
+        //                 * COS(RADIANS(latitude))
+        //                 * COS(RADIANS(longitude) - RADIANS($userLng))
+        //                 + SIN(RADIANS($userLat))
+        //                 * SIN(RADIANS(latitude))
+        //             )
+        //         ) AS distance
+
+        //     FROM branch
+
+        //     WHERE status = 'true'
+        //     AND isOpen = 'true'
+        //     AND latitude IS NOT NULL
+        //     AND longitude IS NOT NULL
+
+        // ) AS branches
+
+        // WHERE distance <= coverage
+
+        // ORDER BY distance ASC
+
+        // LIMIT 1";
+
 
         $result = mysqli_query($con, $query);
 

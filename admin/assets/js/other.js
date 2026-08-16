@@ -90,29 +90,39 @@ const deleteDelCharge = async (item) => {
     }
 }
 
-const delChargeForm = () => {
+// const delChargeForm = () => {
 
-    $(".left-section").html(`
-         <div class="del-charge-field">
-                            <div>
-                                <h4>Set Delivery Charge for your store</h4>
-                            </div>
-                            <div class="input-field">
-                                <label for="deliveryCharge">Enter Delivery Charge</label>
-                                <input type="number" id="deliveryCharge" class="input-box"
-                                    placeholder="Enter Delivery Charge">
-                            </div>
-                            <div class="input-field">
-                                <label for="minAmount">Enter Minimume Amount</label>
-                                <input type="number" id="minAmount" class="input-box"
-                                    placeholder="Enter Minimume Amount">
-                            </div>
-                            <button class="set-btn" id="setCharge" onclick="setDelvieryCharge()">Set Charge</button>
-        </div>
-        `);
-    $(".otherResultHeader").html(`Delivery Fees`);
-    loadDeliveryCharge();
-}
+
+//     $(".left-section").html(`
+//          <div class="del-charge-field">
+//                             <div>
+//                                 <h4>Set Delivery Charge for your store</h4>
+//                             </div>
+//                             <input type="text" id="branchId" hidden>
+//                             <div class="input-field">
+//                                 <label for="branch">Select Branch </label>
+//                                  <select name="branchName" id="branch" onchange="handleBranch(event)">
+//                                  </select>
+//                             </div> 
+//                             <div class="input-field">
+//                                 <label for="deliveryCharge">Enter Delivery Charge</label>
+//                                 <input type="number" id="deliveryCharge" class="input-box"
+//                                     placeholder="Enter Delivery Charge">
+//                             </div>
+//                             <div class="input-field">
+//                                 <label for="minAmount">Enter Minimume Amount</label>
+//                                 <input type="number" id="minAmount" class="input-box"
+//                                     placeholder="Enter Minimume Amount">
+//                             </div>
+//                             <button class="set-btn" id="setCharge" onclick="setDelvieryCharge()">Set Charge</button>
+//         </div>
+//         `);
+        
+//     $(".otherResultHeader").html(`Delivery Fees`);
+    
+//     loadDeliveryCharge();
+//     getAllBranch();
+// }
 
 const handlingChargeForm = () => {
 

@@ -4505,7 +4505,7 @@ else if($type == 'addBranch'){
             '$lastId',
             product_id,
             vid,
-            0,
+            10,
             v_mrp,
             v_seliing_price,
             v_purchase_price
@@ -4600,7 +4600,7 @@ else if($type == "updateBranch"){
     $coverage =$_POST['coverage'];
     
 
-    $query = "UPDATE `branch` SET
+    $query1 = "UPDATE `branch` SET
         `name` = '$name',
         `description` = '$description',
         `phone_no` = '$phone_no',
@@ -4611,10 +4611,19 @@ else if($type == "updateBranch"){
         `state` = '$state',
         `pincode` = '$pincode',
         `coverage`='$coverage'
-    WHERE `id` = '$id'";
+         WHERE `id` = '$id'";
+
+        $query2 = "UPDATE `admin` SET
+        `username` = '$name',
+        `password` = '$password',
+        `email` = '$email'
+        WHERE `role_id` = '$id'";
+
+    $res1 = mysqli_query($con, $query1);
+    $res2 = mysqli_query($con, $query2);
     // echo $query; exit();
 
-    if (mysqli_query($con, $query)) {
+    if ($res1 && $res2) {
         echo json_encode([
             "status" => "success",
             "message" => "Branch updated successfully."
@@ -4628,11 +4637,14 @@ else if($type == "updateBranch"){
 }
 else if($type == "deleteBranch"){
     $id=$_POST['id'];
-    $query="DELETE FROM `branch` WHERE `branch`.`id` = '$id'";
-    // echo $query; die();
-    $res=mysqli_query($con,$query);
-    if($res){
-       
+    $query1="DELETE FROM `branch` WHERE `branch`.`id` = '$id'";
+    $query2 = "DELETE FROM `branch_stock` WHERE `branch_id`='$id'";
+    $query3 = "DELETE FROM `admin` WHERE `role_id`='$id'";
+    
+    $res1=mysqli_query($con,$query1);
+    $res2=mysqli_query($con,$query2);
+    $res3=mysqli_query($con,$query3);
+    if($res1 && $res2 && $res3){   
         echo json_encode([
             "status"=>"success",
             "message"=>"branch delete successfully !"
