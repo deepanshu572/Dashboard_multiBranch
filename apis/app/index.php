@@ -3744,82 +3744,59 @@ else if($type=="findNearestBranch"){
 
         $userLat = (float) $userLat;
         $userLng = (float) $userLng;
-
-
-        // Haversine Formula
         $query = "SELECT
-                id,
-                name,
-                address,
-                city,
-                state,
-                pincode,
-                latitude,
-                longitude,
-                coverage,
-                isOpen,
+    id,
+    name,
+    address,
+    city,
+    state,
+    pincode,
+    latitude,
+    longitude,
+    coverage,
 
-                (
-                    6371 * ACOS(
-                        COS(RADIANS($userLat))
-                        * COS(RADIANS(latitude))
-                        * COS(RADIANS(longitude) - RADIANS($userLng))
-                        + SIN(RADIANS($userLat))
-                        * SIN(RADIANS(latitude))
-                    )
-                ) AS distance
+    (
+        6371 * ACOS(
+            COS(RADIANS($userLat))
+            * COS(RADIANS(latitude))
+            * COS(RADIANS(longitude) - RADIANS($userLng))
+            + SIN(RADIANS($userLat))
+            * SIN(RADIANS(latitude))
+        )
+    ) AS distance
 
-            FROM branch
+FROM branch
 
-            WHERE status = 'true'
-            AND isOpen = 'true'
-            AND latitude IS NOT NULL
-            AND longitude IS NOT NULL
+WHERE status = 'true'
+AND isOpen = 'true'
+AND latitude IS NOT NULL
+AND longitude IS NOT NULL
+AND coverage IS NOT NULL
 
-            ORDER BY distance ASC
+HAVING distance <= coverage
 
-            LIMIT 1
-        ";
+ORDER BY distance ASC
 
-        //  $query = "SELECT *
-        // FROM (
-        //     SELECT
-        //         id,
-        //         name,
-        //         address,
-        //         city,
-        //         state,
-        //         pincode,
-        //         latitude,
-        //         longitude,
-        //         coverage,
-        //         isOpen,
+LIMIT 1";
 
-        //         (
-        //             6371 * ACOS(
-        //                 COS(RADIANS($userLat))
-        //                 * COS(RADIANS(latitude))
-        //                 * COS(RADIANS(longitude) - RADIANS($userLng))
-        //                 + SIN(RADIANS($userLat))
-        //                 * SIN(RADIANS(latitude))
-        //             )
-        //         ) AS distance
+// $res = mysqli_query($con, $query);
 
-        //     FROM branch
+// if (!$res) {
+//     die("SQL ERROR: " . mysqli_error($con));
+// }
 
-        //     WHERE status = 'true'
-        //     AND isOpen = 'true'
-        //     AND latitude IS NOT NULL
-        //     AND longitude IS NOT NULL
+// while ($row = mysqli_fetch_assoc($res)) {
+//     echo "<pre>";
+//     print_r($row);
+//     echo "</pre>";
+// }
 
-        // ) AS branches
-
-        // WHERE distance <= coverage
-
-        // ORDER BY distance ASC
-
-        // LIMIT 1";
-
+// echo "<pre>";
+// echo "USER LAT: " . $userLat . "\n";
+// echo "USER LNG: " . $userLng . "\n";
+// echo $query;
+// echo "</pre>";
+// exit();
 
         $result = mysqli_query($con, $query);
 

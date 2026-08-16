@@ -1573,6 +1573,7 @@ else if ($type == 'logout') {
                 $address_id=$_POST['address_id']; 
                 
                 $query ="SELECT * FROM `user` AS a  LEFT JOIN location AS b ON a.mobile = b.user_id WHERE a.mobile ='$user_id' AND b.id = '$address_id'"; 
+                echo $query; exit();
                 $run=mysqli_query($con,$query);
                 if(mysqli_num_rows($run)>0){
                     while($row=mysqli_fetch_assoc($run)){
@@ -4473,8 +4474,8 @@ else if($type == 'addBranch'){
         '$email',
         '$password',
         '$address',
-        '$longitude',
         '$latitude',
+        '$longitude',
         '$coverage',
         '$city',
         '$state',
