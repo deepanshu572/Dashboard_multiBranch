@@ -60,7 +60,7 @@ $(document).ready(function () {
         let processAjax = function(base64Image = null, fileExtension = null) {
             let actionType = editBannerId ? 'editBanner' : 'addBanner';
             
-            if ( bannerType == "bannerSec1"|| bannerType =="bannerSec2" || bannerType == "bannerSec3" || bannerType == 'footer') {
+            if ( bannerType == "bannerSec1"|| bannerType =="bannerSec2" || bannerType == "bannerSec3" || bannerType == 'flashSale' ||bannerType == 'footer') {
                 data = {
                     type: actionType,
                     bannerType: bannerType,
@@ -181,7 +181,7 @@ const bannerType = () => {
     const bannerType = $("#banner_type").val();
     console.log(bannerType);
     $("#flash-sale-manage-link").toggle(bannerType === 'flash_sale_banner');
-    if (bannerType == 'main' || bannerType == 'topLeft' || bannerType == "topRight" || bannerType == "bannerSec1"|| bannerType =="bannerSec2" || bannerType == "bannerSec3" || bannerType == "footer" || bannerType == 'website_bannner' || bannerType=='category_banner') {
+    if (bannerType == 'main' || bannerType == 'topLeft' || bannerType == "topRight" || bannerType == "bannerSec1"|| bannerType =="bannerSec2" || bannerType == "flashSale"|| bannerType == "bannerSec3" || bannerType == "footer" || bannerType == 'website_bannner' || bannerType=='category_banner') {
         // $(".banner-subcategory").show();
         $(".banner-category").show();
         $(".banner-middle-category").show();

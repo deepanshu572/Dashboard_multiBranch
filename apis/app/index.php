@@ -114,7 +114,8 @@ header("Access-Control-Allow-Origin:*");
         
         // $query = "SELECT * FROM `product` WHERE `flash_sale`='true' AND `status`='true' AND `under_category`='$id'";
 
-         $query = "SELECT 
+
+         $query1 = "SELECT 
             p.*,
 
             (
@@ -154,27 +155,42 @@ header("Access-Control-Allow-Origin:*");
         AND p.flash_sale = 'true'
         AND IFNULL(bs.stock, 0) > 0";
 
-         $res = mysqli_query($con,$query);
-       if(mysqli_num_rows($res)>0){
-            $data=[];
+         $query2 = "SELECT * FROM `banner`
+           WHERE `type`='flashSale'
+           AND `status`='true'
+           AND `under_category`='$categoryId'";
 
-            while($row= mysqli_fetch_assoc($res)){
-                   $data[]=$row;
-            }
+$res1 = mysqli_query($con, $query1);
+$res2 = mysqli_query($con, $query2);
 
-         echo json_encode([
-                "status" => "success",
-                "message" => "Banner fetched successfully !", 
-                "data" => $data
-            ]);
-         }
-         else{
-              echo json_encode([
-                "status" => "failed",
-                "message" => "something wents wrong on api : getTopLeftBanner", 
-                "data" => []
-            ]);
-         }
+if ($res1 && $res2 && mysqli_num_rows($res1) > 0 && mysqli_num_rows($res2) > 0) {
+
+    $data = [];
+
+    // Main banners
+    while ($row = mysqli_fetch_assoc($res1)) {
+        $data[] = $row;
+    }
+
+    // Flash sale background banner - only first record
+    $bgData = mysqli_fetch_assoc($res2);
+
+    echo json_encode([
+        "status"  => "success",
+        "message" => "Banner fetched successfully!",
+        "data"    => $data,
+        "bg"      => $bgData
+    ]);
+
+} else {
+
+    echo json_encode([
+        "status"  => "failed",
+        "message" => "Something went wrong on API: getTopLeftBanner",
+        "data"    => [],
+        "bg"      => []
+    ]);
+}
     }
     else if($type == "getTopRightBanner"){
         $id=$_POST['categoryId'];
