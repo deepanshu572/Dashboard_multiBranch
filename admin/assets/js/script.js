@@ -463,7 +463,9 @@ const applyRBAC = () => {
         $(".dashBox").show(); // Dashboard is always visible
         $(".posBox").show(); // Dashboard is always visible
         $(".productBox").show(); // Product is always visible
-
+        $(".otherSetupBox").show();
+        // $(".otherSetupBox").addClass("hide_option");
+        $("#optionsBtn").hide();
         $(".orderBox").show();
         $(".salesReportBox").show();
 

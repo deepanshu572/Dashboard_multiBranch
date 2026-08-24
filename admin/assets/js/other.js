@@ -24,10 +24,27 @@ const setDelvieryCharge = () => {
 
 const loadDeliveryCharge = () => {
 
+     let branchName = localStorage.getItem("admin_role");
+    let branchId = localStorage.getItem("role_id");
+    let branchData = {};
+    if (branchName == "branch") {
+        branchData = {
+            type: "loadDeliveryCharge",
+            branchId
+        }
+
+    }
+    else {
+        branchData = {
+            type: "loadDeliveryCharge",
+        }
+    }
+
+
     $.ajax({
         url: apiurl,
         type: "POST",
-        data: { type: 'loadDeliveryCharge' },
+        data: branchData,
         success: function (response) {
             if (response != null || response != 'error') {
                 let data = JSON.parse(response);
@@ -117,9 +134,9 @@ const deleteDelCharge = async (item) => {
 //                             <button class="set-btn" id="setCharge" onclick="setDelvieryCharge()">Set Charge</button>
 //         </div>
 //         `);
-        
+
 //     $(".otherResultHeader").html(`Delivery Fees`);
-    
+
 //     loadDeliveryCharge();
 //     getAllBranch();
 // }
@@ -964,7 +981,7 @@ const handleTitle = () => {
     `);
     $(".otherResultHeader").html(`Header Title`);
     loadTitle();
-    
+
     $.ajax({
         url: apiurl,
         type: 'POST',
@@ -1068,7 +1085,7 @@ const selectCategoryChanged = () => {
 
 const selectSubCategoryChanged = () => {
     // $("#hero_category").val('');
-    getSubCategory();
+    // getSubCategory();
 }
 
 function getSubCategory() {
@@ -1246,7 +1263,7 @@ function getmiddleCategory() {
 const saveHeroBanner = () => {
     const categoryId = $("#hero_category").val();
     const middleCategoryId = $("#hero_middle_category").val() || "";
-    const subCategoryId = $("#hero_sub_category").val() || "";
+    // const subCategoryId = $("#hero_sub_category").val() || "";
     const base64Img = $("#bannerImage").data("base64");
     const fullBase64 = $("#bannerImage").data("fullbase64");
     const imgExt = $("#bannerImage").data("ext");
@@ -1269,8 +1286,8 @@ const saveHeroBanner = () => {
             category_id: categoryId,
             image_base64: fullBase64,   // only encoded part
             image_ext: imgExt,
-            subCategoryId: subCategoryId,
-            middleCatId:middleCategoryId
+            // subCategoryId: subCategoryId,
+            middleCatId: middleCategoryId
             // full base64 string (optional)
         },
         success: function (res) {
@@ -1278,9 +1295,9 @@ const saveHeroBanner = () => {
                 Swal.fire({ icon: "success", title: "Hero Banner Added!" });
                 $("#hero_category").val("");
                 $("#hero_middle_category").val("");
-                $("#middleCat").css("display","none");
-                $("#subCat").css("display","none");
-                $("#hero_sub_category").val("");
+                $("#middleCat").css("display", "none");
+                $("#subCat").css("display", "none");
+                // $("#hero_sub_category").val("");
                 $("#bannerImage").val("");
                 $("#imagePreview").html("");
                 loadHeroBanner();
@@ -2125,13 +2142,27 @@ function saveContactInfo() {
 
 
 function getAllBranch() {
+    let branchName = localStorage.getItem("admin_role");
+    let branchId = localStorage.getItem("role_id");
+    let branchData = {};
+    if (branchName == "branch") {
+        branchData = {
+            type: "getAllBranch",
+            branchId
+        }
+
+    }
+    else {
+        branchData = {
+            type: "getAllBranch",
+        }
+    }
+
     $.ajax({
         url: apiurl,
         method: "POST",
         dataType: "JSON",
-        data: {
-            type: "getAllBranch",
-        },
+        data: branchData,
         success: function (response) {
             if (response.status == "success") {
                 console.log(response.data);

@@ -645,9 +645,11 @@ const viewOrderDetails = (orderData) => {
                     type: 'POST',
                     data: { type: 'viewOrderUserDetails', user_id: orderData.user_id, address_id: orderData.address_id },
                     success: function (response) {
+                        console.log(response);
                         if (response != 'error' && response != null) {
                             let data = JSON.parse(response);
                             let user = data[0];
+                            console.log(user);
 
                             // Address formatting
                             const addressParts = [
@@ -662,9 +664,9 @@ const viewOrderDetails = (orderData) => {
                             const fullAddress = addressParts.filter(Boolean).join(', ');
 
                             // Display in DOM
-                            $(".customerName").html(`${user.full_name}`);
-                            $(".customerEmail").html(`${user.email}`);
-                            $(".customerPhone").html(`${user.mobile}`);
+                            $(".customerName").html(`${user.o_username}`);
+                            // $(".customerEmail").html(`${user.email}`);
+                            $(".customerPhone").html(`${user?.o_mobile == "" ? "N/A":user?.o_mobile}`);
                             $(".customerAddress").html(fullAddress || "Address not available");
 
                             // Map Logic

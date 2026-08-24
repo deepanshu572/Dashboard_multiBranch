@@ -101,8 +101,7 @@ function renderProducts() {
             <div class="product">
                 <img src="${imgurl + product.image_path}" alt="${product.name}">
                 <h4>${product.name}</h4>
-                <p style="margin-bottom:10px;">${product.quantity} ${product.unit}</p>
-                <p>Rs.${product.selling_price} /-</p>
+              
                 ${btnSection}
             </div>
         `;

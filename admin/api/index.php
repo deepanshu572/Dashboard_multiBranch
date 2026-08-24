@@ -843,7 +843,7 @@ else if ($type == 'logout') {
                         id,
                         '$lastId',
                         '$variantId',
-                        '0',
+                        '10',
                         '$mrp',
                         '$sellingPrice',
                         '$purchasePrice'
@@ -1572,8 +1572,9 @@ else if ($type == 'logout') {
                 $user_id=$_POST['user_id']; 
                 $address_id=$_POST['address_id']; 
                 
-                $query ="SELECT * FROM `user` AS a  LEFT JOIN location AS b ON a.mobile = b.user_id WHERE a.mobile ='$user_id' AND b.id = '$address_id'"; 
-                echo $query; exit();
+                // $query ="SELECT * FROM `user` AS a  LEFT JOIN location AS b ON a.mobile = b.user_id WHERE a.mobile ='$user_id' AND b.id = '$address_id'"; 
+             $query = "SELECT * FROM `location` WHERE `id` = '$address_id' AND `user_id` = '$user_id'";
+                // echo $query; exit();
                 $run=mysqli_query($con,$query);
                 if(mysqli_num_rows($run)>0){
                     while($row=mysqli_fetch_assoc($run)){
@@ -2773,14 +2774,31 @@ else if($type == 'deleteVarient'){
              }
              
               else if($type=='loadDeliveryCharge'){
+                $branchId = $_POST['branchId'];
                 
-          $query = "SELECT 
-            delivery_charge.*,
-            branch.name AS branch_name
-          FROM `delivery_charge`
-          INNER JOIN `branch`
-              ON delivery_charge.branch_id = branch.id
-          ORDER BY delivery_charge.id DESC";
+                if(!$branchId){
+
+                    $query = "SELECT 
+                    delivery_charge.*,
+                    branch.name AS branch_name
+                    FROM `delivery_charge`
+                    INNER JOIN `branch`
+                        ON delivery_charge.branch_id = branch.id
+                    ORDER BY delivery_charge.id DESC";
+                }else{
+                    $query = "SELECT 
+                        delivery_charge.*,
+                        branch.name AS branch_name
+                    FROM `delivery_charge`
+                    INNER JOIN `branch`
+                        ON delivery_charge.branch_id = branch.id
+                    WHERE branch.id = '$branchId'
+                    ORDER BY delivery_charge.id DESC
+                    ";
+
+                    }
+                    // echo $query; exit();
+
                           $run=mysqli_query($con,$query);
                 if(mysqli_num_rows($run)>0){
                     while($row=mysqli_fetch_assoc($run)){
@@ -2918,6 +2936,7 @@ else if($type == 'deleteVarient'){
             $branch_id = mysqli_real_escape_string($con, $_POST['branch_id']);
 
             $query = "SELECT 
+                v.vid,
                 v.v_unit,
                 v.v_p_limit,
                 v.v_quantity,
@@ -3482,7 +3501,7 @@ else if($type == 'deleteVarient'){
                 // $categoryName = mysqli_real_escape_string($con, $_POST['categoryName']);
                 $category_id=$_POST['category_id'];
                 $middleCatId=$_POST['middleCatId'] ?? '';
-                $subCategoryId=$_POST['subCategoryId'] ?? '';
+                // $subCategoryId=$_POST['subCategoryId'] ?? '';
                 $categoryImage=$_POST['image_base64'];
                 $imageExtension=$_POST['image_ext'];
                 $date=date("Y-m-d H:i:s");
@@ -3492,8 +3511,8 @@ else if($type == 'deleteVarient'){
                 $imgurl = 'api/uploads/'.$img_nm;
                 $image = base64_to_jpeg( $imgurlbase64 , 'uploads/'.$img_nm);
             
-                $query ="INSERT INTO `hero_banner`( `under_category`,`under_middle_category`, `image_path`,`under_subcategory`) 
-                VALUES ('$category_id','$middleCatId','$imgurl','$subCategoryId')";
+                $query ="INSERT INTO `hero_banner`( `under_category`,`under_middle_category`, `image_path`) 
+                VALUES ('$category_id','$middleCatId','$imgurl')";
                 // echo $query; exit();
                 $run=mysqli_query($con,$query);
                 if($run){
@@ -3544,7 +3563,6 @@ else if($type == 'loadHeroBanner'){
             ON (a.under_category IS NULL 
                 OR a.under_category = '' 
                 OR a.under_category = 0)
-            AND a.under_subcategory = s.id
     ";
 
     $run = mysqli_query($con, $query);
@@ -3703,6 +3721,7 @@ else if ($type == 'addToCart') {
             '$staff_username'
         )
     ";
+    // echo $insertOrder; exit();
 
     $run = mysqli_query($con, $insertOrder);
 
@@ -3728,6 +3747,8 @@ else if ($type == 'addToCart') {
                     SET `stock` = GREATEST(`stock` - $nop, 0)
                     WHERE `varient_id` = '$vid' AND `product_id` = '$p_id' AND `branch_id` = '$branchId'
                 ";
+                    // echo $updateVariantStock; exit();
+
                 mysqli_query($con, $updateVariantStock);
             // }
         }
@@ -4659,7 +4680,13 @@ else if($type == "deleteBranch"){
 
 }
 else if($type == "getAllBranch"){
-    $query = "SELECT * FROM `branch`";
+    $branchId = $_POST['branchId'];
+    if(!$branchId){
+        $query = "SELECT * FROM `branch`";
+    }
+    else{
+              $query = "SELECT * FROM `branch` WHERE `id` = '$branchId'";
+    }
     $res=mysqli_query($con,$query);
     if(mysqli_num_rows($res)>0){
         $data=[];

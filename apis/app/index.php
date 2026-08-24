@@ -114,7 +114,9 @@ header("Access-Control-Allow-Origin:*");
         
         // $query = "SELECT * FROM `product` WHERE `flash_sale`='true' AND `status`='true' AND `under_category`='$id'";
 
-         $query = "SELECT  p.*,
+         $query = "SELECT 
+            p.*,
+
             (
                 SELECT COUNT(*)
                 FROM varient vc
@@ -131,26 +133,26 @@ header("Access-Control-Allow-Origin:*");
 
             IFNULL(bs.stock, 0) AS stock
 
-            FROM product p
+        FROM product p
 
-            LEFT JOIN varient v 
-                ON v.vid = (
-                    SELECT v2.vid
-                    FROM varient v2
-                    WHERE v2.product_id = p.p_id
-                    ORDER BY v2.vid ASC
-                    LIMIT 1
-                )
+        LEFT JOIN varient v 
+            ON v.vid = (
+                SELECT v2.vid
+                FROM varient v2
+                WHERE v2.product_id = p.p_id
+                ORDER BY v2.vid ASC
+                LIMIT 1
+            )
 
-            LEFT JOIN branch_stock bs
-                ON bs.product_id = p.p_id
-                AND bs.varient_id = v.vid
-                AND bs.branch_id = '$branchId'
+        LEFT JOIN branch_stock bs
+            ON bs.product_id = p.p_id
+            AND bs.varient_id = v.vid
+            AND bs.branch_id = '$branchId'
 
-            WHERE p.status = 'true'
-            AND p.under_category = '$categoryId'
-            AND p.flash_sale = 'true'";
-
+        WHERE p.status = 'true'
+        AND p.under_category = '$categoryId'
+        AND p.flash_sale = 'true'
+        AND IFNULL(bs.stock, 0) > 0";
 
          $res = mysqli_query($con,$query);
        if(mysqli_num_rows($res)>0){
@@ -3836,12 +3838,18 @@ LIMIT 1";
 else if($type=="getCurrentDeliveryBranch"){
     $branchId = $_POST['branchId'];
     $totalSellingPrice = $_POST['totalSellingPrice'];
-    $query = "SELECT *
-          FROM `delivery_charge`
-          WHERE `branch_Id` = '$branchId'
-          AND `min_amount` <= '$totalSellingPrice'
-          ORDER BY `min_amount` DESC
-          LIMIT 1";
+    // $query = "SELECT *
+    //       FROM `delivery_charge`
+    //       WHERE `branch_Id` = '$branchId'
+    //       AND `min_amount` >= '$totalSellingPrice'
+    //       ORDER BY `min_amount` DESC
+    //       LIMIT 1";
+          $query = "SELECT *
+            FROM delivery_charge
+            WHERE branch_Id = '$branchId'
+            AND CAST(min_amount AS DECIMAL(10,2)) <= '$totalSellingPrice'
+            ORDER BY CAST(min_amount AS DECIMAL(10,2)) DESC
+            LIMIT 1";
         //   echo $query; exit();
 
     $res = mysqli_query($con,$query);
