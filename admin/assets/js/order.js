@@ -69,6 +69,56 @@ const loadTimeSlots = () => {
         }
     });
 };
+const getAllBranch = () => {
+
+
+    let branchName = localStorage.getItem("admin_role");
+    let branchId = localStorage.getItem("role_id");
+    let branchData = {};
+    if (branchName == "branch") {
+        branchData = {
+            type: "getAllBranch",
+            branchId
+        }
+
+    }
+    else {
+        branchData = {
+            type: "getAllBranch",
+        }
+    }
+    $.ajax({
+        url: apiurl,
+        method: "POST",
+        dataType: "JSON",
+        data: branchData,
+        success: function (response) {
+            if (response.status == "success") {
+                console.log(response.data);
+                let data = response.data;
+
+                let branchHtml;
+                if (branchName == "branch") {
+                    branchHtml = '';
+
+                    $("#branch-filter").val(data[0]?.id);
+                } else {
+
+                    branchHtml = '<option value="all">All branch</option>';
+                }
+
+                data?.forEach((item) => {
+                    branchHtml += `<option value='${item?.id}'>${item?.name}</option>`;
+                });
+                $("#branch-filter").html(branchHtml);
+
+
+            } else {
+                console.log(response.message);
+            }
+        }
+    })
+}
 
 const loadOrder = async (page = 1, pageSize = 10) => {
     console.log("loadOrder called", { page, pageSize });
@@ -77,15 +127,15 @@ const loadOrder = async (page = 1, pageSize = 10) => {
     let mobile = params.get("mobile");
     let branchId = localStorage.getItem("role_id");
 
-       const productData =
+    const productData =
         branchId > 0
-        ? {
-            type: "loadBranchOrder",
-            branchId
-        }
-        : {
-            type: "loadOrder"
-        };
+            ? {
+                type: "loadBranchOrder",
+                branchId
+            }
+            : {
+                type: "loadOrder"
+            };
 
     console.log("URL Param Type:", type, "Mobile:", mobile);
 
@@ -155,7 +205,7 @@ const applyFilters = (page = 1, pageSize = 10) => {
     currentPage = page;
     currentSize = pageSize;
 
-    console.log("applyFilters called with pageSize:", pageSize); 
+    console.log("applyFilters called with pageSize:", pageSize);
 
     let dateFilter = $('#date-filter').val();
     let startDate = $('#start-date').val(); // yyyy-mm-dd
@@ -166,9 +216,11 @@ const applyFilters = (page = 1, pageSize = 10) => {
     let selectedDateFilter = $('#selected-date-filter').val(); // yyyy-mm-dd
     let timeSlotFilter = $('#time-slot-filter').val();
     let searchQuery = $('#search-input').val().toLowerCase().trim();
+    let branchFilter = $("#branch-filter").val() || 'all';
 
-    console.log("Current Filters:", { dateFilter, statusFilter, typeFilter, paymentFilter, selectedDateFilter, timeSlotFilter, searchQuery });
+    console.log("Current Filters:", { dateFilter, statusFilter, typeFilter, paymentFilter, selectedDateFilter, timeSlotFilter, searchQuery, branchFilter });
 
+    console.log(allOrders)
     let filteredData = allOrders.filter(item => {
         let matches = true;
         let orderDate = parseOrderDate(item.dor);
@@ -226,6 +278,9 @@ const applyFilters = (page = 1, pageSize = 10) => {
             if (!item.order_type || item.order_type.toLowerCase() !== typeFilter.toLowerCase()) matches = false;
         }
 
+        if (branchFilter !== 'all') {
+            if (!item?.branch_id || Number(item?.branch_id) !== Number(branchFilter)) matches = false;
+        }
         // Payment Filter
         if (paymentFilter !== 'all') {
             let pMethod = (item.payment_method || "").toLowerCase().replace(/ /g, "_");
@@ -292,6 +347,7 @@ const renderOrders = (data, page, pageSize) => {
         <thead>
             <tr>
                 <th>#</th>
+                <th>Branch</th>
                 <th>Date</th>
                 <th>Customer Details</th>
                 <th>Total Amt</th>
@@ -324,6 +380,7 @@ const renderOrders = (data, page, pageSize) => {
             html += `
                 <tr>
                     <td class="sl">${item.id}</td>
+                    <td>${item.branchName}</td>
                     <td>${formattedDate}</td>
                     <td>
                         <div style="font-weight: bold;">${item.user_id}</div>
@@ -395,7 +452,7 @@ $(document).ready(function () {
     });
 
     // Trigger filter on change for all inputs including rows-per-page
-    $('#start-date, #end-date, #status-filter, #order-type-filter, #payment-method-filter, #selected-date-filter, #time-slot-filter, #rows-per-page').change(function () {
+    $('#start-date, #end-date, #status-filter, #order-type-filter, #payment-method-filter, #selected-date-filter, #time-slot-filter, #rows-per-page, #branch-filter').change(function () {
         applyFilters(1);
     });
 
@@ -414,6 +471,8 @@ $(document).ready(function () {
         $('#time-slot-filter').val('all');
         $('#rows-per-page').val('10');
         $('#search-input').val('');
+        $('#branch-filter').val('all');
+
         applyFilters(1);
     });
 
@@ -666,7 +725,7 @@ const viewOrderDetails = (orderData) => {
                             // Display in DOM
                             $(".customerName").html(`${user.o_username}`);
                             // $(".customerEmail").html(`${user.email}`);
-                            $(".customerPhone").html(`${user?.o_mobile == "" ? "N/A":user?.o_mobile}`);
+                            $(".customerPhone").html(`${user?.o_mobile == "" ? "N/A" : user?.o_mobile}`);
                             $(".customerAddress").html(fullAddress || "Address not available");
 
                             // Map Logic
@@ -752,44 +811,44 @@ $statusSelect.on('change', function () {
                 successAlert("successfully updated");
                 sendPushNotification(orderDatas.id, status);
 
-                    // Real-time update in Order Details
-                    $(".orderstatus").text(status);
+                // Real-time update in Order Details
+                $(".orderstatus").text(status);
 
-                    // Update global data source
+                // Update global data source
 
-                    // Force String comparison and Trim to avoid mismatch
-                    let targetId = String(orderDatas.id).trim();
-                    let orderIndex = allOrders.findIndex(o => String(o.id).trim() === targetId);
+                // Force String comparison and Trim to avoid mismatch
+                let targetId = String(orderDatas.id).trim();
+                let orderIndex = allOrders.findIndex(o => String(o.id).trim() === targetId);
 
-                    console.log("Updating order status. Index:", orderIndex, "New Status:", status, "Target ID:", targetId);
+                console.log("Updating order status. Index:", orderIndex, "New Status:", status, "Target ID:", targetId);
 
-                    if (orderIndex !== -1) {
-                        allOrders[orderIndex].status = status;
-                        // Force update the orderDatas reference too, just in case
-                        orderDatas.status = status;
-                    } else {
-                        console.error("Could not find order in global list to update:", orderDatas.id);
-                        // Emergency: Since we can't find it to update locally, we MUST reload the list
-                        // But reloadOrder is async. 
-                        // Let's try to reload page 1 if all else fails, or current page
-                        loadOrder(currentPage, currentSize);
-                        return; // Exit here, loadOrder will handle render
-                    }
-
-                    // Update local orderDatas
+                if (orderIndex !== -1) {
+                    allOrders[orderIndex].status = status;
+                    // Force update the orderDatas reference too, just in case
                     orderDatas.status = status;
-
-                    // Remove old status classes and add new one
-                    $(".orderstatus")
-                        .removeClass("status-pending status-confirmed status-shipped status-out-for-delivery status-delivered status-cancelled status-returned")
-                        .addClass(getStatusClass(status));
-
-                    // Re-render list with current state instead of full reload
-                    console.log("Re-rendering list with page:", currentPage, "size:", currentSize);
-                    applyFilters(currentPage, currentSize);
+                } else {
+                    console.error("Could not find order in global list to update:", orderDatas.id);
+                    // Emergency: Since we can't find it to update locally, we MUST reload the list
+                    // But reloadOrder is async. 
+                    // Let's try to reload page 1 if all else fails, or current page
+                    loadOrder(currentPage, currentSize);
+                    return; // Exit here, loadOrder will handle render
                 }
+
+                // Update local orderDatas
+                orderDatas.status = status;
+
+                // Remove old status classes and add new one
+                $(".orderstatus")
+                    .removeClass("status-pending status-confirmed status-shipped status-out-for-delivery status-delivered status-cancelled status-returned")
+                    .addClass(getStatusClass(status));
+
+                // Re-render list with current state instead of full reload
+                console.log("Re-rendering list with page:", currentPage, "size:", currentSize);
+                applyFilters(currentPage, currentSize);
             }
-        });
+        }
+    });
     disableOptionsBasedOnStatus($(this).val());
 });
 
@@ -1210,11 +1269,11 @@ function encrypt(data) {
 const sendPushNotification = (id, status) => {
 
     const formData = new FormData();
-  formData.append('dbUserNm', encrypt('u373855149_bachatfresh2'));
-  formData.append('dbPass', encrypt('Bachatfresh2@123'));
-  formData.append('dbName', encrypt('u373855149_bachatfresh2'));
-  formData.append('projectId', 'bachat-fresh-kirana-466e6');
-  formData.append('pvKeyUrl', 'https://indiantechsolution.com/pvkey/bachatfresh2/pvkey.json');
+    formData.append('dbUserNm', encrypt('u373855149_bachatfresh2'));
+    formData.append('dbPass', encrypt('Bachatfresh2@123'));
+    formData.append('dbName', encrypt('u373855149_bachatfresh2'));
+    formData.append('projectId', 'bachat-fresh-kirana-466e6');
+    formData.append('pvKeyUrl', 'https://indiantechsolution.com/pvkey/bachatfresh2/pvkey.json');
     formData.append('id', id);
     formData.append('status', status);
 

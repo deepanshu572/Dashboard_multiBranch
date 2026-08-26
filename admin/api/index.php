@@ -636,8 +636,13 @@ else if ($type == 'logout') {
 
         else if ($type =='loadBrands'){
           
-            $query="SELECT * FROM `brands` ORDER BY `id` DESC";
-
+         $query = "SELECT 
+                brands.*,
+                category.name AS categoryName
+            FROM brands
+            LEFT JOIN category 
+                ON brands.categoryId = category.id
+            ORDER BY brands.id DESC";
             $run=mysqli_query($con,$query);
         
             if($run){
@@ -713,27 +718,27 @@ else if ($type == 'logout') {
 //         mysqli_query($con, $imgquery);
 
 //         // Insert variants if any
-//         if (isset($_POST['variantData'])) {
-//             $variantData = json_decode($_POST['variantData'], true);
-//             if (is_array($variantData)) {
-//                 foreach ($variantData as $variant) {
-//                     $quantity = $variant['quantity'] ?? null;
-//                     $unit = mysqli_real_escape_string($con, $variant['unit'] ?? '');
-//                     $mrp = $variant['mrp'] ?? null;
-//                     $sellingPrice = $variant['sellingPrice'] ?? null;
-//                     $purchasePrice = $variant['purchasePrice'] ?? null;
-//                     $stock = $variant['stock'] ?? null;
+        // if (isset($_POST['variantData'])) {
+        //     $variantData = json_decode($_POST['variantData'], true);
+        //     if (is_array($variantData)) {
+        //         foreach ($variantData as $variant) {
+        //             $quantity = $variant['quantity'] ?? null;
+        //             $unit = mysqli_real_escape_string($con, $variant['unit'] ?? '');
+        //             $mrp = $variant['mrp'] ?? null;
+        //             $sellingPrice = $variant['sellingPrice'] ?? null;
+        //             $purchasePrice = $variant['purchasePrice'] ?? null;
+        //             $stock = $variant['stock'] ?? null;
 
-//                     $addVariant = "INSERT INTO `varient`(`v_mrp`, `product_id`, `v_seliing_price`, `v_purchase_price`, `v_stock`, `v_quantity`, `v_unit`) 
-//                                   VALUES ('$mrp', '$lastId', '$sellingPrice', '$purchasePrice', '$stock', '$quantity', '$unit')";
-//                     $run1 = mysqli_query($con, $addVariant); 
-//                     if (!$run1) {
-//                         echo "Error inserting variant: " . mysqli_error($con);
-//                         exit;
-//                     }
-//                 }
-//             }
-//         }
+        //             $addVariant = "INSERT INTO `varient`(`v_mrp`, `product_id`, `v_seliing_price`, `v_purchase_price`, `v_stock`, `v_quantity`, `v_unit`) 
+        //                           VALUES ('$mrp', '$lastId', '$sellingPrice', '$purchasePrice', '$stock', '$quantity', '$unit')";
+        //             $run1 = mysqli_query($con, $addVariant); 
+        //             if (!$run1) {
+        //                 echo "Error inserting variant: " . mysqli_error($con);
+        //                 exit;
+        //             }
+        //         }
+        //     }
+        // }
 
 //         // Insert multiple product images
 //         if (!empty($imageFiles)) {
@@ -769,12 +774,12 @@ else if ($type == 'logout') {
     $middleCategory      = mysqli_real_escape_string($con, $_POST['middleCategory'] ?? '');
     $subCategory   = mysqli_real_escape_string($con, $_POST['subCategory'] ?? '');
     $brandName     = mysqli_real_escape_string($con, $_POST['brandName'] ?? '');
-    $mrp           = $_POST['mrp'] ?? null;
-    $sellingPrice  = $_POST['sellingPrice'] ?? null;
-    $purchasePrice = $_POST['purchasePrice'] ?? null;
+    // $mrp           = $_POST['mrp'] ?? null;
+    // $sellingPrice  = $_POST['sellingPrice'] ?? null;
+    // $purchasePrice = $_POST['purchasePrice'] ?? null;
     // $stock         = $_POST['stock'] ?? null;
-    $quantity      = $_POST['quantity'] ?? null;
-    $unit          = mysqli_real_escape_string($con, $_POST['unit'] ?? '');
+    // $quantity      = $_POST['quantity'] ?? null;
+    // $unit          = mysqli_real_escape_string($con, $_POST['unit'] ?? '');
     $review        = $_POST['review'] ?? null;
     $reviewNop     = $_POST['reviewNop'] ?? null;
     $skuNumber     = mysqli_real_escape_string($con, $_POST['skuNumber'] ?? '');
@@ -811,12 +816,11 @@ else if ($type == 'logout') {
              
              `review_val`, `review_nop`, `information`, `highlight`, `isvarient`, `date`, `status`, `sku_number`,`p_limit`,`keyword`,`added_by`) 
             VALUES (
-                '$productName', '$imgurl', '$category','$middleCategory', '$subCategory', '$brandName',
-                
+                '$productName', '$imgurl', '$category','$middleCategory', '$subCategory', '$brandName',  
                 '$review', '$reviewNop', '$informationData', '$highlightData', 'true',
                 '$date', 'true', '$skuNumber','$product_limit','$product_keyword','$staff_username'
             )";
-//  echo $sql; die();
+//  echo $variantData; die();
     $run = mysqli_query($con, $sql);
    
     $lastId = mysqli_insert_id($con);
@@ -826,41 +830,130 @@ else if ($type == 'logout') {
         $imgquery = "INSERT INTO `product_img`(`product_id`, `image_path`) VALUES ('$lastId','$imgurl')";
         mysqli_query($con, $imgquery);
 
-                $addVariant = "INSERT INTO `varient`
-                               (`v_mrp`, `product_id`, `v_seliing_price`, `v_purchase_price`, `v_quantity`, `v_unit`,`v_p_limit`)
-                               VALUES ('$mrp', '$lastId', '$sellingPrice', '$purchasePrice', '$quantity', '$unit','')"; 
-                $run1 = mysqli_query($con, $addVariant);
+                // $addVariant = "INSERT INTO `varient`
+                //                (`v_mrp`, `product_id`, `v_seliing_price`, `v_purchase_price`, `v_quantity`, `v_unit`,`v_p_limit`)
+                //                VALUES ('$mrp', '$lastId', '$sellingPrice', '$purchasePrice', '$quantity', '$unit','')"; 
+                // $run1 = mysqli_query($con, $addVariant);
 
-                if($run1){
+                // if($run1){
 
-                    // Newly created Variant ID
-                    $variantId = mysqli_insert_id($con);
+                //     // Newly created Variant ID
+                //     $variantId = mysqli_insert_id($con);
 
-                    // Add stock entry for every branch
-                    $query = "INSERT INTO `branch_stock`
-                        (branch_id, product_id, varient_id, stock, v_mrp, v_seliing_price, v_purchase_price)
-                    SELECT
-                        id,
-                        '$lastId',
-                        '$variantId',
-                        '10',
-                        '$mrp',
-                        '$sellingPrice',
-                        '$purchasePrice'
+                //     // Add stock entry for every branch
+                //     $query = "INSERT INTO `branch_stock`
+                //         (branch_id, product_id, varient_id, stock, v_mrp, v_seliing_price, v_purchase_price)
+                //     SELECT
+                //         id,
+                //         '$lastId',
+                //         '$variantId',
+                //         '10',
+                //         '$mrp',
+                //         '$sellingPrice',
+                //         '$purchasePrice'
                         
-                    FROM branch";
+                //     FROM branch";
 
                 
 
-                    $run2 = mysqli_query($con, $query);
+                //     $run2 = mysqli_query($con, $query);
 
-                    if($run2){
-                        echo "Success";
-                    }else{
-                        echo mysqli_error($con);
+                //     if($run2){
+                //         echo "Success";
+                //     }else{
+                //         echo mysqli_error($con);
+                //     }
+                // }
+
+
+        if (isset($_POST['variantData'])) {
+
+
+            if (is_array($variantData)) {
+
+                foreach ($variantData as $variant) {
+
+                    $quantity = $variant['quantity'] ?? 0;
+                    $unit = mysqli_real_escape_string($con, $variant['unit'] ?? '');
+                    $mrp = $variant['mrp'] ?? 0;
+                    $sellingPrice = $variant['sellingPrice'] ?? 0;
+                    $purchasePrice = $variant['purchasePrice'] ?? 0;
+
+                    /*
+                    |--------------------------------------------------------------------------
+                    | 1. Insert Variant
+                    |--------------------------------------------------------------------------
+                    */
+
+                    $addVariant = "INSERT INTO `varient`
+                        (
+                            `v_mrp`,
+                            `product_id`,
+                            `v_seliing_price`,
+                            `v_purchase_price`,
+                            `v_quantity`,
+                            `v_unit`,
+                            `v_p_limit`
+                        )
+                        VALUES
+                        (
+                            '$mrp',
+                            '$lastId',
+                            '$sellingPrice',
+                            '$purchasePrice',
+                            '$quantity',
+                            '$unit',
+                            ''
+                        )";
+
+                        // echo $addVariant; exit();
+
+                    $run1 = mysqli_query($con, $addVariant);
+
+                    if (!$run1) {
+                        echo "Error inserting variant: " . mysqli_error($con);
+                        exit;
+                    }
+
+
+
+                    $variantId = mysqli_insert_id($con);
+
+
+                
+
+                    $branchStockQuery = "INSERT INTO `branch_stock`
+                        (
+                            `branch_id`,
+                            `product_id`,
+                            `varient_id`,
+                            `stock`,
+                            `v_mrp`,
+                            `v_seliing_price`,
+                            `v_purchase_price`
+                        )
+                        SELECT
+                            `id`,
+                            '$lastId',
+                            '$variantId',
+                            '10',
+                            '$mrp',
+                            '$sellingPrice',
+                            '$purchasePrice'
+                        FROM `branch`";
+
+                    $run2 = mysqli_query($con, $branchStockQuery);
+                    // echo $branchStockQuery; exit();
+
+                    if (!$run2) {
+                        echo "Error inserting branch stock: " . mysqli_error($con);
+                        exit;
                     }
                 }
 
+
+            } 
+        }
         // Insert multiple product images
         if (!empty($imageFiles)) {
             $imageData = json_decode($imageFiles, true);
@@ -1509,7 +1602,15 @@ else if ($type == 'logout') {
             }
             
             else if($type=='loadOrder'){  
-                $query ="SELECT * FROM `order` ORDER BY `id` DESC"; 
+                $query ="SELECT `order`.*,
+                 `branch`.`name` AS branchName 
+                FROM `order`
+                LEFT JOIN `branch`
+                 ON `order`.`branch_id` = `branch`.`id`
+                ORDER BY `id` DESC";
+
+                
+                // echo $query; exit(); 
                 $run=mysqli_query($con,$query);
                 if(mysqli_num_rows($run)>0){
                     while($row=mysqli_fetch_assoc($run)){
@@ -1523,7 +1624,15 @@ else if ($type == 'logout') {
             
               else if($type=='loadBranchOrder'){
                 $branchId=$_POST['branchId'];
-                $query="SELECT * FROM `order` WHERE `branch_id` = '$branchId' ORDER BY `id` DESC";
+                // $query="SELECT * FROM `order` WHERE `branch_id` = '$branchId' ORDER BY `id` DESC";
+                $query = "SELECT 
+                `order`.*,
+                `branch`.`name` AS branchName
+                FROM `order`
+                LEFT JOIN `branch`
+                    ON `order`.`branch_id` = `branch`.`id`
+                WHERE `order`.`branch_id` = '$branchId'
+                ORDER BY `order`.`id` DESC";
                 // echo $query; exit();
                 $run=mysqli_query($con,$query);
                 if(mysqli_num_rows($run)>0){
@@ -2325,32 +2434,27 @@ else if($type == 'deleteVarient'){
                 // echo $addVariant; exit();
 
                 $run1 = mysqli_query($con, $addVariant);  
-                $variantId = mysqli_insert_id($con);
+                 if (!$run1) {
+                    echo "Error inserting variant: " . mysqli_error($con);
+                    exit;
+                }
 
-            // mysqli_query($con,"INSERT INTO `branch_stock`
-            //     (branch_id, product_id, varient_id,stock,v_seliing_price,v_purchase_price,v_quantity)
-            //     SELECT
-            //         id,
-            //         '$lastId',
-            //         '$variantId',
-            //         '0',
-            //         '$sellingPrice', 
-            //             '$purchasePrice', 
-            //             '$quantity'
-            //     FROM branch");
+                $variantId = mysqli_insert_id($con);
             $qry="INSERT INTO `branch_stock`
-                (branch_id, product_id, varient_id,stock,v_seliing_price,v_purchase_price)
+                (branch_id, product_id, varient_id,stock,v_seliing_price,v_mrp,v_purchase_price)
                 SELECT
                     id,
                     '$lastId',
                     '$variantId',
-                    '0',
+                    '10',
                     '$sellingPrice', 
-                        '$purchasePrice', 
+                    '$mrp',
+                    '$purchasePrice'
                 FROM branch";
             // echo $qry; exit();
+            $run2 = mysqli_query($con,$qry);
 
-                if (!$run1) {
+                if (!$run2) {
                     echo "Error inserting variant: " . mysqli_error($con);
                     exit;
                 }
@@ -3469,10 +3573,11 @@ else if($type == 'deleteVarient'){
                 $title=$_POST['title'];
                 $header_title=$_POST['header_title'];
                 $category=$_POST['category'];
-                $query="SELECT * FROM `header_title`";  
+                // $query="SELECT * FROM `header_title`";  
             
                  $updateQuery = "UPDATE `header_title` SET `$title`='$header_title' WHERE `title_type`='$headline' AND `category_Id`='$category'";
-                        $updateRun = mysqli_query($con, $updateQuery);
+                //  echo $updateQuery; exit();      
+                 $updateRun = mysqli_query($con, $updateQuery);
                     
                         if ($updateRun) {
                             echo "success";
@@ -4620,6 +4725,8 @@ else if($type == "updateBranch"){
     $state = $_POST['state'];
     $pincode = $_POST['pincode'];
     $coverage =$_POST['coverage'];
+    $longitude=$_POST['longitude'];
+    $latitude=$_POST['latitude'];
     
 
     $query1 = "UPDATE `branch` SET
@@ -4632,8 +4739,11 @@ else if($type == "updateBranch"){
         `city` = '$city',
         `state` = '$state',
         `pincode` = '$pincode',
-        `coverage`='$coverage'
+        `coverage`='$coverage',
+        `longitude`='$longitude',
+        `latitude`='$latitude'
          WHERE `id` = '$id'";
+        //  echo $query1; exit();
 
         $query2 = "UPDATE `admin` SET
         `username` = '$name',

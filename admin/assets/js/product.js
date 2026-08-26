@@ -138,67 +138,69 @@ fileInput2.addEventListener('change', (event) => {
 
 
 
-// let varientData = [];
-// let vid = 1;
-// $("#addmore").click(() => {
-//     const vquantity = $("#vquantity").val();
-//     const vunit = $("#vunit").val();
-//     const vmrp = $("#vmrp").val();
-//     const vsellingPrice = $("#vselling-price").val();
-//     const vpurchasePrice = $("#vpurchase-price").val();
-//     const vstock = $("#vstock").val();
-//     const vlimit = $("#vlimit").val();
+let varientData = [];
+let vid = 1;
+$("#addmore").click(() => {
+    const vquantity = $("#vquantity").val();
+    const vunit = $("#vunit").val();
+    const vmrp = $("#vmrp").val();
+    const vsellingPrice = $("#vselling-price").val();
+    const vpurchasePrice = $("#vpurchase-price").val();
+    // const vstock = $("#vstock").val();
+    const vlimit = $("#vlimit").val();
 
-//     varientData.push(
-//         {
-//             vid: vid,
-//             quantity: vquantity,
-//             unit: vunit,
-//             mrp: vmrp,
-//             sellingPrice: vsellingPrice, purchasePrice: vpurchasePrice,
-//             stock: vstock,
-//             limit: vlimit
-//         }
-//     )
+  
+    console.log(
+        vquantity, vunit, vmrp, vpurchasePrice, vsellingPrice
+    )
 
-//     console.log(varientData);
+    varientData.push(
+        {
+            vid: vid,
+            quantity: vquantity,
+            unit: vunit,
+            mrp: vmrp,
+            sellingPrice: vsellingPrice, purchasePrice: vpurchasePrice,
+            limit: vlimit
+        }
+    )
 
-//     $("#vareint-result").append(`
-//         <div class="vdata" data-id="${vid}">
-//           <p> Quantity: ${vquantity}</p>
-//           <p> Unit: ${vunit}</p>
-//           <p> MRP: ${vmrp}</p>
-//           <p> Selling Price: ${vsellingPrice}</p>
-//           <p> Purchase Price: ${vpurchasePrice}</p>
-//           <p> Stock: ${vstock}</p>
-//           <p> Limit: ${vlimit}</p>
-//           <div class="vcancel flex" onclick="vareintCancel(${vid})">X</div>
-//         </div>
-//       `);
+    console.log(varientData);
+
+    $("#vareint-result").append(`
+        <div class="vdata" data-id="${vid}">
+          <p> Quantity: ${vquantity}</p>
+          <p> Unit: ${vunit}</p>
+          <p> MRP: ${vmrp}</p>
+          <p> Selling Price: ${vsellingPrice}</p>
+          <p> Purchase Price: ${vpurchasePrice}</p>
+          <p> Limit: ${vlimit}</p>
+          <div class="vcancel flex" onclick="vareintCancel(${vid})">X</div>
+        </div>
+      `);
 
 
-//     $("#vquantity").val("");
-//     $("#vunit").val("");
-//     $("#vmrp").val("");
-//     $("#vselling-price").val("");
-//     $("#vpurchase-price").val("");
-//     $("#vstock").val("");
-//     $("#vlimit").val("");
+    $("#vquantity").val("");
+    $("#vunit").val("");
+    $("#vmrp").val("");
+    $("#vselling-price").val("");
+    $("#vpurchase-price").val("");
+    $("#vlimit").val("");
 
-//     vid++;
-//     $("#vquantity").focus();
-// })
+    vid++;
+    $("#vquantity").focus();
+})
 
-// function vareintCancel(vid) {
-//     if (confirm("Are you sure you want to delete this variant?")) {
-//         $(`.vdata[data-id="${vid}"]`).remove();
+function vareintCancel(vid) {
+    if (confirm("Are you sure you want to delete this variant?")) {
+        $(`.vdata[data-id="${vid}"]`).remove();
 
-//         varientData = varientData.filter(variant => variant.vid !== vid);
+        varientData = varientData.filter(variant => variant.vid !== vid);
 
-//         console.log(`Variant with ID ${vid} has been removed.`);
-//         console.log("Updated variantData:", varientData);
-//     }
-// }
+        console.log(`Variant with ID ${vid} has been removed.`);
+        console.log("Updated variantData:", varientData);
+    }
+}
 
 //  add more variant data
 
@@ -214,13 +216,19 @@ $("#addmorevarient").click(() => {
     // const vstock = $("#addvstock").val();
     const vlimit = $("#addvlimit").val();
 
+    //    if(vquantity == '' || vunit == '' || vmrp == '' || vpurchasePrice == '' || vsellingPrice == ''){
+    //     alert("Fill the required fields");
+    //     return null;
+    // }
+
     addvarientData.push(
         {
             vid: addvid,
             quantity: vquantity,
             unit: vunit,
             mrp: vmrp,
-            sellingPrice: vsellingPrice, purchasePrice: vpurchasePrice,
+            sellingPrice: vsellingPrice,
+            purchasePrice: vpurchasePrice,
             limit: vlimit
         }
     )
@@ -270,6 +278,7 @@ const addMoreVarient = () => {
                 successAlert('Successfully added');
                 seeVarient(pid);
                 addvarientData = [];
+                $("#addvareint-result").html('')
             } else {
                 errorAlert(response);
             }
@@ -388,12 +397,12 @@ $('#product-form').submit(function (e) {
     const subCategory = $('#sub-category').val();
     const brandName = $('#brand_name').val();
     const productName = $('#product-name').val();
-    const mrp = $('#mrp').val();
-    const sellingPrice = $('#selling-price').val();
-    const purchasePrice = $('#purchase-price').val();
+    const mrp = $('#vmrp').val();
+    const sellingPrice = $('#vselling-price').val();
+    const purchasePrice = $('#vpurchase-price').val();
     // const stock = $('#stock').val();
-    const quantity = $('#quantity').val();
-    const unit = $('#unit').val();
+    const quantity = $('#vquantity').val();
+    const unit = $('#vunit').val();
     const review = $('#review').val();
     const reviewNop = $('#review-nop').val();
     const skuNumber = $('#sku-number').val();
@@ -403,11 +412,16 @@ $('#product-form').submit(function (e) {
 
 
     // Validate required fields
-    if (!productName || !mrp || !sellingPrice || !category) {
-        alert('Please fill out all required fields.');
-        return;
-    }
+    // if (!productName || !category ) {
+    //     alert('Please fill out all required fields.');
+    //     return;
+    // }
+    //   if(vquantity == '' || vunit == '' || vmrp == '' || vpurchasePrice == '' || vsellingPrice == ''){
+    //     alert("Fill the required fields");
+    //     return null;
+    // }
 
+      
     const file = $('#product-image')[0].files[0];
 
 
@@ -421,12 +435,12 @@ $('#product-form').submit(function (e) {
     formData.append('subCategory', subCategory);
     formData.append('brandName', brandName);
     formData.append('productName', productName);
-    formData.append('mrp', mrp);
-    formData.append('sellingPrice', sellingPrice);
-    formData.append('purchasePrice', purchasePrice);
+    // formData.append('mrp', mrp);
+    // formData.append('sellingPrice', sellingPrice);
+    // formData.append('purchasePrice', purchasePrice);
     // formData.append('stock', stock);
-    formData.append('quantity', quantity);
-    formData.append('unit', unit);
+    // formData.append('quantity', quantity);
+    // formData.append('unit', unit);
     formData.append('review', review);
     formData.append('reviewNop', reviewNop);
     formData.append('skuNumber', skuNumber);
@@ -441,10 +455,14 @@ $('#product-form').submit(function (e) {
     // Add array data
     formData.append('informationData', JSON.stringify(informationData));
     formData.append('highlightData', JSON.stringify(highlightData));
-    // formData.append('variantData', JSON.stringify(varientData));
+    formData.append('variantData', JSON.stringify(varientData));
     formData.append('imageFiles', JSON.stringify(imageFiles));
 
-    $("#submit-button").prop("disabled", true)
+    $("#submit-button").prop("disabled", true);
+
+
+    console.log("FormData: " + formData);
+
     $.ajax({
         url: apiurl,
         type: 'POST',

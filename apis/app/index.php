@@ -409,7 +409,7 @@ else if($type == "getBestSellingPrd"){
 
     // Header Titles
     $headerQuery = "SELECT * FROM `header_title`
-                    WHERE `title_type`='best_selling_grocery'";
+                    WHERE `title_type`='best_selling'";
     $headerRes = mysqli_query($con, $headerQuery);
 
     $headers = [];
@@ -1775,9 +1775,7 @@ else if($type == "getAllProductData"){
     $typename=$_POST['typeName'];
         $branch_id = $_POST['branchId'] ?? '';
 
-       $query = "SELECT
-
-    p.*,
+       $query = "SELECT p.*,
 
     (
         SELECT COUNT(*)
@@ -1807,9 +1805,7 @@ else if($type == "getAllProductData"){
 
     WHERE p.`status` = 'true'
     AND p.`under_category` = '$id'
-    AND p.`$typename` = 'true'
-
-    LIMIT 10";
+    AND p.`$typename` = 'true'";
 
     $res = mysqli_query($con, $query);
 
@@ -1876,8 +1872,7 @@ else if($type == "getAllProductBrandData"){
             AND bs.branch_id = '$branch_id'
           WHERE p.`status` = 'true'
           AND p.`under_category` = '$id'
-          AND p.`brand_name` = '$brandId'
-          LIMIT 10";
+          AND p.`brand_name` = '$brandId'";
 
     $res = mysqli_query($con, $query);
 

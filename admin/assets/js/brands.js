@@ -125,6 +125,7 @@ const loadBrands =()=>{
                 <thead>
                         <tr>
                             <th>SN</th>
+                            <th>Category name</th>
                             <th>Logo Image</th>
                             <th>Product Image</th>
                             <th>Name</th>
@@ -141,6 +142,7 @@ const loadBrands =()=>{
                    html += `
                    <tr>
                         <td class="sl">${index + 1}</td>
+                        <td>${item?.categoryName}</td>
                         <td><img src="${imgurl+item.logo_path}" alt="${item.name}"></td>
                         <td><img src="${imgurl+item.product_path}" alt="${item.name}"></td>
                         <td>${item.name}</td>

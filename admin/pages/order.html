@@ -3,6 +3,7 @@
 
 
 <!-- Mirrored from /dashboard/pages/order.html?type=all by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 05 May 2026 18:40:18 GMT -->
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -90,7 +91,7 @@
                     </div>
 
                 </div>
-                 <div class="sidebar-box flex flex-start gap-10 branchBox ">
+                <div class="sidebar-box flex flex-start gap-10 branchBox ">
                     <i class="bi bi-shop"></i>
                     <p>Branch</p>
                 </div>
@@ -418,6 +419,15 @@
                             </select>
                         </div>
 
+
+                        <!-- Rows Per Page -->
+                        <div class="filter-group">
+                            <label for="branch-filter">Select Branch</label>
+                            <select id="branch-filter" class="filter-control">
+
+                            </select>
+                        </div>
+
                         <!-- Actions -->
                         <div class="filter-actions">
                             <button id="apply-filters" class="btn-filter btn-apply">
@@ -623,7 +633,7 @@
         <div class="binvoice" id="binvoice">
             <div class="bheader">
                 <img src="../assets/images/logo.png" alt="GroFresh Logo">
-                
+
                 <p class="billing_address">
                 </p>
             </div>
@@ -702,7 +712,7 @@
 
             <div class="bfooter">
                 <p>** THANK YOU **</p>
-                
+
             </div>
         </div>
 
@@ -776,6 +786,7 @@
     <script>
         $(document).ready(function () {
             loadOrder();
+            getAllBranch();
         });
     </script>
 
@@ -786,4 +797,5 @@
 
 
 <!-- Mirrored from /dashboard/pages/order.html?type=all by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 05 May 2026 18:40:20 GMT -->
+
 </html>

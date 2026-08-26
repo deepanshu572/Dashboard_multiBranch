@@ -79,6 +79,7 @@ let editBranchMap = null;
                             <tr>
                                 <th>SN</th>
                                 <th>Branch Name</th>
+                                <th>Password</th>
                                 <th>Description</th>
                                 <th>Phone No</th>
                                 <th>Email</th>
@@ -103,6 +104,7 @@ let editBranchMap = null;
                         <tr>
                             <td>${index + 1}</td>
                             <td>${item.name}</td>
+                            <td>${item.password}</td>
                             <td>${item.description}</td>
                             <td>${item.phone_no}</td>
                             <td>${item.email}</td>
@@ -277,8 +279,8 @@ function editBranch(item) {
                     city: $("#edit-branch-city").val(),
                     state: $("#edit-branch-state").val(),
                     pincode: $("#edit-branch-pincode").val(),
-                    longitude: $("#longitude-branch").val(),
-                    latitude:$("#latitude-branch").val(),
+                    longitude: $("#edit-branch-latitude").val(),
+                    latitude:$("#edit-branch-longitude").val(),
                     coverage:$("#coverage-branch").val()
                 },
                 success: function (response) {

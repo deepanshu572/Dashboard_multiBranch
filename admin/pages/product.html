@@ -270,12 +270,11 @@
                         </div>
                     </div>
 
-                    <div class="">
+                    <!-- <div class="">
                         <h3 style="margin-bottom: 10px;">Add Variant</h3>
 
                         <div class="flex flex-start gap-30 k_form_group_container">
 
-                            <!-- Pricing Information -->
                             <div class="form-group k_form_group">
                                 <label for="mrp">MRP</label>
                                 <input type="number" step="0.01" id="mrp" name="mrp" placeholder="MRP" required>
@@ -292,15 +291,15 @@
                                 <input type="number" step="0.01" id="purchase-price" name="purchase-price"
                                     placeholder="Purchase Price" required>
                             </div>
-                            <!-- <div class="form-group k_form_group">
+                            <div class="form-group k_form_group">
                             <label for="stock">Stock</label>
                             <input type="number" step="0.01" id="stock" name="stock" placeholder="Stock" required>
-                        </div> -->
                         </div>
-                    </div>
+                        </div>
+                    </div> -->
 
 
-                    <div class="flex flex-start gap-30 k_form_group_container">
+                    <!-- <div class="flex flex-start gap-30 k_form_group_container">
                         <div class="form-group k_form_group">
                             <label for="quantity">Quantity</label>
                             <input type="text" step="0.01" id="quantity" name="quantity" placeholder="Quantity"
@@ -311,7 +310,6 @@
                             <label for="unit">Select Unit</label>
                             <select id="unit" name="unit" required>
                                 <option value="">Select Unit</option>
-                                <!-- Grocery & General Food Items -->
                                 <option value="gm">gm</option>
                                 <option value="kg">kg</option>
                                 <option value="ml">ml</option>
@@ -326,14 +324,12 @@
                                 <option value="box">Box</option>
                                 <option value="tray">Tray</option>
 
-                                <!-- Fruits & Vegetables -->
                                 <option value="pieces">Pieces</option>
                                 <option value="bunch">Bunch</option>
                                 <option value="dozen">Dozen</option>
                                 <option value="bundle">Bundle</option>
                                 <option value="pair">Pair</option>
 
-                                <!-- Clothes -->
                                 <option value="piece">Piece</option>
                                 <option value="set">Set</option>
                                 <option value="pair">Pair</option>
@@ -344,7 +340,6 @@
                                 <option value="xl">XL</option>
                                 <option value="xxl">XXL</option>
 
-                                <!-- Electronics -->
                                 <option value="unit">Unit</option>
 
                                 <option value="half plate">Half Plate</option>
@@ -357,6 +352,107 @@
                         </div>
 
 
+
+                    </div> -->
+                        <!-- ----- variant section ------ -->
+                    <div class="">
+                        <h3>Add Variant</h3>
+                        <div class="vareint-result" id="vareint-result">
+
+                        </div>
+
+                        <div class="flex flex-start gap-30 flex-wrap k_form_group_container">
+
+                            <div class="form-group k_form_group">
+                                <label for="vquantity">Quantity</label>
+                                <input type="text" step="0.01" id="vquantity" name="quantity" placeholder="Quantity">
+                            </div>
+
+                            <div class="form-group k_form_group">
+                                <label for="vunit">Select Unit</label>
+                                <select id="vunit" name="vunit">
+                                    <option value="">Select Unit</option>
+                                    <!-- Grocery & General Food Items -->
+                                    <option value="gm">gm</option>
+                                    <option value="kg">kg</option>
+                                    <option value="ml">ml</option>
+                                    <option value="liter">liter</option>
+                                    <option value="packet">Packet</option>
+                                    <option value="bottle">Bottle</option>
+                                    <option value="can">Can</option>
+                                    <option value="jar">Jar</option>
+                                    <option value="tin">Tin</option>
+                                    <option value="sachet">Sachet</option>
+                                    <option value="bar">Bar</option>
+                                    <option value="box">Box</option>
+                                    <option value="tray">Tray</option>
+
+                                    <!-- Fruits & Vegetables -->
+                                    <option value="pieces">Pieces</option>
+                                    <option value="bunch">Bunch</option>
+                                    <option value="dozen">Dozen</option>
+                                    <option value="bundle">Bundle</option>
+                                    <option value="pair">Pair</option>
+
+                                    <!-- Clothes -->
+                                    <option value="piece">Piece</option>
+                                    <option value="set">Set</option>
+                                    <option value="pair">Pair</option>
+                                    <option value="pack">Pack</option>
+                                    <option value="s">S</option>
+                                    <option value="m">M</option>
+                                    <option value="l">L</option>
+                                    <option value="xl">XL</option>
+                                    <option value="xxl">XXL</option>
+
+                                    <!-- Electronics -->
+                                    <option value="unit">Unit</option>
+
+                                    <option value="half plate">Half Plate</option>
+                                    <option value="full plate">Full Plate</option>
+                                    <option value="glass">glass</option>
+                                    <option value="cup">cup</option>
+                                    <option value="plate">plate</option>
+
+                                </select>
+                            </div>
+
+                            <div class="form-group k_form_group">
+                                <label for="vmrp">MRP</label>
+                                <input type="number" step="0.01" id="vmrp" name="mrp" placeholder="MRP">
+                            </div>
+
+                            <div class="form-group k_form_group">
+                                <label for="vselling-price">Selling Price</label>
+                                <input type="number" step="0.01" id="vselling-price" name="selling-price"
+                                    placeholder="Selling Price">
+                            </div>
+                        </div>
+
+                        <div class="flex flex-start gap-30 flex-wrap k_form_group_container">
+                            <div class="form-group k_form_group">
+                                <label for="vpurchase-price">Purchase Price</label>
+                                <input type="number" step="0.01" id="vpurchase-price" name="purchase-price"
+                                    placeholder="Purchase Price">
+                            </div>
+                            <!-- Stock and Quantity -->
+                            <!-- <div class="form-group k_form_group">
+                                <label for="vstock">Stock</label>
+                                <input type="number" step="0.01" id="vstock" name="stock" placeholder="Stock">
+                            </div> -->
+
+                            <div class="form-group k_form_group">
+                                <label for="vlimit">Limit</label>
+                                <input type="number" step="0.01" id="vlimit" name="limit"
+                                    placeholder="Limit (Optional)">
+                            </div>
+
+                            <div class="form-group k_form_group">
+                                <label for="vstock"></label> &nbsp;
+                                <input type="button" id="addmore" value="Add">
+                            </div>
+
+                        </div>
 
                     </div>
                     <!-- --- product details----- -->

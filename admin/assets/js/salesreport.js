@@ -69,6 +69,7 @@ function renderSalesReport(filterType = '') {
     let startDate = $('#startDate').val();
     let endDate = $('#endDate').val();
     let statusFilter = $('#orderStatusFilter').val();
+    let branchFilter = $("#branch-filter").val();
 
     const today = new Date();
 
@@ -94,6 +95,7 @@ function renderSalesReport(filterType = '') {
         if (startTS && item.dor_ts < startTS) return false;
         if (endTS && item.dor_ts > endTS) return false;
         if (statusFilter && item.order_status !== statusFilter) return false;
+        if (branchFilter && item.branch_id !== branchFilter) return false;     
         return true;
     });
 
@@ -206,6 +208,7 @@ function clearSalesReport() {
     $('#startDate').val('');
     $('#endDate').val('');
     $('#orderStatusFilter').val('');
+    $('#branch-filter').val('')
     $('.filter_btn').removeClass('active');
     renderSalesReport();
 }
@@ -222,6 +225,11 @@ $(document).on('click', '.filter_btn', function () {
 $('#orderStatusFilter').on('change', function () {
     renderSalesReport();
 });
+$('#branch-filter').on('change', function () {
+    renderSalesReport();
+});
+
+
 
 /* ===============================
    INIT
@@ -229,3 +237,46 @@ $('#orderStatusFilter').on('change', function () {
 $(document).ready(function () {
     loadSalesReport();
 });
+
+
+const getAllBranch = () =>{
+
+        let branchName = localStorage.getItem("admin_role");
+    let branchId = localStorage.getItem("role_id");
+    let branchData = {};
+    if (branchName == "branch") {
+        branchData = {
+            type: "getAllBranch",
+            branchId
+        }
+
+    }
+    else {
+        branchData = {
+            type: "getAllBranch",
+        }
+    }
+
+    $.ajax({
+        url:apiurl,
+        method:"POST",
+        dataType:"JSON",
+        data:branchData,
+        success:function (response) {
+            if(response.status == "success"){
+                console.log(response.data);
+                let data = response.data;
+
+                let branchHtml = '<option value="">All branch</option>';
+
+                data?.forEach((item)=>{
+                  branchHtml+=`<option value='${item?.id}'>${item?.name}</option>`;
+                });
+                $("#branch-filter").html(branchHtml);
+
+            }else{
+                console.log(response.message);
+            }
+        }
+    })
+}

@@ -24,6 +24,9 @@
     font-weight: bold;
     margin-bottom: 5px;
 }
+.table td{
+    text-transform: capitalize;
+}
 
 .form-group input[type="text"], .form-group input[type="file"], .form-group input[type="password"] ,.form-group select ,.form-group input[type="date"]{
     width: 100%;

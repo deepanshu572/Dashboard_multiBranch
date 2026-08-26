@@ -84,7 +84,7 @@
                         </div>
                         <i class="bi bi-chevron-down down"></i>
                     </div>
-                   <div class="sub-box">
+                    <div class="sub-box">
                         <li class="categoryBox">Top Category</li>
                         <li class="bottomCategoryBox">Bottom Category</li>
                         <li class="subCategoryBox">Subcategory</li>
@@ -92,7 +92,7 @@
 
                 </div>
 
-                 <div class="sidebar-box flex flex-start gap-10 branchBox ">
+                <div class="sidebar-box flex flex-start gap-10 branchBox ">
                     <i class="bi bi-shop"></i>
                     <p>Branch</p>
                 </div>
@@ -255,6 +255,11 @@
                         <option value="delivered">Delivered</option>
                         <option value="cancelled">Cancelled</option>
                     </select>
+
+                   <select id="branch-filter" class="filter-control">
+
+                        </select>
+
                 </div>
 
             </div>
@@ -342,6 +347,8 @@
         <script>
 
             loadSalesReport();
+            getAllBranch();
+
         </script>
 </body>
 
